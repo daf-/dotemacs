@@ -14,26 +14,30 @@
 (require 'python-mode)
 (setq py-load-pymacs-p t) ; for code completeion
 
-; autocomplete
+;; popup
+(add-to-list 'load-path "~/.emacs.d/popup-el")
+(require 'popup)
+
+;; auto-complete
+(add-to-list 'load-path "~/.emacs.d/ac-install/")
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
 
 ;; YASnippet
-;; (add-to-list 'load-path "~/.emacs.d/yasnippet")
-;; (require 'yasnippet)
-;; (yas-global-mode 1)
-;; ;; makes TAB work in terminal
-;; (defun yas/advise-indent-function (function-symbol)
-;;   (eval `(defadvice ,function-symbol (around yas/try-expand-first activate)
-;;            ,(format
-;;              "Try to expand a snippet before point, then call `%s' as usual"
-;;              function-symbol)
-;;            (let ((yas/fallback-behavior nil))
-;;              (unless (and (interactive-p)
-;;                           (yas/expand))
-;;            ad-do-it)))))
-;; (yas/advise-indent-function 'c-indent-line-or-region)
+(add-to-list 'load-path "~/.emacs.d/yasnippet")
+(require 'yasnippet)
+(yas-global-mode 1)
+;; makes TAB work in terminal
+(defun yas/advise-indent-function (function-symbol)
+  (eval `(defadvice ,function-symbol (around yas/try-expand-first activate)
+           ,(format
+             "Try to expand a snippet before point, then call `%s' as usual"
+             function-symbol)
+           (let ((yas/fallback-behavior nil))
+             (unless (and (interactive-p)
+                          (yas/expand))
+           ad-do-it)))))
+(yas/advise-indent-function 'c-indent-line-or-region)
 
 ; for SuperCollider - from http://sam.aaron.name/2010/02/09/hooking-supercollider-up-to-emacs-on-os-x.html
 ;(setq path "/Applications/Supercollider.app/Contents/Resources:PATH")
@@ -49,12 +53,20 @@
 
 ;; Solarized
 (add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized/")
-(load-theme 'solarized-dark t)
 
 ;; EVIL
 (add-to-list 'load-path "~/.emacs.d/evil")
 (require 'evil)
 (evil-mode 1)
+
+;; evil-leader
+(add-to-list 'load-path "~/.emacs.d/evil-leader")
+(require 'evil-leader)
+
+;; evil-surround
+(add-to-list 'load-path "~/.emacs.d/evil-surround")
+(require 'surround)
+(global-surround-mode 1)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -66,6 +78,7 @@
 ;; Maps "kj" to escape
 ;; taken from http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-vim/ -- fantastic blog entry on vim->emacs
 (define-key evil-insert-state-map "k" #'cofi/maybe-exit)
+(define-key evil-replace-state-map "k" #'cofi/maybe-exit)
 (evil-define-command cofi/maybe-exit ()
  :repeat change
  (interactive)
@@ -81,8 +94,25 @@
 	(push 'escape unread-command-events))
       (t (setq unread-command-events (append unread-command-events
 					      (list evt))))))))
+
+;;(define-key evil-normal-state-map "," ctl-x-map)
 ;;(define-key evil-normal-state-map ";" #'evil-ex)
-;;(define-key evil-normal-state-map "`" ctl-x-map)
+
+;; Minimize hand fatigue
+(define-key evil-normal-state-map " " #'evil-toggle-fold)
+(define-key evil-normal-state-map (kbd "C-h") #'evil-window-left)
+(define-key evil-normal-state-map (kbd "C-j") #'evil-window-down)
+(define-key evil-normal-state-map (kbd "C-k") #'evil-window-up)
+(define-key evil-normal-state-map (kbd "C-l") #'evil-window-right)
+
+;; Remaps for navigation
+(define-key evil-normal-state-map (kbd "C-u") #'evil-scroll-up)
+
+;; Leader maps
+(evil-leader/set-leader ",")
+(evil-leader/set-key "x" ctl-x-map)
+(evil-leader/set-key "xf" (kbd "C-x C-f"))
+;; TODO: define common C-c commands to this
 
 ;; Fun comments with boxing
 (defun box-comment() ;; "defun" is a macro for defining named functions in emacs lisp
@@ -94,8 +124,7 @@ different types of comments section our your code more thoroughly."
     ((comment-style 'box))
     (comment-region
      (region-beginning)
-     (region-end))
-    ))
+     (region-end))))
 
 (defun box-uncomment()
   "Destroys a box created with box-comment, leaving the original contents
@@ -128,28 +157,26 @@ box, then it attempts to remove the blank lines left over by this operation."
 	(narrow-to-region clear1 clear2)
 	(delete-blank-lines)
 	(goto-char (region-end))
-	(delete-blank-lines)))
-
-    ))
+	(delete-blank-lines)))))
 
 
 ;; This is useful for macbooks, where C-/ has been cleverly
 ;; bound to "make the terminal beep" by Apple. Thanks, Apple!
 (global-set-key "\M-/" 'undo)
 
-(global-set-key (kbd "C-x <up>") 'enlarge-window)
-(global-set-key (kbd "C-x <down>") 'shrink-window)
-(global-set-key (kbd "C-q") 'fill-region)
-(global-set-key (kbd "M-s o") 'occur)
-(global-set-key (kbd "C-x p") 'previous-multiframe-window)
-(global-set-key (kbd "C-x x ;") 'box-comment)
-(global-set-key (kbd "C-x x '") 'box-uncomment)
-(global-set-key (kbd "M-o j") 'windmove-down)
-(global-set-key (kbd "M-o k") 'windmove-up)
-(global-set-key (kbd "M-o h") 'windmove-left)
-(global-set-key (kbd "M-o l") 'windmove-right)
-(global-set-key (kbd "M-n") 'forward-paragraph)
-(global-set-key (kbd "M-p") 'backward-paragraph)
+;; (global-set-key (kbd "C-x <up>") 'enlarge-window)
+;; (global-set-key (kbd "C-x <down>") 'shrink-window)
+;; (global-set-key (kbd "C-q") 'fill-region)
+;; (global-set-key (kbd "M-s o") 'occur)
+;; (global-set-key (kbd "C-x p") 'previous-multiframe-window)
+;; (global-set-key (kbd "C-x x ;") 'box-comment)
+;; (global-set-key (kbd "C-x x '") 'box-uncomment)
+;; (global-set-key (kbd "M-o j") 'windmove-down)
+;; (global-set-key (kbd "M-o k") 'windmove-up)
+;; (global-set-key (kbd "M-o h") 'windmove-left)
+;; (global-set-key (kbd "M-o l") 'windmove-right)
+;; (global-set-key (kbd "M-n") 'forward-paragraph)
+;; (global-set-key (kbd "M-p") 'backward-paragraph)
 
 ;; C-c <letter> is guaranteed never to be bound in the standard
 ;; distribution of Emacs.  It is reserved for users' personal
@@ -194,7 +221,7 @@ box, then it attempts to remove the blank lines left over by this operation."
   (interactive "*")
   (save-excursion
       (set-mark (point))
-      (insert "public static void main(String[] args) {")
+      (insert "public static void main (String[] args) {")
       (newline 2)
       (insert "}")
       (indent-region (region-beginning) (region-end)))
@@ -279,7 +306,7 @@ box, then it attempts to remove the blank lines left over by this operation."
 ; return is newline & indent
 (define-key global-map (kbd "RET") 'newline-and-indent)
 ; sets line numbers
-(global-linum-mode t)
+;(global-linum-mode t)
 ; no backup files -- luke's section may cover this...
 (setq make-backup-files nil) ; prevents creation of backup files
 (setq auto-save-default nil) ; disables auto save
@@ -290,7 +317,8 @@ box, then it attempts to remove the blank lines left over by this operation."
 (defun track-mouse(e))
 (setq mouse-sel-mode t)
 
-
+;; turn on hl-line-mode
+(hl-line-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -315,7 +343,8 @@ box, then it attempts to remove the blank lines left over by this operation."
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(c-basic-offset 4)
- '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
+ '(custom-enabled-themes (quote (solarized-dark)))
+ '(custom-safe-themes (quote ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
  '(inhibit-startup-screen nil)
  '(initial-buffer-choice nil)
  '(sclang-auto-scroll-post-buffer t)

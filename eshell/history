@@ -7,3 +7,37 @@ rm -r vendor/
 git clone git://github.com/samaaron/scel.git vendor/supercollider
 ls
 cp -R ~/.emacs.d/vendor/supercollider/sc ~/.sclang/SCClassLibrary/Common/Emacs
+ls
+exit
+ls
+ls | grep evil
+ls
+git submodule add https://github.com/timcharper/evil-surround evil-surround
+git submodule add git://gitorious.org/evil/evil.git evil
+git rm evil
+git submodule rm evil
+git submodule add git://gitorious.org/evil/evil.git evil
+ls
+git rm -r evil
+git submodule add git://gitorious.org/evil/evil.git evil
+git submodule update
+git submodule init
+git submodule update
+rm -r evil
+ls
+git submodule add git://gitorious.org/evil/evil.git evil
+ls
+git rm evil
+git submodule add git://gitorious.org/evil/evil.git evil
+ls
+exit
+ls
+ls popup-el
+fg
+vim
+clear
+ls
+,
+ls auto-complete/
+ls
+mkdir ac-install
