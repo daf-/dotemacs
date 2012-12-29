@@ -41,3 +41,7 @@ ls
 ls auto-complete/
 ls
 mkdir ac-install
+ls
+ls -a
+ls -a | grep vim
+exit

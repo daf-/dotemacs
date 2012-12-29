@@ -1,3 +1,5 @@
+;; Heavily modified .emacs file originally from Luke Lovett
+;; Customized 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ------- PATH AND REQUIRES ------- ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -7,24 +9,25 @@
 
 ;; Point emacs to our expansions/configurations directory
 (add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/plugin")
 
 ;; python mode
-(setq py-install-directory "~/.emacs.d/python-mode.el-6.0.11/")
-(add-to-list 'load-path py-install-directory)
-(require 'python-mode)
-(setq py-load-pymacs-p t) ; for code completeion
+;; (setq py-install-directory "~/.emacs.d/plugin/python-mode.el-6.0.11/")
+;; (add-to-list 'load-path py-install-directory)
+;; (require 'python-mode)
+;; (setq py-load-pymacs-p t) ; for code completeion
 
 ;; popup
-(add-to-list 'load-path "~/.emacs.d/popup-el")
+(add-to-list 'load-path "~/.emacs.d/plugin/popup-el")
 (require 'popup)
 
 ;; auto-complete
-(add-to-list 'load-path "~/.emacs.d/ac-install/")
+(add-to-list 'load-path "~/.emacs.d/plugin/ac-install-files/")
 (require 'auto-complete-config)
 (ac-config-default)
 
 ;; YASnippet
-(add-to-list 'load-path "~/.emacs.d/yasnippet")
+(add-to-list 'load-path "~/.emacs.d/plugin/yasnippet")
 (require 'yasnippet)
 (yas-global-mode 1)
 ;; makes TAB work in terminal
@@ -52,19 +55,19 @@
 ;(require 'sclang)
 
 ;; Solarized
-(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized/")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/plugin/emacs-color-theme-solarized/")
 
 ;; EVIL
-(add-to-list 'load-path "~/.emacs.d/evil")
+(add-to-list 'load-path "~/.emacs.d/plugin/evil")
 (require 'evil)
 (evil-mode 1)
 
 ;; evil-leader
-(add-to-list 'load-path "~/.emacs.d/evil-leader")
+(add-to-list 'load-path "~/.emacs.d/plugin/evil-leader")
 (require 'evil-leader)
 
 ;; evil-surround
-(add-to-list 'load-path "~/.emacs.d/evil-surround")
+(add-to-list 'load-path "~/.emacs.d/plugin/evil-surround")
 (require 'surround)
 (global-surround-mode 1)
 
@@ -73,7 +76,17 @@
 ;; ------- KEY MAPPINGS ------- ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; EVIL
+
+;; EVIL ;;
+
+;; esc quits -- from http://stackoverflow.com/questions/8483182/emacs-evil-mode-best-practice
+(define-key evil-normal-state-map [escape] 'keyboard-quit)
+(define-key evil-visual-state-map [escape] 'keyboard-quit)
+(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
 ;; Maps "kj" to escape
 ;; taken from http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-vim/ -- fantastic blog entry on vim->emacs
@@ -95,9 +108,6 @@
       (t (setq unread-command-events (append unread-command-events
 					      (list evt))))))))
 
-;;(define-key evil-normal-state-map "," ctl-x-map)
-;;(define-key evil-normal-state-map ";" #'evil-ex)
-
 ;; Minimize hand fatigue
 (define-key evil-normal-state-map " " #'evil-toggle-fold)
 (define-key evil-normal-state-map (kbd "C-h") #'evil-window-left)
@@ -105,14 +115,16 @@
 (define-key evil-normal-state-map (kbd "C-k") #'evil-window-up)
 (define-key evil-normal-state-map (kbd "C-l") #'evil-window-right)
 
-;; Remaps for navigation
+;; Navigation
 (define-key evil-normal-state-map (kbd "C-u") #'evil-scroll-up)
 
 ;; Leader maps
 (evil-leader/set-leader ",")
+
 (evil-leader/set-key "x" ctl-x-map)
-(evil-leader/set-key "xf" (kbd "C-x C-f"))
-;; TODO: define common C-c commands to this
+(evil-leader/set-key "f" 'find-file)
+(evil-leader/set-key "c" 'comment-or-uncomment-region)
+(evil-leader/set-key "s" 'eshell)
 
 ;; Fun comments with boxing
 (defun box-comment() ;; "defun" is a macro for defining named functions in emacs lisp
@@ -164,20 +176,6 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;; bound to "make the terminal beep" by Apple. Thanks, Apple!
 (global-set-key "\M-/" 'undo)
 
-;; (global-set-key (kbd "C-x <up>") 'enlarge-window)
-;; (global-set-key (kbd "C-x <down>") 'shrink-window)
-;; (global-set-key (kbd "C-q") 'fill-region)
-;; (global-set-key (kbd "M-s o") 'occur)
-;; (global-set-key (kbd "C-x p") 'previous-multiframe-window)
-;; (global-set-key (kbd "C-x x ;") 'box-comment)
-;; (global-set-key (kbd "C-x x '") 'box-uncomment)
-;; (global-set-key (kbd "M-o j") 'windmove-down)
-;; (global-set-key (kbd "M-o k") 'windmove-up)
-;; (global-set-key (kbd "M-o h") 'windmove-left)
-;; (global-set-key (kbd "M-o l") 'windmove-right)
-;; (global-set-key (kbd "M-n") 'forward-paragraph)
-;; (global-set-key (kbd "M-p") 'backward-paragraph)
-
 ;; C-c <letter> is guaranteed never to be bound in the standard
 ;; distribution of Emacs.  It is reserved for users' personal
 ;; keybindings, and we, being reasonable people, will abide by this
@@ -190,9 +188,7 @@ box, then it attempts to remove the blank lines left over by this operation."
 (define-key personal-map "p" 'run-python)
 (define-key personal-map "j" 'eshell)
 (define-key personal-map "k" 'term)
-(define-key personal-map ";" 'comment-region)
 (define-key personal-map "f" 'find-file-other-window)
-(define-key personal-map "l" 'goto-line)
 (define-key personal-map "." 'bookmark-set)
 (define-key personal-map "/" 'bookmark-jump)
 
@@ -262,7 +258,8 @@ box, then it attempts to remove the blank lines left over by this operation."
 (unless (or (equal window-system 'x) (equal window-system 'ns))
   (setq scroll-conservatively 1)	;; Scroll as you navigate
   (setq scroll-margin 20)		;; Scroll when we are 20 lines from the top or bottom of the window
-   (menu-bar-mode -1))			;; The menu bar is utterly useless in text mode.
+   (menu-bar-mode -1) 			;; The menu bar is utterly useless in text mode.
+   (linum-mode))                        ;; linum-mode sucks in GUI Emacs (mac)
 
 ;; better switching between buffers (this is VERY awesome)
 (iswitchb-mode t)
@@ -293,11 +290,9 @@ box, then it attempts to remove the blank lines left over by this operation."
 
 
 
-;;;;;;;;;;;;;;;;;;
-;; Dan Friedman ;;
-;;;;;;;;;;;;;;;;;;
-
-;; style ;;
+;;;;;;;;;;;
+;; Style ;;
+;;;;;;;;;;;
 
 ;; sets indentation style
 (setq c-default-style "k&r")
@@ -305,8 +300,6 @@ box, then it attempts to remove the blank lines left over by this operation."
 (setq-default indent-tabs-mode nil)
 ; return is newline & indent
 (define-key global-map (kbd "RET") 'newline-and-indent)
-; sets line numbers
-;(global-linum-mode t)
 ; no backup files -- luke's section may cover this...
 (setq make-backup-files nil) ; prevents creation of backup files
 (setq auto-save-default nil) ; disables auto save
@@ -320,20 +313,10 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;; turn on hl-line-mode
 (hl-line-mode t)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; You'll almost certainly want to customize some things using
-;; the "customize" system of Emacs. You can do this with commands
-;; of the form customize-*
-;;
-;; When you do these, Emacs will drop some code into the bottom of your
-;; .emacs file. It's generally a bad idea to edit this code manually.
-;; Emacs' generated code should appear below this message.
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;
-;; autogenerated ;;
+;; Autogenerated ;;
 ;;;;;;;;;;;;;;;;;;;
 
 (custom-set-variables

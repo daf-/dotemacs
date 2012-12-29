@@ -1,15 +1,18 @@
 [submodule "evil-leader"]
-	path = evil-leader
+	path = plugin/evil-leader
 	url = https://github.com/cofi/evil-leader.git
 [submodule "evil-surround"]
-	path = evil-surround
+	path = plugin/evil-surround
 	url = https://github.com/timcharper/evil-surround
 [submodule "evil"]
-	path = evil
+	path = plugin/evil
 	url = git://gitorious.org/evil/evil.git
 [submodule "auto-complete"]
-	path = auto-complete
+	path = plugin/auto-complete
 	url = https://github.com/auto-complete/auto-complete.git
 [submodule "popup-el"]
-	path = popup-el
+	path = plugin/popup-el
 	url = https://github.com/auto-complete/popup-el.git
+[submodule "plugin/auto-complete"]
+	path = plugin/auto-complete
+	url = https://github.com/auto-complete/auto-complete.git
