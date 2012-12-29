@@ -45,3 +45,7 @@ ls
 ls -a
 ls -a | grep vim
 exit
+ls
+git commit -am "cleaned up plugins"
+git push -u origin master
+exit

@@ -123,6 +123,7 @@
 
 (evil-leader/set-key "x" ctl-x-map)
 (evil-leader/set-key "f" 'find-file)
+(evil-leader/set-key "l" 'load-file)
 (evil-leader/set-key "c" 'comment-or-uncomment-region)
 (evil-leader/set-key "s" 'eshell)
 

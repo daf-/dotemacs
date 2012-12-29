@@ -13,6 +13,3 @@
 [submodule "popup-el"]
 	path = plugin/popup-el
 	url = https://github.com/auto-complete/popup-el.git
-[submodule "plugin/auto-complete"]
-	path = plugin/auto-complete
-	url = https://github.com/auto-complete/auto-complete.git
