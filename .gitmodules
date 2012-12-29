@@ -3,7 +3,7 @@
 	url = https://github.com/cofi/evil-leader.git
 [submodule "plugin/evil-surround"]
 	path = plugin/evil-surround
-	url = https://github.com/timcharper/evil-surround
+	url = https://github.com/timcharper/evil-surround.git
 [submodule "plugin/evil"]
 	path = plugin/evil
 	url = git://gitorious.org/evil/evil.git
@@ -16,3 +16,6 @@
 [submodule "plugin/emacs-color-theme-solarized"]
 	path = plugin/emacs-color-theme-solarized
 	url = https://github.com/sellout/emacs-color-theme-solarized.git
+[submodule "plugin/yasnippet"]
+	path = plugin/yasnippet
+	url = https://github.com/capitaomorte/yasnippet.git
