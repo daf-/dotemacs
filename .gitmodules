@@ -1,15 +1,18 @@
-[submodule "evil-leader"]
+[submodule "plugin/evil-leader"]
 	path = plugin/evil-leader
 	url = https://github.com/cofi/evil-leader.git
-[submodule "evil-surround"]
+[submodule "plugin/evil-surround"]
 	path = plugin/evil-surround
 	url = https://github.com/timcharper/evil-surround
-[submodule "evil"]
+[submodule "plugin/evil"]
 	path = plugin/evil
 	url = git://gitorious.org/evil/evil.git
-[submodule "auto-complete"]
+[submodule "plugin/auto-complete"]
 	path = plugin/auto-complete
 	url = https://github.com/auto-complete/auto-complete.git
-[submodule "popup-el"]
+[submodule "plugin/popup-el"]
 	path = plugin/popup-el
 	url = https://github.com/auto-complete/popup-el.git
+[submodule "plugin/emacs-color-theme-solarized"]
+	path = plugin/emacs-color-theme-solarized
+	url = https://github.com/sellout/emacs-color-theme-solarized.git
