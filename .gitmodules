@@ -22,3 +22,6 @@
 [submodule "plugin/emacs-powerline"]
 	path = plugin/emacs-powerline
 	url = https://github.com/jonathanchu/emacs-powerline.git
+[submodule "plugin/evil"]
+	path = plugin/evil
+	url = git://gitorious.org/evil/evil.git
