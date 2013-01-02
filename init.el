@@ -1,5 +1,5 @@
 ;; Heavily modified .emacs file originally from Luke Lovett
-;; Customized 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ------- PATH AND REQUIRES ------- ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -7,15 +7,19 @@
 ;; run emacs in server-mode, so that new sessions start quickly
 ;; (server-start)
 
-;; Point emacs to our expansions/configurations directory
-(add-to-list 'load-path "~/.emacs.d")
-(add-to-list 'load-path "~/.emacs.d/plugin")
+;; EVIL
+;;(add-to-list 'load-path "~/.emacs.d/plugin/evil")
+;;(require 'evil)
+;;(evil-mode 1)
 
-;; python mode
-;; (setq py-install-directory "~/.emacs.d/plugin/python-mode.el-6.0.11/")
-;; (add-to-list 'load-path py-install-directory)
-;; (require 'python-mode)
-;; (setq py-load-pymacs-p t) ; for code completeion
+;; evil-leader
+(add-to-list 'load-path "~/.emacs.d/plugin/evil-leader")
+(require 'evil-leader)
+
+;; evil-surround
+(add-to-list 'load-path "~/.emacs.d/plugin/evil-surround")
+(require 'surround)
+(global-surround-mode 1)
 
 ;; popup
 (add-to-list 'load-path "~/.emacs.d/plugin/popup-el")
@@ -26,21 +30,20 @@
 (require 'auto-complete-config)
 (ac-config-default)
 
+;; Solarized
+(when (>= emacs-major-version 24)
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
+  (load-theme 'solarized-dark t))
+
+;; golden-ratio
+(add-to-list 'load-path "~/.emacs.d/plugin/golden-ratio")
+(require 'golden-ratio)
+(golden-ratio-enable)
+
 ;; YASnippet
 (add-to-list 'load-path "~/.emacs.d/plugin/yasnippet")
 (require 'yasnippet)
 (yas-global-mode 1)
-;; makes TAB work in terminal
-(defun yas/advise-indent-function (function-symbol)
-  (eval `(defadvice ,function-symbol (around yas/try-expand-first activate)
-           ,(format
-             "Try to expand a snippet before point, then call `%s' as usual"
-             function-symbol)
-           (let ((yas/fallback-behavior nil))
-             (unless (and (interactive-p)
-                          (yas/expand))
-           ad-do-it)))))
-(yas/advise-indent-function 'c-indent-line-or-region)
 
 ; for SuperCollider - from http://sam.aaron.name/2010/02/09/hooking-supercollider-up-to-emacs-on-os-x.html
 ;(setq path "/Applications/Supercollider.app/Contents/Resources:PATH")
@@ -54,22 +57,22 @@
 ;(add-to-list 'load-path "/Applications/SuperCollider/SuperCollider.app/Contents/Resources/sclang")
 ;(require 'sclang)
 
-;; Solarized
-(add-to-list 'custom-theme-load-path "~/.emacs.d/plugin/emacs-color-theme-solarized/")
 
-;; EVIL
-(add-to-list 'load-path "~/.emacs.d/plugin/evil")
-(require 'evil)
-(evil-mode 1)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ------ PLUGIN SETTINGS ------ ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; evil-leader
-(add-to-list 'load-path "~/.emacs.d/plugin/evil-leader")
-(require 'evil-leader)
-
-;; evil-surround
-(add-to-list 'load-path "~/.emacs.d/plugin/evil-surround")
-(require 'surround)
-(global-surround-mode 1)
+;; YASnippet -- makes TAB work in terminal
+(defun yas/advise-indent-function (function-symbol)
+  (eval `(defadvice ,function-symbol (around yas/try-expand-first activate)
+           ,(format
+             "Try to expand a snippet before point, then call `%s' as usual"
+             function-symbol)
+           (let ((yas/fallback-behavior nil))
+             (unless (and (interactive-p)
+                          (yas/expand))
+           ad-do-it)))))
+(yas/advise-indent-function 'c-indent-line-or-region)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -114,18 +117,28 @@
 (define-key evil-normal-state-map (kbd "C-j") #'evil-window-down)
 (define-key evil-normal-state-map (kbd "C-k") #'evil-window-up)
 (define-key evil-normal-state-map (kbd "C-l") #'evil-window-right)
+(define-key evil-motion-state-map (kbd "C-h") #'evil-window-left)
+(define-key evil-motion-state-map (kbd "C-j") #'evil-window-down)
+(define-key evil-motion-state-map (kbd "C-k") #'evil-window-up)
+(define-key evil-motion-state-map (kbd "C-l") #'evil-window-right)
 
-;; Navigation
+;; Navigation and Editing
 (define-key evil-normal-state-map (kbd "C-u") #'evil-scroll-up)
+(define-key evil-insert-state-map (kbd "C-e") #'move-end-of-line)
+
+;; (define-key evil-insert-state-map (kbd "C-z") #'move-end-of-line)
+;; (define-key evil-normal-state-map (kbd "C-z") #'move-end-of-line)
+;; (define-key evil-visual-state-map (kbd "C-z") #'move-end-of-line)
+;; (define-key evil-motion-state-map (kbd "C-z") #'move-end-of-line)
 
 ;; Leader maps
 (evil-leader/set-leader ",")
-
 (evil-leader/set-key "x" ctl-x-map)
 (evil-leader/set-key "f" 'find-file)
 (evil-leader/set-key "l" 'load-file)
 (evil-leader/set-key "c" 'comment-or-uncomment-region)
 (evil-leader/set-key "s" 'eshell)
+;; (evil-leader/set-key "e" evil-toggle-key)
 
 ;; Fun comments with boxing
 (defun box-comment() ;; "defun" is a macro for defining named functions in emacs lisp
@@ -241,7 +254,7 @@ box, then it attempts to remove the blank lines left over by this operation."
    (set-face-foreground font-lock-comment-face 'red))
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
-
+;; TODO: add mode-hooks for evil mode; e.g. optargs for shell-script-mode
 
 
 
@@ -250,20 +263,26 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(transient-mark-mode t)		;; show regions as highlighted
-(column-number-mode t)		;; shows column number in modeline
-(size-indication-mode t)	;; show buffer size in modeline
+(transient-mark-mode t)	                ;; show regions as highlighted
+(column-number-mode t)	                ;; shows column number in modeline
+(size-indication-mode t)                ;; show buffer size in modeline
+(linum-mode (< emacs-major-version 24)) ;; linum mode is broken in Emacs 24
+(if (>= emacs-major-version 24)         ;; inserts matching brackets
+    (electric-pair-mode t))
 
 ;; for some reason, scroll-conservatively really messes with
 ;; graphical emacs...
 (unless (or (equal window-system 'x) (equal window-system 'ns))
   (setq scroll-conservatively 1)	;; Scroll as you navigate
   (setq scroll-margin 20)		;; Scroll when we are 20 lines from the top or bottom of the window
-   (menu-bar-mode -1) 			;; The menu bar is utterly useless in text mode.
-   (linum-mode))                        ;; linum-mode sucks in GUI Emacs (mac)
+   (menu-bar-mode -1))			;; The menu bar is utterly useless in text mode.
+(if (or (equal window-system 'x) (equal window-system 'ns))
+    (tool-bar-mode 0))                ;; tool-bar sucks
 
 ;; better switching between buffers (this is VERY awesome)
 (iswitchb-mode t)
+;; fuzzy matching!
+(ido-mode t)
 
 ;; Show matching parentheses for lisp editing
 ;; Highlight the entire parenthesized expression for easy visual understanding
@@ -327,7 +346,6 @@ box, then it attempts to remove the blank lines left over by this operation."
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(c-basic-offset 4)
- '(custom-enabled-themes (quote (solarized-dark)))
  '(custom-safe-themes (quote ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
  '(inhibit-startup-screen nil)
  '(initial-buffer-choice nil)
