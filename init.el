@@ -1,5 +1,8 @@
 ;; Heavily modified .emacs file originally from Luke Lovett
 
+;; supposedly makes emacs load faster
+(setq vc-handled-backends nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ------- PATH AND REQUIRES ------- ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -8,9 +11,9 @@
 ;; (server-start)
 
 ;; EVIL
-;;(add-to-list 'load-path "~/.emacs.d/plugin/evil")
-;;(require 'evil)
-;;(evil-mode 1)
+(add-to-list 'load-path "~/.emacs.d/plugin/evil")
+(require 'evil)
+(evil-mode 1)
 
 ;; evil-leader
 (add-to-list 'load-path "~/.emacs.d/plugin/evil-leader")
@@ -30,20 +33,24 @@
 (require 'auto-complete-config)
 (ac-config-default)
 
-;; Solarized
+;; Colors
 (when (>= emacs-major-version 24)
   (add-to-list 'custom-theme-load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
-  (load-theme 'solarized-dark t))
+  (if (window-system)
+      (load-theme 'deeper-blue t)
+    (load-theme 'solarized-dark t)))
 
 ;; golden-ratio
-(add-to-list 'load-path "~/.emacs.d/plugin/golden-ratio")
-(require 'golden-ratio)
-(golden-ratio-enable)
+(when (>= emacs-major-version 24)
+  (add-to-list 'load-path "~/.emacs.d/plugin/golden-ratio")
+  (require 'golden-ratio)
+  (golden-ratio-enable))
 
 ;; YASnippet
 (add-to-list 'load-path "~/.emacs.d/plugin/yasnippet")
 (require 'yasnippet)
 (yas-global-mode 1)
+
 
 ; for SuperCollider - from http://sam.aaron.name/2010/02/09/hooking-supercollider-up-to-emacs-on-os-x.html
 ;(setq path "/Applications/Supercollider.app/Contents/Resources:PATH")
@@ -80,7 +87,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;; EVIL ;;
+;; EVIL -- NOTE: M-RET toggles evil/emacs state
 
 ;; esc quits -- from http://stackoverflow.com/questions/8483182/emacs-evil-mode-best-practice
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
@@ -123,13 +130,9 @@
 (define-key evil-motion-state-map (kbd "C-l") #'evil-window-right)
 
 ;; Navigation and Editing
-(define-key evil-normal-state-map (kbd "C-u") #'evil-scroll-up)
+(setq evil-want-C-u-scroll t)
 (define-key evil-insert-state-map (kbd "C-e") #'move-end-of-line)
 
-;; (define-key evil-insert-state-map (kbd "C-z") #'move-end-of-line)
-;; (define-key evil-normal-state-map (kbd "C-z") #'move-end-of-line)
-;; (define-key evil-visual-state-map (kbd "C-z") #'move-end-of-line)
-;; (define-key evil-motion-state-map (kbd "C-z") #'move-end-of-line)
 
 ;; Leader maps
 (evil-leader/set-leader ",")
@@ -138,7 +141,7 @@
 (evil-leader/set-key "l" 'load-file)
 (evil-leader/set-key "c" 'comment-or-uncomment-region)
 (evil-leader/set-key "s" 'eshell)
-;; (evil-leader/set-key "e" evil-toggle-key)
+(evil-leader/set-key "e" evil-toggle-key)
 
 ;; Fun comments with boxing
 (defun box-comment() ;; "defun" is a macro for defining named functions in emacs lisp
@@ -195,16 +198,16 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;; keybindings, and we, being reasonable people, will abide by this
 ;; convention, so that we don't override anything important:
 ;; Prepare your own personal keymap, and then put it on C-c:
-(define-prefix-command 'personal-map)
-(global-set-key "\C-c" personal-map)
-
-(define-key personal-map "s" 'run-scheme)
-(define-key personal-map "p" 'run-python)
-(define-key personal-map "j" 'eshell)
-(define-key personal-map "k" 'term)
-(define-key personal-map "f" 'find-file-other-window)
-(define-key personal-map "." 'bookmark-set)
-(define-key personal-map "/" 'bookmark-jump)
+;;(define-prefix-command 'personal-map)
+;;(global-set-key "\C-c" personal-map)
+;;
+;; (define-key personal-map "s" 'run-scheme)
+;; (define-key personal-map "p" 'run-python)
+;; (define-key personal-map "j" 'eshell)
+;; (define-key personal-map "k" 'term)
+;; (define-key personal-map "f" 'find-file-other-window)
+;; (define-key personal-map "." 'bookmark-set)
+;; (define-key personal-map "/" 'bookmark-jump)
 
 
 
@@ -266,18 +269,14 @@ box, then it attempts to remove the blank lines left over by this operation."
 (transient-mark-mode t)	                ;; show regions as highlighted
 (column-number-mode t)	                ;; shows column number in modeline
 (size-indication-mode t)                ;; show buffer size in modeline
-(linum-mode (< emacs-major-version 24)) ;; linum mode is broken in Emacs 24
 (if (>= emacs-major-version 24)         ;; inserts matching brackets
     (electric-pair-mode t))
-
-;; for some reason, scroll-conservatively really messes with
-;; graphical emacs...
-(unless (or (equal window-system 'x) (equal window-system 'ns))
-  (setq scroll-conservatively 1)	;; Scroll as you navigate
-  (setq scroll-margin 20)		;; Scroll when we are 20 lines from the top or bottom of the window
-   (menu-bar-mode -1))			;; The menu bar is utterly useless in text mode.
-(if (or (equal window-system 'x) (equal window-system 'ns))
-    (tool-bar-mode 0))                ;; tool-bar sucks
+(global-hl-line-mode 1)
+(global-linum-mode 1)
+(setq scroll-conservatively 1)
+(setq scroll-margin 5)
+(if (not (window-system))
+    (menu-bar-mode -1))
 
 ;; better switching between buffers (this is VERY awesome)
 (iswitchb-mode t)
@@ -288,7 +287,6 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;; Highlight the entire parenthesized expression for easy visual understanding
 (show-paren-mode t)
 (setq show-paren-style 'expression)
-
 
 
 
@@ -330,9 +328,6 @@ box, then it attempts to remove the blank lines left over by this operation."
 (defun track-mouse(e))
 (setq mouse-sel-mode t)
 
-;; turn on hl-line-mode
-(hl-line-mode t)
-
 
 
 ;;;;;;;;;;;;;;;;;;;
@@ -346,13 +341,13 @@ box, then it attempts to remove the blank lines left over by this operation."
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(c-basic-offset 4)
- '(custom-safe-themes (quote ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
+ '(column-number-mode t)
+ '(fringe-mode (quote (0)) nil (fringe))
  '(inhibit-startup-screen nil)
  '(initial-buffer-choice nil)
- '(sclang-auto-scroll-post-buffer t)
- '(sclang-eval-line-forward nil)
- '(sclang-help-path (quote ("/Applications/SuperCollider/SuperCollider.app/Contents/Resources/Help")))
- '(sclang-runtime-directory "~/Applications/SuperCollider/SuperCollider.app/Contents/Resources/"))
+ '(show-paren-mode t)
+ '(size-indication-mode t)
+ '(tool-bar-mode nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
