@@ -25,3 +25,6 @@
 [submodule "plugin/evil"]
 	path = plugin/evil
 	url = git://gitorious.org/evil/evil.git
+[submodule "plugin/magit"]
+	path = plugin/magit
+	url = https://github.com/magit/magit.git

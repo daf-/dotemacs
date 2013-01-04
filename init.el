@@ -51,6 +51,10 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
+;; magit
+(add-to-list 'load-path "~/.emacs.d/plugin/magit")
+(require 'magit)
+
 
 ; for SuperCollider - from http://sam.aaron.name/2010/02/09/hooking-supercollider-up-to-emacs-on-os-x.html
 ;(setq path "/Applications/Supercollider.app/Contents/Resources:PATH")
@@ -130,7 +134,8 @@
 (define-key evil-motion-state-map (kbd "C-l") #'evil-window-right)
 
 ;; Navigation and Editing
-(setq evil-want-C-u-scroll t)
+;; (setq evil-want-C-u-scroll t) ;; why isn't this working?
+(define-key evil-normal-state-map (kbd "C-u") #'evil-scroll-up)
 (define-key evil-insert-state-map (kbd "C-e") #'move-end-of-line)
 
 
@@ -305,6 +310,8 @@ box, then it attempts to remove the blank lines left over by this operation."
  backup-directory-alist '(("." . ".swp_emacs"))
  delete-old-versions t)
 
+;; Evil
+(setq evil-default-cursor t)
 
 
 
@@ -342,6 +349,7 @@ box, then it attempts to remove the blank lines left over by this operation."
  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(c-basic-offset 4)
  '(column-number-mode t)
+ '(custom-safe-themes (quote ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
  '(fringe-mode (quote (0)) nil (fringe))
  '(inhibit-startup-screen nil)
  '(initial-buffer-choice nil)
