@@ -266,13 +266,9 @@ box, then it attempts to remove the blank lines left over by this operation."
 
 ;; make magit evil
 (defun my-evil-magit-mode-hook()
-  (evil-motion-state))
+  (evil-motion-state)
+  (define-key evil-motion-state-map (kbd "SPC") 'magit-toggle-section))
 (add-hook 'magit-mode-hook 'my-evil-magit-mode-hook)
-
-;; Looks like C-c C-c is the best option afterall...
-;;(defun my-evil-magit-log-edit-mode-hook()
-;;  (evil-ex-define-cmd "commit" 'magit-log-edit-commit))
-;;(add-hook 'magit-log-edit-mode-hook 'my-evil-magit-log-edit-mode-hook)
 
 ;; TODO: add mode-hooks for evil mode; e.g. optargs for shell-script-mode
 
