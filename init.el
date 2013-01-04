@@ -1,4 +1,6 @@
 ;; Heavily modified .emacs file originally from Luke Lovett
+;; TODO: trim file
+;; -- move functions / mode-hooks to different files
 
 ;; supposedly makes emacs load faster
 (setq vc-handled-backends nil)
@@ -93,14 +95,15 @@
 
 ;; EVIL -- NOTE: M-RET toggles evil/emacs state
 
-;; esc quits -- from http://stackoverflow.com/questions/8483182/emacs-evil-mode-best-practice
+;; esc quits -- modified from http://stackoverflow.com/questions/8483182/emacs-evil-mode-best-practice
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
 (define-key evil-visual-state-map [escape] 'keyboard-quit)
-(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+(define-key evil-motion-state-map [escape] 'keyboard-quit)
+(define-key minibuffer-local-map [escape] 'abort-recursive-edit)
+(define-key minibuffer-local-ns-map [escape] 'abort-recursive-edit)
+(define-key minibuffer-local-completion-map [escape] 'abort-recursive-edit)
+(define-key minibuffer-local-must-match-map [escape] 'abort-recursive-edit)
+(define-key minibuffer-local-isearch-map [escape] 'abort-recursive-edit)
 
 ;; Maps "kj" to escape
 ;; taken from http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-vim/ -- fantastic blog entry on vim->emacs
@@ -141,12 +144,15 @@
 
 ;; Leader maps
 (evil-leader/set-leader ",")
+(evil-leader/set-key "," 'evil-repeat-find-char-reverse)
+(define-key evil-motion-state-map "," evil-leader/map)  ;; allows leader in motion state, too
 (evil-leader/set-key "x" ctl-x-map)
 (evil-leader/set-key "f" 'find-file)
 (evil-leader/set-key "l" 'load-file)
 (evil-leader/set-key "c" 'comment-or-uncomment-region)
 (evil-leader/set-key "s" 'eshell)
 (evil-leader/set-key "e" evil-toggle-key)
+(evil-leader/set-key "g" 'magit-status)
 
 ;; Fun comments with boxing
 (defun box-comment() ;; "defun" is a macro for defining named functions in emacs lisp
@@ -221,16 +227,12 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;; ------- MODE-HOOKS ------- ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; A `hook' is something that runs when certain modes start up. For example,
-;; text-mode-hook will run when you enter text-mode. Mode hooks are the place
-;; for setting environmental variables and doing local keybindings.
 (defun my-text-mode-hook()
   (turn-on-auto-fill)	;; allows text-wrapping
   (set-fill-column 80)	;; how many characters before we wrap?
   (cond
    ((eq major-mode "text-mode")	;; Allow comments in text-mode
-    (setq comment-start "#")))		;; # is comment character
-  )
+    (setq comment-start "#"))))
 (add-hook 'text-mode-hook 'my-text-mode-hook)
 (setq default-major-mode 'text-mode) ;; default is fundamental-mode
 
@@ -261,6 +263,16 @@ box, then it attempts to remove the blank lines left over by this operation."
    ;; Make sure we get good comment syntax highlighting
    (set-face-foreground font-lock-comment-face 'red))
 (add-hook 'python-mode-hook 'my-python-mode-hook)
+
+;; make magit evil
+(defun my-evil-magit-mode-hook()
+  (evil-motion-state))
+(add-hook 'magit-mode-hook 'my-evil-magit-mode-hook)
+
+;; Looks like C-c C-c is the best option afterall...
+;;(defun my-evil-magit-log-edit-mode-hook()
+;;  (evil-ex-define-cmd "commit" 'magit-log-edit-commit))
+;;(add-hook 'magit-log-edit-mode-hook 'my-evil-magit-log-edit-mode-hook)
 
 ;; TODO: add mode-hooks for evil mode; e.g. optargs for shell-script-mode
 
@@ -350,7 +362,9 @@ box, then it attempts to remove the blank lines left over by this operation."
  '(c-basic-offset 4)
  '(column-number-mode t)
  '(custom-safe-themes (quote ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
- '(fringe-mode (quote (0)) nil (fringe))
+ '(fringe-mode (quote (nil . 0)) nil (fringe))
+ '(indicate-buffer-boundaries (quote left))
+ '(indicate-empty-lines t)
  '(inhibit-startup-screen nil)
  '(initial-buffer-choice nil)
  '(show-paren-mode t)
