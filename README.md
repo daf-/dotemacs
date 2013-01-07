@@ -4,7 +4,7 @@
 My .emacs.d folder Plugins managed through git submodules.
 
 ## To install:
-    git clone https://github.com/daf-/dotemacs.git
+    git clone https://github.com/daf-/dotemacs.git ~/.emacs.d
     cd ~/.emacs.d
     git submodule update --init --recursive
 
