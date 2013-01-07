@@ -356,8 +356,8 @@ box, then it attempts to remove the blank lines left over by this operation."
 ; no backup files -- luke's section may cover this...
 (setq make-backup-files nil) ; prevents creation of backup files
 (setq auto-save-default nil) ; disables auto save
-(set-face-attribute 'default nil
-                    :family "menlo" :height 130)
+;;(set-face-attribute 'default nil
+;;                    :family "menlo" :height 130)
 
 ;; allows mouse in terminal
 (unless window-system
@@ -373,16 +373,15 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;;;;;;;;;;;;;;;;;;;
 
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(c-basic-offset 4)
  '(column-number-mode t)
  '(custom-safe-themes (quote ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
- '(fringe-mode (quote (nil . 0)) nil (fringe))
- '(indicate-buffer-boundaries (quote left))
+ '(fringe-mode (quote (nil . 0)) nil (fringe)) '(indicate-buffer-boundaries (quote left))
  '(indicate-empty-lines t)
  '(inhibit-startup-screen nil)
  '(initial-buffer-choice nil)
@@ -391,8 +390,8 @@ box, then it attempts to remove the blank lines left over by this operation."
  '(tool-bar-mode nil))
 
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "#002b36" :foreground "#839496" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "Ubuntu Mono")))))
