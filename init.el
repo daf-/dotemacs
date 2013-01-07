@@ -1,5 +1,6 @@
 ;; Heavily modified .emacs file originally from Luke Lovett
 ;; TODO: trim file
+;; figure out merging this with my own .emacs.d
 ;; -- move functions / mode-hooks to different files
 
 ;; supposedly makes emacs load faster
@@ -37,10 +38,18 @@
 
 ;; Colors
 (when (>= emacs-major-version 24)
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
-  (if (window-system)
-      (load-theme 'deeper-blue t)
-    (load-theme 'solarized-dark t)))
+    (if (window-system)
+	(load-theme 'deeper-blue t)
+      ((add-to-list 'custom-theme-load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
+       (load-theme 'solarized-dark t))))
+(when (<= emacs-major-version 24)
+  (add-to-list 'load-path "~/.emacs.d/plugin/color-theme-6.6.0")
+  (add-to-list 'load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
+  (require 'color-theme)
+  (require 'color-theme-solarized)
+  (color-theme-initialize)
+  (color-theme-solarized-dark))
+  
 
 ;; golden-ratio
 (when (>= emacs-major-version 24)
@@ -85,7 +94,7 @@
              (unless (and (interactive-p)
                           (yas/expand))
            ad-do-it)))))
-(yas/advise-indent-function 'c-indent-line-or-region)
+(yas/advise-indent-function 'comment-indent-new-line)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -138,8 +147,11 @@
 
 ;; Navigation and Editing
 ;; (setq evil-want-C-u-scroll t) ;; why isn't this working?
-(define-key evil-normal-state-map (kbd "C-u") #'evil-scroll-up)
-(define-key evil-insert-state-map (kbd "C-e") #'move-end-of-line)
+(define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+(define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
+(define-key evil-insert-state-map (kbd "RET") 'comment-indent-new-line)
+(define-key evil-normal-state-map (kbd "TAB") #'evil-indent-line)
+(define-key evil-visual-state-map (kbd "TAB") #'evil-indent)
 
 
 ;; Leader maps
@@ -282,10 +294,8 @@ box, then it attempts to remove the blank lines left over by this operation."
 (transient-mark-mode t)	                ;; show regions as highlighted
 (column-number-mode t)	                ;; shows column number in modeline
 (size-indication-mode t)                ;; show buffer size in modeline
-(if (>= emacs-major-version 24)         ;; inserts matching brackets
-    (electric-pair-mode t))
 (global-hl-line-mode 1)
-(global-linum-mode 1)
+;; (global-linum-mode 1)
 (setq scroll-conservatively 1)
 (setq scroll-margin 5)
 (if (not (window-system))
@@ -299,7 +309,8 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;; Show matching parentheses for lisp editing
 ;; Highlight the entire parenthesized expression for easy visual understanding
 (show-paren-mode t)
-(setq show-paren-style 'expression)
+;; (setq show-paren-style 'expression)
+(setq show-paren-style 'parentheses)
 
 
 
@@ -321,7 +332,11 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;; Evil
 (setq evil-default-cursor t)
 
+;; woman
+(setq woman-use-topic-at-point t)
+;; woman-follow
 
+;;(setq woman-preserve-ascii nil)
 
 ;;;;;;;;;;;
 ;; Style ;;
@@ -332,16 +347,17 @@ box, then it attempts to remove the blank lines left over by this operation."
 ; always use spaces instead of tabs
 (setq-default indent-tabs-mode nil)
 ; return is newline & indent
-(define-key global-map (kbd "RET") 'newline-and-indent)
+;; (define-key global-map (kbd "RET") 'newline-and-indent)
 ; no backup files -- luke's section may cover this...
 (setq make-backup-files nil) ; prevents creation of backup files
 (setq auto-save-default nil) ; disables auto save
 
 ;; allows mouse in terminal
-(require 'mouse)
-(xterm-mouse-mode t)
-(defun track-mouse(e))
-(setq mouse-sel-mode t)
+(unless window-system
+  (require 'mouse)
+  (xterm-mouse-mode t)
+  (defun track-mouse(e))
+  (setq mouse-sel-mode t))
 
 
 
