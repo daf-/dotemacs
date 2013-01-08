@@ -38,11 +38,11 @@
 (ac-config-default)
 
 ;; Colors
-(when (>= emacs-major-version 24)
-    (if (window-system)
-	(load-theme 'deeper-blue t)))
-      ((add-to-list 'custom-theme-load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
-       (load-theme 'solarized-dark t))))
+(when (and (>= emacs-major-version 24) (window-system))
+  (load-theme 'deeper-blue t))
+(when (and (>= emacs-major-version 24) (not window-system))
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
+  (load-theme 'solarized-dark t))
 (when (< emacs-major-version 24)
   (add-to-list 'load-path "~/.emacs.d/plugin/color-theme-6.6.0")
   (add-to-list 'load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
