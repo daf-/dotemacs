@@ -150,6 +150,7 @@
 					      (list evt))))))))
 
 ;; Minimize hand fatigue
+;; window mappings
 (define-key evil-normal-state-map " " #'evil-toggle-fold)
 (define-key evil-normal-state-map (kbd "C-h") #'evil-window-left)
 (define-key evil-normal-state-map (kbd "C-j") #'evil-window-down)
@@ -164,7 +165,7 @@
 ;; (setq evil-want-C-u-scroll t) ;; why isn't this working?
 (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
 (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
-(define-key evil-insert-state-map (kbd "RET") 'comment-indent-new-line)
+;; (define-key evil-insert-state-map (kbd "RET") 'comment-indent-new-line)
 (define-key evil-normal-state-map (kbd "TAB") #'evil-indent-line)
 (define-key evil-visual-state-map (kbd "TAB") #'evil-indent)
 
@@ -177,7 +178,8 @@
 (evil-leader/set-key "f" 'find-file)
 (evil-leader/set-key "l" 'load-file)
 (evil-leader/set-key "c" 'comment-or-uncomment-region)
-(evil-leader/set-key "s" 'eshell)
+(evil-leader/set-key "s" 'save-buffer)
+(evil-leader/set-key "t" 'ansi-term)
 (evil-leader/set-key "e" evil-toggle-key)
 (evil-leader/set-key "g" 'magit-status)
 
@@ -231,23 +233,6 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;; bound to "make the terminal beep" by Apple. Thanks, Apple!
 (global-set-key "\M-/" 'undo)
 
-;; C-c <letter> is guaranteed never to be bound in the standard
-;; distribution of Emacs.  It is reserved for users' personal
-;; keybindings, and we, being reasonable people, will abide by this
-;; convention, so that we don't override anything important:
-;; Prepare your own personal keymap, and then put it on C-c:
-;;(define-prefix-command 'personal-map)
-;;(global-set-key "\C-c" personal-map)
-;;
-;; (define-key personal-map "s" 'run-scheme)
-;; (define-key personal-map "p" 'run-python)
-;; (define-key personal-map "j" 'eshell)
-;; (define-key personal-map "k" 'term)
-;; (define-key personal-map "f" 'find-file-other-window)
-;; (define-key personal-map "." 'bookmark-set)
-;; (define-key personal-map "/" 'bookmark-jump)
-
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -293,7 +278,6 @@ box, then it attempts to remove the blank lines left over by this operation."
 
 ;; make magit evil
 (defun my-evil-magit-mode-hook()
-  (evil-motion-state)
   (define-key evil-motion-state-map (kbd "SPC") 'magit-toggle-section))
 (add-hook 'magit-mode-hook 'my-evil-magit-mode-hook)
 
@@ -346,6 +330,10 @@ box, then it attempts to remove the blank lines left over by this operation."
 
 ;; Evil
 (setq evil-default-cursor t)
+;; from emacs wiki (http://emacswiki.org/emacs/Evil#toc8)
+;; makes evil-emacs-state modes open up in motion state
+(setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
+(setq evil-emacs-state-modes nil)
 
 ;; woman
 (setq woman-use-topic-at-point t)
@@ -362,7 +350,7 @@ box, then it attempts to remove the blank lines left over by this operation."
 ; always use spaces instead of tabs
 (setq-default indent-tabs-mode nil)
 ; return is newline & indent
-;; (define-key global-map (kbd "RET") 'newline-and-indent)
+(define-key global-map (kbd "RET") 'newline-and-indent)
 ; no backup files -- luke's section may cover this...
 (setq make-backup-files nil) ; prevents creation of backup files
 (setq auto-save-default nil) ; disables auto save
