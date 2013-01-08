@@ -39,17 +39,16 @@
 ;; Colors
 (when (>= emacs-major-version 24)
     (if (window-system)
-	(load-theme 'deeper-blue t)
+	(load-theme 'deeper-blue t)))
       ((add-to-list 'custom-theme-load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
        (load-theme 'solarized-dark t))))
-(when (<= emacs-major-version 24)
+(when (< emacs-major-version 24)
   (add-to-list 'load-path "~/.emacs.d/plugin/color-theme-6.6.0")
   (add-to-list 'load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
   (require 'color-theme)
   (require 'color-theme-solarized)
   (color-theme-initialize)
   (color-theme-solarized-dark))
-  
 
 ;; golden-ratio
 (when (>= emacs-major-version 24)
