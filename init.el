@@ -117,7 +117,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;; EVIL -- NOTE: M-RET toggles evil/emacs state
+;; M-SPC toggles evil/emacs state
+(evil-set-toggle-key "M-SPC")
 
 ;; esc quits -- modified from http://stackoverflow.com/questions/8483182/emacs-evil-mode-best-practice
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
@@ -180,7 +181,6 @@
 (evil-leader/set-key "c" 'comment-or-uncomment-region)
 (evil-leader/set-key "s" 'save-buffer)
 (evil-leader/set-key "t" 'ansi-term)
-(evil-leader/set-key "e" evil-toggle-key)
 (evil-leader/set-key "g" 'magit-status)
 
 ;; Fun comments with boxing
@@ -329,6 +329,7 @@ box, then it attempts to remove the blank lines left over by this operation."
  delete-old-versions t)
 
 ;; Evil
+;; (setq evil-toggle-key (kbd "M-RET")
 (setq evil-default-cursor t)
 ;; from emacs wiki (http://emacswiki.org/emacs/Evil#toc8)
 ;; makes evil-emacs-state modes open up in motion state
