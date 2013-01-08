@@ -168,7 +168,7 @@
 (evil-leader/set-key "l" 'load-file)
 (evil-leader/set-key "c" 'comment-or-uncomment-region)
 (evil-leader/set-key "s" 'eshell)
-(evil-leader/set-key "e" evil-toggle-key)
+(evil-leader/set-key "t" 'ansi-term)
 (evil-leader/set-key "g" 'magit-status)
 
 ;; Fun comments with boxing
