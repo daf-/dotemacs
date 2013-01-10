@@ -43,13 +43,13 @@
 (when (and (>= emacs-major-version 24) (not window-system))
   (add-to-list 'custom-theme-load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
   (load-theme 'solarized-dark t))
-(when (< emacs-major-version 24)
-  (add-to-list 'load-path "~/.emacs.d/plugin/color-theme-6.6.0")
-  (add-to-list 'load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
-  (require 'color-theme)
-  (require 'color-theme-solarized)
-  (color-theme-initialize)
-  (color-theme-solarized-dark))
+;; (when (< emacs-major-version 24)
+;;   (add-to-list 'load-path "~/.emacs.d/plugin/color-theme-6.6.0")
+;;   (add-to-list 'load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
+;;   (require 'color-theme)
+;;   (require 'color-theme-solarized)
+;;   (color-theme-initialize)
+;;   (color-theme-solarized-dark))
 
 ;; golden-ratio
 (when (>= emacs-major-version 24)
@@ -383,4 +383,4 @@ box, then it attempts to remove the blank lines left over by this operation."
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#002b36" :foreground "#839496" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "Ubuntu Mono")))))
+ )
