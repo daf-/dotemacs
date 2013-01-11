@@ -10,15 +10,16 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(defvar daf-packages '(auto-complete
+(defvar daf-packages '(popup
+		       auto-complete
                        color-theme
                        color-theme-solarized
+                       undo-tree
                        evil
                        evil-leader
                        golden-ratio
                        magit
                        python-mode
-                       undo-tree
                        yasnippet))
 (dolist (p daf-packages)
   (when (not (package-installed-p p))
@@ -32,7 +33,8 @@
 ; (setq yas-snippet-dirs "~/.emacs.d/elpa/yasnippet-20121225.430/snippets")
 
 (ac-config-default)
-(add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-solarized-20121209.1204")
+(when (>= emacs-major-version 24)
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-solarized-20121209.1204"))
 ;; (load-theme 'solarized-dark t)
 (evil-mode 1)
 (golden-ratio-enable)
