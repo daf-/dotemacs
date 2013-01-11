@@ -1,88 +1,49 @@
-;; Heavily modified .emacs file originally from Luke Lovett
-;; TODO: trim file
-;; figure out merging this with my own .emacs.d
-;; -- move functions / mode-hooks to different files
-
-;; supposedly makes emacs load faster
 (setq vc-handled-backends nil)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ------- PATH AND REQUIRES ------- ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;; run emacs in server-mode, so that new sessions start quickly
-;; (server-start)
-
-;; EVIL
-(add-to-list 'load-path "~/.emacs.d/plugin/evil")
-(require 'evil)
-(evil-mode 1)
-
-;; evil-leader
-(add-to-list 'load-path "~/.emacs.d/plugin/evil-leader")
-(require 'evil-leader)
-
-;; evil-surround
-(add-to-list 'load-path "~/.emacs.d/plugin/evil-surround")
-(require 'surround)
-(global-surround-mode 1)
-
-;; popup
-(add-to-list 'load-path "~/.emacs.d/plugin/popup-el")
-(require 'popup)
-
-;; auto-complete
-(add-to-list 'load-path "~/.emacs.d/plugin/ac-install-files/")
-(require 'auto-complete-config)
-(ac-config-default)
-
-;; Colors
-(when (and (>= emacs-major-version 24) (window-system))
-  (load-theme 'deeper-blue t))
-(when (and (>= emacs-major-version 24) (not window-system))
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
-  (load-theme 'solarized-dark t))
 (when (< emacs-major-version 24)
-  (add-to-list 'load-path "~/.emacs.d/plugin/color-theme-6.6.0")
-  (add-to-list 'load-path "~/.emacs.d/plugin/emacs-color-theme-solarized")
-  (require 'color-theme)
-  (require 'color-theme-solarized)
-  (color-theme-initialize)
-  (color-theme-solarized-dark))
+  (add-to-list 'load-path "~/.emacs.d/"))
+(require 'package)
+(setq package-archives '(("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+(package-initialize)
 
-;; golden-ratio
-(when (>= emacs-major-version 24)
-  (add-to-list 'load-path "~/.emacs.d/plugin/golden-ratio")
-  (require 'golden-ratio)
-  (golden-ratio-enable))
+(when (not package-archive-contents)
+  (package-refresh-contents))
 
-;; python-mode -- https://launchpad.net/python-mode/
-(setq py-install-directory "~/.emacs.d/plugin/python-mode.el-6.1.0")
-(add-to-list 'load-path py-install-directory)
-(require 'python-mode)
+(defvar daf-packages '(auto-complete
+                       color-theme
+                       color-theme-solarized
+                       evil
+                       evil-leader
+                       golden-ratio
+                       magit
+                       python-mode
+                       undo-tree
+                       yasnippet))
+(dolist (p daf-packages)
+  (when (not (package-installed-p p))
+    (package-install p)))
 
-;; YASnippet
-(add-to-list 'load-path "~/.emacs.d/plugin/yasnippet")
-(require 'yasnippet)
+
+;; initialize plugins
+(require 'popup)
+(require 'auto-complete-config)
+(require 'evil-leader)
+; (setq yas-snippet-dirs "~/.emacs.d/elpa/yasnippet-20121225.430/snippets")
+
+(ac-config-default)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-solarized-20121209.1204")
+;; (load-theme 'solarized-dark t)
+(evil-mode 1)
+(golden-ratio-enable)
 (yas-global-mode 1)
-
-;; magit
-(add-to-list 'load-path "~/.emacs.d/plugin/magit")
-(require 'magit)
-
-
-; for SuperCollider - from http://sam.aaron.name/2010/02/09/hooking-supercollider-up-to-emacs-on-os-x.html
-;(setq path "/Applications/Supercollider.app/Contents/Resources:PATH")
-;; (setq path "/Applications/Supercollider.app/Contents/Resources:$PATH")
-;; (setenv "PATH" path)
-;; (push "/Applications/SuperCollider/SuperCollider.app/Contents/Resources" exec-path)
-;; (add-to-list 'load-path "~/.emacs.d/vendor/supercollider/el")
-;; (require 'sclang)
-
-;; SuperCollider -- finish this
-;(add-to-list 'load-path "/Applications/SuperCollider/SuperCollider.app/Contents/Resources/sclang")
-;(require 'sclang)
+;; theming depends on major version
+(if (and (>= emacs-major-version 24) (window-system))
+    (load-theme 'deeper-blue t)
+  (if (and (>= emacs-major-version 24) (not (window-system)))
+      (load-theme 'solarized-dark t)
+    ((color-theme-initialize)
+     (color-theme-solarized-dark))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -156,7 +117,6 @@
 ;; (setq evil-want-C-u-scroll t) ;; why isn't this working?
 (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
 (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
-;; (define-key evil-insert-state-map (kbd "RET") 'comment-indent-new-line)
 (define-key evil-normal-state-map (kbd "TAB") #'evil-indent-line)
 (define-key evil-visual-state-map (kbd "TAB") #'evil-indent)
 
@@ -172,6 +132,7 @@
 (evil-leader/set-key "s" 'save-buffer)
 (evil-leader/set-key "t" 'ansi-term)
 (evil-leader/set-key "g" 'magit-status)
+(evil-leader/set-key "q" 'evil-quit)
 
 ;; Fun comments with boxing
 (defun box-comment() ;; "defun" is a macro for defining named functions in emacs lisp
@@ -229,6 +190,8 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;; ------- MODE-HOOKS ------- ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; TODO: add mode-hooks for evil mode; e.g. optargs for shell-script-mode
+
 (defun my-text-mode-hook()
   (turn-on-auto-fill)	;; allows text-wrapping
   (set-fill-column 80)	;; how many characters before we wrap?
@@ -262,16 +225,12 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;; TODO: why won't setting evil-lookup-func work?
 (defun my-python-mode-hook()
   (setq evil-lookup-func 'py-documentation))
-;;  (define-key evil-local-set-key evil-normal-state-map (kbd "K")
-;;    #'py-documentation))
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
 ;; make magit evil
 (defun my-evil-magit-mode-hook()
   (define-key evil-motion-state-map (kbd "SPC") 'magit-toggle-section))
 (add-hook 'magit-mode-hook 'my-evil-magit-mode-hook)
-
-;; TODO: add mode-hooks for evil mode; e.g. optargs for shell-script-mode
 
 
 
@@ -284,7 +243,7 @@ box, then it attempts to remove the blank lines left over by this operation."
 (column-number-mode t)	                ;; shows column number in modeline
 (size-indication-mode t)                ;; show buffer size in modeline
 (global-hl-line-mode 1)
-;; (global-linum-mode 1)
+(global-linum-mode 1)
 (setq scroll-conservatively 1)
 (setq scroll-margin 5)
 (if (not (window-system))
@@ -319,7 +278,6 @@ box, then it attempts to remove the blank lines left over by this operation."
  delete-old-versions t)
 
 ;; Evil
-;; (setq evil-toggle-key (kbd "M-RET")
 (setq evil-default-cursor t)
 ;; from emacs wiki (http://emacswiki.org/emacs/Evil#toc8)
 ;; makes evil-emacs-state modes open up in motion state
@@ -328,9 +286,6 @@ box, then it attempts to remove the blank lines left over by this operation."
 
 ;; woman
 (setq woman-use-topic-at-point t)
-;; woman-follow
-
-;;(setq woman-preserve-ascii nil)
 
 ;;;;;;;;;;;
 ;; Style ;;
@@ -362,15 +317,16 @@ box, then it attempts to remove the blank lines left over by this operation."
 ;;;;;;;;;;;;;;;;;;;
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(c-basic-offset 4)
  '(column-number-mode t)
- '(custom-safe-themes (quote ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
- '(fringe-mode (quote (nil . 0)) nil (fringe)) '(indicate-buffer-boundaries (quote left))
+ '(custom-safe-themes (quote ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
+ '(fringe-mode (quote (nil . 0)) nil (fringe))
+ '(indicate-buffer-boundaries (quote left))
  '(indicate-empty-lines t)
  '(inhibit-startup-screen nil)
  '(initial-buffer-choice nil)
@@ -379,8 +335,8 @@ box, then it attempts to remove the blank lines left over by this operation."
  '(tool-bar-mode nil))
 
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  )
