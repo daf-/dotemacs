@@ -12,15 +12,14 @@
 
 (defvar daf-packages '(popup
 		       auto-complete
-                       color-theme
-                       color-theme-solarized
                        undo-tree
+		       golden-ratio
                        evil
                        evil-leader
-                       golden-ratio
                        magit
                        python-mode
-                       yasnippet))
+                       yasnippet
+                       color-theme-solarized))
 (dolist (p daf-packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -30,32 +29,22 @@
 (require 'popup)
 (require 'auto-complete-config)
 (require 'evil-leader)
-; (setq yas-snippet-dirs "~/.emacs.d/elpa/yasnippet-20121225.430/snippets")
-
 (ac-config-default)
-(when (>= emacs-major-version 24)
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-solarized-20121209.1204"))
-;; (load-theme 'solarized-dark t)
 (evil-mode 1)
-(golden-ratio-enable)
+;; (golden-ratio-enable)
 (yas-global-mode 1)
-;; theming depends on major version
-(if (and (>= emacs-major-version 24) (window-system))
-    (load-theme 'deeper-blue t)
-  (if (and (>= emacs-major-version 24) (not (window-system)))
-      (load-theme 'solarized-dark t)
-    ((color-theme-initialize)
-     (color-theme-solarized-dark))))
 
 
-;; load my settings
-(add-to-list 'load-path "~/.emacs.d/config")
-(require 'daf-yas)
-(require 'daf-evil)
-(require 'daf-evil-leader)
-(require 'daf-mode-hooks)
-(require 'daf-global-settings)
-(require 'luke-funcs)
+;; load settings -- wait for packages to load first (emacswiki.org/emacs/ELPA)
+(add-hook 'after-init-hook
+          #'(lambda ()
+	      (add-to-list 'load-path "~/.emacs.d/config")
+	      (require 'daf-yas)
+	      (require 'daf-evil)
+	      (require 'daf-evil-leader)
+	      (require 'daf-mode-hooks)
+	      (require 'daf-global-settings)
+	      (require 'luke-funcs)))
 
 
 ;;;;;;;;;;;;;;;;;;;

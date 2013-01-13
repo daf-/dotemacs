@@ -2,6 +2,15 @@
 ;; Daniel Friedman, Fall 2013
 
 
+;; colors -- only for emacs 24
+
+(when (>= emacs-major-version 24)
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-solarized-20121209.1204"))
+(if (and (>= emacs-major-version 24) (window-system))
+    (load-theme 'deeper-blue t)
+  (if (and (>= emacs-major-version 24) (not (window-system)))
+      (load-theme 'solarized-dark t)))
+
 ;; minor modes
 
 (transient-mark-mode t)    ;; show regions as highlighted
@@ -38,12 +47,6 @@
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (let ((process-list ())) ad-do-it))
-
-;; Don't pollute my filesystem
-(setq
- backup-by-copying t
- backup-directory-alist '(("." . ".swp_emacs"))
- delete-old-versions t)
 
 ;; Evil
 (setq evil-default-cursor t)
