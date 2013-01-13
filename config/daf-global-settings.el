@@ -11,6 +11,14 @@
   (if (and (>= emacs-major-version 24) (not (window-system)))
       (load-theme 'solarized-dark t)))
 
+;; global keys
+
+;; C-left/right/up/down resize the window
+(global-set-key (kbd "C-<left>") 'shrink-window-horizontally)
+(global-set-key (kbd "C-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "C-<down>") 'shrink-window)
+(global-set-key (kbd "C-<up>") 'enlarge-window)
+
 ;; minor modes
 
 (transient-mark-mode t)    ;; show regions as highlighted
