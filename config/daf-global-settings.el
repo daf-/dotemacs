@@ -5,11 +5,10 @@
 ;; colors -- only for emacs 24
 
 (when (>= emacs-major-version 24)
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-solarized-20121209.1204"))
-(if (and (>= emacs-major-version 24) (window-system))
-    (load-theme 'deeper-blue t)
-  (if (and (>= emacs-major-version 24) (not (window-system)))
-      (load-theme 'solarized-dark t)))
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-solarized-20121209.1204")
+  (if (window-system)
+      (load-theme 'deeper-blue t)
+    (load-theme 'solarized-dark t)))
 
 ;; global keys
 
