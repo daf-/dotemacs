@@ -5,10 +5,9 @@
 ;; colors -- only for emacs 24
 
 (when (>= emacs-major-version 24)
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-solarized-20121209.1204")
   (if (window-system)
       (load-theme 'deeper-blue t)
-    (load-theme 'solarized-dark t)))
+    (load-theme 'twilight t)))
 
 ;; global keys
 
@@ -24,7 +23,7 @@
 (column-number-mode t)     ;; shows column number in modeline
 (size-indication-mode t)   ;; show buffer size in modeline
 (global-hl-line-mode 1)
-(global-linum-mode 1)
+;; (global-linum-mode 1)
 (setq scroll-conservatively 1)
 (setq scroll-margin 5)
 (if (not (window-system))
@@ -37,8 +36,7 @@
 ;; Show matching parentheses for lisp editing
 ;; Highlight the entire parenthesized expression for easy visual understanding
 (show-paren-mode t)
-;; (setq show-paren-style 'expression)
-(setq show-paren-style 'parentheses)
+(setq show-paren-style 'expression)
 
 ;; allows mouse in terminal
 (unless window-system
