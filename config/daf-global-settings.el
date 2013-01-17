@@ -74,8 +74,9 @@
 (setq-default indent-tabs-mode nil)
 ; return is newline & indent
 (define-key global-map (kbd "RET") 'newline-and-indent)
-; no backup files -- luke's section may cover this...
-(setq make-backup-files nil) ; prevents creation of backup files
+; no backup files
+(setq make-backup-files nil) ; prevents creation of backup files on first save
+(setq backup-inhibited t)    ; never make backups
 (setq auto-save-default nil) ; disables auto save
 ;;(set-face-attribute 'default nil
 ;;                    :family "menlo" :height 130)
