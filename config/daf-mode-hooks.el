@@ -1,7 +1,7 @@
 ;; My mode hooks
 ;; Daniel Friedman, January 2013
 
-;; TODO: add more mode-hooks
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 ;; from luke
 (defun my-text-mode-hook ()
