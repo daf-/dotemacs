@@ -17,10 +17,10 @@
                        evil
                        evil-leader
                        magit
-                       python-mode
                        yasnippet
                        color-theme-solarized
-                       twilight-theme))
+                       twilight-theme
+                       pony-mode))
 (dolist (p daf-packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -30,6 +30,7 @@
 (require 'popup)
 (require 'auto-complete-config)
 (require 'evil-leader)
+(require 'pony-mode)
 (ac-config-default)
 (evil-mode 1)
 ;; (golden-ratio-enable)
@@ -67,8 +68,7 @@
  '(inhibit-startup-screen nil)
  '(initial-buffer-choice nil)
  '(show-paren-mode t)
- '(size-indication-mode t)
- '(tool-bar-mode nil))
+ '(size-indication-mode t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

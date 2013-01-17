@@ -23,6 +23,8 @@
 (column-number-mode t)     ;; shows column number in modeline
 (size-indication-mode t)   ;; show buffer size in modeline
 (global-hl-line-mode 1)
+(if window-system
+    (tool-bar-mode 0))
 ;; (global-linum-mode 1)
 (setq scroll-conservatively 1)
 (setq scroll-margin 5)
