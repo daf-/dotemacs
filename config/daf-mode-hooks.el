@@ -24,7 +24,9 @@
 
 ;; make magit evil
 (defun my-magit-mode-hook ()
-  (define-key evil-motion-state-map (kbd "SPC") 'magit-toggle-section))
+  (define-key evil-motion-state-map (kbd "TAB") 'magit-toggle-section)
+  (define-key evil-motion-state-map (kbd "SPC") 'magit-goto-next-section)
+  (define-key evil-motion-state-map (kbd "DEL") 'magit-goto-previous-section))
 (add-hook 'magit-mode-hook 'my-magit-mode-hook)
 
 ;; fix indentation in pony template mode
