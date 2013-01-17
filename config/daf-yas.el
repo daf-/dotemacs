@@ -15,4 +15,7 @@
            ad-do-it)))))
 (yas/advise-indent-function 'comment-indent-new-line)
 
+;; allow nested snippets to be triggered correctly
+(setq yas/triggers-in-field)
+
 (provide 'daf-yas)

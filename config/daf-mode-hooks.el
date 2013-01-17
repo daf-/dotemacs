@@ -41,6 +41,7 @@
             (progn
               (pony-tpl-mode-fix-indent 'evil-ret)
               (pony-tpl-mode-fix-indent 'evil-open-below)
-              (pony-tpl-mode-fix-indent 'evil-open-above))))
+              (pony-tpl-mode-fix-indent 'evil-open-above)
+              (pony-tpl-mode-fix-indent 'yas-expand))))
 
 (provide 'daf-mode-hooks)
