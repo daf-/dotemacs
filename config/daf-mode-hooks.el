@@ -31,11 +31,11 @@
 
 ;; fix indentation in pony template mode
 (defun pony-tpl-mode-fix-indent (function-symbol)
-  (eval `(defadvice ,function-symbol (after pony-tpl-fix-indent)
+  (eval `(defadvice ,function-symbol (after pony-tpl-end-of-line activate)
            ,(format
              "Call `%s', then move to end of line"
              function-symbol)
-           (move-end-of-line))))
+           (move-end-of-line nil))))
 (add-hook 'pony-tpl-mode-hook
           (lambda ()
             (progn
