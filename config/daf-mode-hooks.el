@@ -1,5 +1,6 @@
 ;; My mode hooks
 ;; Daniel Friedman, January 2013
+;; TODO: use evil-local-set-key
 
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
@@ -43,5 +44,9 @@
               (pony-tpl-mode-fix-indent 'evil-open-below)
               (pony-tpl-mode-fix-indent 'evil-open-above)
               (pony-tpl-mode-fix-indent 'yas-expand))))
+
+(defun my-occur-mode-hook ()
+  (define-key evil-motion-state-map (kbd "RET") 'occur-mode-goto-occurrence))
+(add-hook 'occur-mode-hook 'my-occur-mode-hook)
 
 (provide 'daf-mode-hooks)

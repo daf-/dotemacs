@@ -14,5 +14,6 @@
 (evil-leader/set-key "t" 'ansi-term)
 (evil-leader/set-key "g" 'magit-status)
 (evil-leader/set-key "q" 'evil-quit)
+(evil-leader/set-key "o" 'occur)
 
 (provide 'daf-evil-leader)
