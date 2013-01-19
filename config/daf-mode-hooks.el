@@ -2,6 +2,7 @@
 ;; Daniel Friedman, January 2013
 ;; TODO: use evil-local-set-key
 
+;; open header files in c++ mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 ;; from luke
@@ -14,20 +15,11 @@
 (add-hook 'text-mode-hook 'my-text-mode-hook)
 (setq default-major-mode 'text-mode) ;; default is fundamental-mode
 
-;; from luke
-(defun my-java-mode-hook ()
-  (local-set-key (kbd "C-c C-c") 'compile)
-  (local-set-key (kbd "C-c m") 'java-insert-main)
-  (cond
-   (if (fboundp 'c-subword-mode) (c-subword-mode t))
-   (if (fboundp 'subword-mode) (subword-mode t))))
-(add-hook 'java-mode-hook 'my-java-mode-hook)
-
 ;; make magit evil
 (defun my-magit-mode-hook ()
-  (define-key evil-motion-state-map (kbd "TAB") 'magit-toggle-section)
-  (define-key evil-motion-state-map (kbd "SPC") 'magit-goto-next-section)
-  (define-key evil-motion-state-map (kbd "DEL") 'magit-goto-previous-section))
+  (define-key evil-motion-state-local-map (kbd "TAB") 'magit-toggle-section)
+  (define-key evil-motion-state-local-map (kbd "SPC") 'magit-goto-next-section)
+  (define-key evil-motion-state-local-map (kbd "DEL") 'magit-goto-previous-section))
 (add-hook 'magit-mode-hook 'my-magit-mode-hook)
 
 ;; fix indentation in pony template mode
@@ -45,8 +37,9 @@
               (pony-tpl-mode-fix-indent 'evil-open-above)
               (pony-tpl-mode-fix-indent 'yas-expand))))
 
+;; make RET behave in occur-mode
 (defun my-occur-mode-hook ()
-  (define-key evil-motion-state-map (kbd "RET") 'occur-mode-goto-occurrence))
+  (define-key evil-motion-state-local-map (kbd "RET") 'occur-mode-goto-occurrence))
 (add-hook 'occur-mode-hook 'my-occur-mode-hook)
 
 (provide 'daf-mode-hooks)
