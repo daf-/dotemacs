@@ -13,7 +13,6 @@
 (defvar daf-packages '(popup
 		       auto-complete
                        undo-tree
-		       golden-ratio
                        evil
                        evil-leader
                        magit
@@ -33,7 +32,6 @@
 (require 'pony-mode)
 (ac-config-default)
 (evil-mode 1)
-;; (golden-ratio-enable)
 (yas-global-mode 1)
 
 
