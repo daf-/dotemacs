@@ -3,11 +3,9 @@
 
 
 ;; colors -- only for emacs 24
-
 (when (>= emacs-major-version 24)
-  (if (window-system)
-      (load-theme 'deeper-blue t)
-    (load-theme 'twilight t)))
+    (load-theme 'twilight t))
+
 
 ;; global keys
 
@@ -18,11 +16,11 @@
 (global-set-key (kbd "C-<up>") 'enlarge-window)
 
 ;; minor modes
-
 (transient-mark-mode t)    ;; show regions as highlighted
 (column-number-mode t)     ;; shows column number in modeline
 (size-indication-mode t)   ;; show buffer size in modeline
-(global-hl-line-mode 1)
+(global-hl-line-mode t)
+(make-variable-buffer-local 'global-hl-line-mode)
 (if window-system
     (tool-bar-mode 0))
 ;; (global-linum-mode 1)

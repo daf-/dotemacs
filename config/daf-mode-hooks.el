@@ -42,4 +42,9 @@
   (define-key evil-motion-state-local-map (kbd "RET") 'occur-mode-goto-occurrence))
 (add-hook 'occur-mode-hook 'my-occur-mode-hook)
 
+;; don't highlight line in shell
+(add-hook 'term-mode-hook
+          (lambda ()
+            (setq global-hl-line-mode nil)))
+
 (provide 'daf-mode-hooks)
