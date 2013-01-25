@@ -52,7 +52,6 @@
 ;; (setq evil-want-C-u-scroll t) ;; why isn't this working?
 (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
 (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
-(define-key evil-normal-state-map (kbd "TAB") #'evil-indent-line)
 (define-key evil-visual-state-map (kbd "TAB") #'evil-indent)
 
 (provide 'daf-evil)
