@@ -19,6 +19,7 @@
 (transient-mark-mode t)    ;; show regions as highlighted
 (column-number-mode t)     ;; shows column number in modeline
 (size-indication-mode t)   ;; show buffer size in modeline
+(electric-indent-mode t)
 (global-hl-line-mode t)
 (make-variable-buffer-local 'global-hl-line-mode)
 (if window-system
