@@ -15,5 +15,6 @@
 (evil-leader/set-key "g" 'magit-status)
 (evil-leader/set-key "q" 'evil-quit)
 (evil-leader/set-key "o" 'occur)
+(evil-leader/set-key "m" 'compile)
 
 (provide 'daf-evil-leader)
