@@ -51,7 +51,11 @@
 ;; Navigation and Editing
 ;; (setq evil-want-C-u-scroll t) ;; why isn't this working?
 (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+(define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-up)
 (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
 (define-key evil-visual-state-map (kbd "TAB") #'evil-indent)
+
+(define-key evil-normal-state-map (kbd "H") #'evil-beginning-of-line)
+(define-key evil-normal-state-map (kbd "L") #'evil-end-of-line)
 
 (provide 'daf-evil)

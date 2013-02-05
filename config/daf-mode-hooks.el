@@ -15,12 +15,17 @@
 (add-hook 'text-mode-hook 'my-text-mode-hook)
 (setq default-major-mode 'text-mode) ;; default is fundamental-mode
 
-;; make magit evil
-(defun my-magit-mode-hook ()
-  (define-key evil-motion-state-local-map (kbd "TAB") 'magit-toggle-section)
-  (define-key evil-motion-state-local-map (kbd "SPC") 'magit-goto-next-section)
-  (define-key evil-motion-state-local-map (kbd "DEL") 'magit-goto-previous-section))
-(add-hook 'magit-mode-hook 'my-magit-mode-hook)
+(defun my-lispy-mode-hook ()
+  (make-local-variable 'evil-move-cursor-back)
+  (setq evil-move-cursor-back nil)
+  (paredit-mode)
+  (evil-paredit-mode))
+  ;; (make-local-variable 'evil-highlight-closing-paren-at-point-states)
+  ;; (cons 'normal evil-highlight-closing-paren-at-point-states))
+(add-hook 'emacs-lisp-mode-hook 'my-lispy-mode-hook t)
+(add-hook 'scheme-mode-hook 'my-lispy-mode-hook t)
+(add-hook 'lisp-mode-hook 'my-lispy-mode-hook t)
+(add-hook 'lisp-interaction-mode-hook 'my-lispy-mode-hook)
 
 ;; fix indentation in pony template mode
 (defun pony-tpl-mode-fix-indent (function-symbol)
@@ -36,6 +41,13 @@
               (pony-tpl-mode-fix-indent 'evil-open-below)
               (pony-tpl-mode-fix-indent 'evil-open-above)
               (pony-tpl-mode-fix-indent 'yas-expand))))
+
+;; make magit evil
+(defun my-magit-mode-hook ()
+  (define-key evil-motion-state-local-map (kbd "TAB") 'magit-toggle-section)
+  (define-key evil-motion-state-local-map (kbd "SPC") 'magit-goto-next-section)
+  (define-key evil-motion-state-local-map (kbd "DEL") 'magit-goto-previous-section))
+(add-hook 'magit-mode-hook 'my-magit-mode-hook)
 
 ;; make RET behave in occur-mode
 (defun my-occur-mode-hook ()
