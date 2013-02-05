@@ -3,7 +3,7 @@
 
 (require 'evil-leader)
 
-(evil-leader/set-leader ",")
+;; (evil-leader/set-leader ",")
 (evil-leader/set-key "," 'evil-repeat-find-char-reverse)
 (define-key evil-motion-state-map "," evil-leader/map)  ;; allows leader in motion state, too
 (evil-leader/set-key "x" ctl-x-map)
