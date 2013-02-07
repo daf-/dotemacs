@@ -33,7 +33,7 @@
 (require 'auto-complete-config)
 (require 'evil-leader)
 (require 'evil-paredit)
-(require 'pony-mode)
+;; (require 'pony-mode)
 (ac-config-default)
 (evil-mode 1)
 (yas-global-mode 1)
