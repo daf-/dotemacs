@@ -36,6 +36,13 @@
       (t (setq unread-command-events (append unread-command-events
 					      (list evt))))))))
 
+;; Evil
+(setq evil-default-cursor t)
+;; from emacs wiki (http://emacswiki.org/emacs/Evil#toc8)
+;; makes evil-emacs-state modes open up in motion state
+(setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
+(setq evil-emacs-state-modes nil)
+
 ;; Minimize hand fatigue
 ;; window mappings
 (define-key evil-normal-state-map " " #'evil-toggle-fold)

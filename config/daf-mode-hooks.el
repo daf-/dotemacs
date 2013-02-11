@@ -27,6 +27,7 @@
 (add-hook 'lisp-interaction-mode-hook 'my-lispy-mode-hook)
 (add-hook 'scheme-mode-hook 'my-lispy-mode-hook t)
 (add-hook 'geiser-repl-mode-hook 'my-lispy-mode-hook t)
+(add-hook 'clojure-mode-hook 'my-lispy-mode-hook t)
 
 (defun my-latex-mode-hook ()
   (turn-on-auto-fill)
