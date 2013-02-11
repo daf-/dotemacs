@@ -62,7 +62,7 @@
 (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
 (define-key evil-visual-state-map (kbd "TAB") #'evil-indent)
 
-(define-key evil-normal-state-map (kbd "H") #'evil-beginning-of-line)
+(define-key evil-normal-state-map (kbd "H") #'evil-first-non-blank)
 (define-key evil-normal-state-map (kbd "L") #'evil-end-of-line)
 
 (provide 'daf-evil)

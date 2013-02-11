@@ -26,12 +26,11 @@
 (add-hook 'lisp-mode-hook 'my-lispy-mode-hook t)
 (add-hook 'lisp-interaction-mode-hook 'my-lispy-mode-hook)
 (add-hook 'scheme-mode-hook 'my-lispy-mode-hook t)
-(add-hook 'geiser-repl-mode-hook 'my-lispy-mode-hook t)
 (add-hook 'clojure-mode-hook 'my-lispy-mode-hook t)
 
 (defun my-latex-mode-hook ()
   (turn-on-auto-fill)
-  (set-fill-column 90))
+  (set-fill-column 80))
 (add-hook 'latex-mode-hook 'my-latex-mode-hook)
 
 ;; fix indentation in pony template mode
