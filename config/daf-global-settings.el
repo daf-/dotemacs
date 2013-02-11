@@ -3,8 +3,8 @@
 
 
 ;; colors -- only for emacs 24
-(when (>= emacs-major-version 24)
-    (load-theme 'twilight t))
+;; (when (>= emacs-major-version 24)
+;;     (load-theme 'twilight t))
 
 
 ;; global keys
@@ -37,7 +37,7 @@
 ;; Show matching parentheses for lisp editing
 ;; Highlight the entire parenthesized expression for easy visual understanding
 (show-paren-mode t)
-(setq show-paren-style 'expression)
+;; (setq show-paren-style 'expression)
 
 ;; allows mouse in terminal
 (unless window-system

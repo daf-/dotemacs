@@ -29,6 +29,8 @@
 
 
 ;; initialize plugins
+(add-to-list 'load-path "~/.emacs.d/plugin/emacs-daylight")
+(require 'daylight)
 (require 'popup)
 (require 'auto-complete-config)
 (require 'evil-leader)
@@ -43,6 +45,7 @@
 (add-hook 'after-init-hook
           #'(lambda ()
 	      (add-to-list 'load-path "~/.emacs.d/config")
+              (require 'daf-daylight)
 	      (require 'daf-yas)
 	      (require 'daf-evil)
 	      (require 'daf-evil-leader)
