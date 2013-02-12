@@ -21,7 +21,7 @@
 (if window-system
     (tool-bar-mode 0))
 ;; (global-linum-mode 1)
-(setq scroll-conservatively 1)
+;; (setq scroll-conservatively 1)
 (setq scroll-margin 5)
 (if (not (window-system))
     (menu-bar-mode -1))
@@ -49,13 +49,6 @@
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (let ((process-list ())) ad-do-it))
-
-;; Evil
-(setq evil-default-cursor t)
-;; from emacs wiki (http://emacswiki.org/emacs/Evil#toc8)
-;; makes evil-emacs-state modes open up in motion state
-(setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
-(setq evil-emacs-state-modes nil)
 
 ;; woman
 (setq woman-use-topic-at-point t)

@@ -22,7 +22,9 @@
                        pony-mode
                        paredit
                        evil-paredit
-                       geiser))
+                       geiser
+                       clojure-mode
+                       nrepl))
 (dolist (p daf-packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -45,8 +47,8 @@
           #'(lambda ()
 	      (add-to-list 'load-path "~/.emacs.d/config")
 	      (require 'daf-yas)
-	      (require 'daf-evil)
-	      (require 'daf-evil-leader)
+              (require 'daf-evil)
+              (require 'daf-evil-leader)
 	      (require 'daf-mode-hooks)
 	      (require 'daf-global-settings)
 	      (require 'luke-funcs)))
@@ -74,11 +76,12 @@
  '(inhibit-startup-screen nil)
  '(initial-buffer-choice nil)
  '(show-paren-mode t)
- '(size-indication-mode t))
+ '(size-indication-mode t)
+ '(tool-bar-mode nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:inherit nil :stipple nil :background "#141414" :foreground "#f8f8f8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "apple" :family "Monaco")))))
