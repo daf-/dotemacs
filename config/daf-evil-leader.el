@@ -13,6 +13,7 @@
 (evil-leader/set-key "c" 'comment-or-uncomment-region)
 (evil-leader/set-key "w" 'save-buffer)
 (evil-leader/set-key "t" 'ansi-term)
+(evil-leader/set-key "s" 'eshell)
 (evil-leader/set-key "g" 'magit-status)
 (evil-leader/set-key "q" 'evil-quit)
 (evil-leader/set-key "o" 'occur)

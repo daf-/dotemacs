@@ -60,8 +60,10 @@
 (add-hook 'occur-mode-hook 'my-occur-mode-hook)
 
 ;; don't highlight line in shell
-(add-hook 'term-mode-hook
-          (lambda ()
-            (setq global-hl-line-mode nil)))
+(defun my-term-mode-hook ()
+  (setq global-hl-line-mode nil))
+(add-hook 'term-mode-hook 'my-term-mode-hook)
+(add-hook 'term-mode-hook 'my-term-mode-hook)
+(add-hook 'eshell-mode-hook 'my-term-mode-hook)
 
 (provide 'daf-mode-hooks)

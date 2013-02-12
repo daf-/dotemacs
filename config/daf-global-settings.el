@@ -2,10 +2,6 @@
 ;; Daniel Friedman, Fall 2013
 
 
-;; colors -- only for emacs 24
-;; (when (>= emacs-major-version 24)
-;;     (load-theme 'twilight t))
-
 
 ;; global keys
 
