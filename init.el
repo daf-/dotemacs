@@ -11,7 +11,7 @@
   (package-refresh-contents))
 
 (defvar daf-packages '(popup
-		       auto-complete
+                       auto-complete
                        undo-tree
                        evil
                        evil-leader
@@ -20,8 +20,6 @@
                        color-theme-solarized
                        twilight-theme
                        pony-mode
-                       paredit
-                       evil-paredit
                        geiser
                        clojure-mode
                        nrepl))
@@ -35,7 +33,6 @@
 (require 'popup)
 (require 'auto-complete-config)
 (require 'evil-leader)
-(require 'evil-paredit)
 ;; (require 'pony-mode)
 (ac-config-default)
 (evil-mode 1)

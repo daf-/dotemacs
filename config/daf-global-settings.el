@@ -21,7 +21,7 @@
 (if window-system
     (tool-bar-mode 0))
 ;; (global-linum-mode 1)
-;; (setq scroll-conservatively 1)
+(setq scroll-conservatively 1)
 (setq scroll-margin 5)
 (if (not (window-system))
     (menu-bar-mode -1))

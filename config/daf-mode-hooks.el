@@ -16,8 +16,6 @@
 (setq default-major-mode 'text-mode) ;; default is fundamental-mode
 
 (defun my-lispy-mode-hook ()
-  (paredit-mode)
-  (evil-paredit-mode)
   (make-local-variable 'evil-move-cursor-back)
   (setq evil-move-cursor-back nil))
   ; (make-local-variable 'evil-highlight-closing-paren-at-point-states)
@@ -66,5 +64,10 @@
 (add-hook 'term-mode-hook 'my-term-mode-hook)
 (add-hook 'term-mode-hook 'my-term-mode-hook)
 (add-hook 'eshell-mode-hook 'my-term-mode-hook)
+
+(add-hook 'geiser-repl-mode-hook
+          (lambda ()
+            (evil-define-key normal 'geiser-repl-mode-map (kbd "C-h") 'window-left)))
+
 
 (provide 'daf-mode-hooks)
