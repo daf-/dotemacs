@@ -4,6 +4,7 @@
 
 
 ;; global keys
+(global-set-key (kbd "s-<return>") 'ns-toggle-fullscreen)
 
 ;; C-left/right/up/down resize the window
 (global-set-key (kbd "C-<left>") 'shrink-window-horizontally)
