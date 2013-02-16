@@ -24,10 +24,12 @@
 ;; <Leader>-e corresponds to evaluate/run in interpreter
 (evil-define-key 'visual scheme-mode-map ",er" 'geiser-eval-region)
 (evil-define-key 'visual emacs-lisp-mode-map ",er" 'eval-region)
+(evil-define-key 'visual lisp-interaction-mode-map ",er" 'eval-region)
 (evil-define-key 'visual python-mode-map ",er" 'python-send-region)
 (evil-define-key 'normal scheme-mode-map ",ed" 'geiser-eval-definition)
 (evil-define-key 'normal python-mode-map ",ed" 'python-send-defun)
 (evil-define-key 'normal scheme-mode-map ",es" 'geiser-eval-last-sexp)
 (evil-define-key 'normal emacs-lisp-mode-map ",es" 'eval-last-sexp)
+(evil-define-key 'normal lisp-interaction-mode-map ",es" 'eval-last-sexp)
 
 (provide 'daf-evil-leader)

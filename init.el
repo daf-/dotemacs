@@ -20,9 +20,7 @@
                        color-theme-solarized
                        twilight-theme
                        pony-mode
-                       geiser
-                       clojure-mode
-                       nrepl))
+                       geiser))
 (dolist (p daf-packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -32,10 +30,12 @@
 (add-to-list 'load-path "~/.emacs.d/plugin/emacs-daylight")
 (require 'popup)
 (require 'auto-complete-config)
-(require 'evil-leader)
-;; (require 'pony-mode)
 (ac-config-default)
+
+;; (require 'pony-mode)
+
 (evil-mode 1)
+
 (yas-global-mode 1)
 
 
@@ -64,9 +64,13 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
+ '(background-color "#1c1c1c")
+ '(background-mode dark)
  '(c-basic-offset 4)
  '(column-number-mode t)
- '(custom-safe-themes (quote ("159bb8f86836ea30261ece64ac695dc490e871d57107016c09f286146f0dae64" "fe6330ecf168de137bb5eddbf9faae1ec123787b5489c14fa5fa627de1d9f82b" "5e1d1564b6a2435a2054aa345e81c89539a72c4cad8536cfe02583e0b7d5e2fa" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "27470eddcaeb3507eca2760710cc7c43f1b53854372592a3afa008268bcf7a75" "6cfe5b2f818c7b52723f3e121d1157cf9d95ed8923dbc1b47f392da80ef7495d" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
+ '(cursor-color "#808080")
+ '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "159bb8f86836ea30261ece64ac695dc490e871d57107016c09f286146f0dae64" "fe6330ecf168de137bb5eddbf9faae1ec123787b5489c14fa5fa627de1d9f82b" "5e1d1564b6a2435a2054aa345e81c89539a72c4cad8536cfe02583e0b7d5e2fa" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "27470eddcaeb3507eca2760710cc7c43f1b53854372592a3afa008268bcf7a75" "6cfe5b2f818c7b52723f3e121d1157cf9d95ed8923dbc1b47f392da80ef7495d" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
+ '(foreground-color "#808080")
  '(fringe-mode (quote (nil . 0)) nil (fringe))
  '(indicate-buffer-boundaries (quote left))
  '(indicate-empty-lines t)
@@ -81,4 +85,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#141414" :foreground "#f8f8f8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "apple" :family "Monaco")))))
+ )
+ ;; '(default ((t (:inherit nil :stipple nil :background "#141414" :foreground "#f8f8f8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "apple" :family "Monaco")))))
