@@ -13,7 +13,7 @@
              (unless (and (interactive-p)
                           (yas/expand))
            ad-do-it)))))
-(yas/advise-indent-function 'comment-indent-new-line)
+;; (yas/advise-indent-function 'comment-indent-new-line) ;; causes problems in python-mode
 
 ;; allow nested snippets to be triggered correctly
 (setq yas/triggers-in-field)

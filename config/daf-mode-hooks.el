@@ -15,6 +15,14 @@
 (add-hook 'text-mode-hook 'my-text-mode-hook)
 (setq default-major-mode 'text-mode) ;; default is fundamental-mode
 
+;; Have comments auto-wrap
+(defun code-comments-mode-hook ()
+  (auto-fill-mode))
+(add-hook 'c-mode-hook 'code-comments-mode-hook)
+(add-hook 'c++-mode-hook 'code-comments-mode-hook)
+(add-hook 'java-mode-hook 'code-comments-mode-hook)
+(add-hook 'python-mode-hook 'code-comments-mode-hook)
+
 (defun my-lispy-mode-hook ()
   (make-local-variable 'evil-move-cursor-back)
   (setq evil-move-cursor-back nil))
@@ -48,7 +56,6 @@
 
 ;; make magit evil
 (defun my-magit-mode-hook ()
-  (define-key evil-motion-state-local-map (kbd "TAB") 'magit-toggle-section)
   (define-key evil-motion-state-local-map (kbd "SPC") 'magit-goto-next-section)
   (define-key evil-motion-state-local-map (kbd "DEL") 'magit-goto-previous-section))
 (add-hook 'magit-mode-hook 'my-magit-mode-hook)

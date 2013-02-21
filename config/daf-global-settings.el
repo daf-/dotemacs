@@ -5,7 +5,6 @@
 
 ;; global keys
 (global-set-key (kbd "s-<return>") 'ns-toggle-fullscreen)
-
 ;; C-left/right/up/down resize the window
 (global-set-key (kbd "C-<left>") 'shrink-window-horizontally)
 (global-set-key (kbd "C-<right>") 'enlarge-window-horizontally)
@@ -17,25 +16,21 @@
 (column-number-mode t)     ;; shows column number in modeline
 (size-indication-mode t)   ;; show buffer size in modeline
 (electric-indent-mode t)
+(show-paren-mode t)
 (global-hl-line-mode t)
+(iswitchb-mode t)
+(ido-mode t)
+
+;; global settings
 (make-variable-buffer-local 'global-hl-line-mode)
 (if window-system
     (tool-bar-mode 0))
 ;; (global-linum-mode 1)
 (setq linum-format "%4d ")
-(setq scroll-conservatively 1)
+;; (setq scroll-conservatively 1)
 (setq scroll-margin 5)
 (if (not (window-system))
     (menu-bar-mode -1))
-
-;; better switching between buffers, fuzzy matching
-(iswitchb-mode t)
-(ido-mode t)
-
-;; Show matching parentheses for lisp editing
-;; Highlight the entire parenthesized expression for easy visual understanding
-(show-paren-mode t)
-;; (setq show-paren-style 'expression)
 
 ;; allows mouse in terminal
 (unless window-system
@@ -43,9 +38,6 @@
   (xterm-mouse-mode t)
   (defun track-mouse(e))
   (setq mouse-sel-mode t))
-
-
-;; formatting / variables
 
 ;; Don't prompt for "really want to exit?" when I still have processes running
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
@@ -57,18 +49,12 @@
 
 
 ;; style
-
-;; sets indentation style
 (setq c-default-style "k&r")
-; always use spaces instead of tabs
 (setq-default indent-tabs-mode nil)
-; return is newline & indent
-(define-key global-map (kbd "RET") 'newline-and-indent)
+
 ; no backup files
 (setq make-backup-files nil) ; prevents creation of backup files on first save
 (setq backup-inhibited t)    ; never make backups
 (setq auto-save-default nil) ; disables auto save
-;;(set-face-attribute 'default nil
-;;                    :family "menlo" :height 130)
 
 (provide 'daf-global-settings)

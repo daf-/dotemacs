@@ -6,6 +6,11 @@
 ;; M-SPC toggles evil/emacs state
 (evil-set-toggle-key "M-SPC")
 
+;; Fix motion-state
+(define-key evil-motion-state-map (kbd "RET") nil)
+(define-key evil-motion-state-map (kbd "TAB") nil)
+(define-key evil-motion-state-map (kbd "SPC") nil)
+
 ;; esc quits -- modified from http://stackoverflow.com/questions/8483182/emacs-evil-mode-best-practice
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
 (define-key evil-visual-state-map [escape] 'keyboard-quit)
@@ -18,8 +23,8 @@
 
 ;; Maps "kj" to escape
 ;; from http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-vim/
-(define-key evil-insert-state-map "k" #'cofi/maybe-exit)
-(define-key evil-replace-state-map "k" #'cofi/maybe-exit)
+(evil-define-key 'insert global-map "k" #'cofi/maybe-exit)
+(evil-define-key 'insert global-map "k" #'cofi/maybe-exit)
 (evil-define-command cofi/maybe-exit ()
  :repeat change
  (interactive)
