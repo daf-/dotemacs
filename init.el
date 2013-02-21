@@ -16,8 +16,8 @@
                        evil
                        evil-leader
                        magit
-                       yasnippet
-                       color-theme-solarized
+                       ;; yasnippet
+                       ;; color-theme-solarized
                        twilight-theme
                        pony-mode
                        geiser))
@@ -36,14 +36,14 @@
 
 (evil-mode 1)
 
-(yas-global-mode 1)
+;; (yas-global-mode 1)
 
 
 ;; load settings -- wait for packages to load first (emacswiki.org/emacs/ELPA)
 (add-hook 'after-init-hook
           #'(lambda ()
 	      (add-to-list 'load-path "~/.emacs.d/config")
-	      (require 'daf-yas)
+	      ;; (require 'daf-yas)
               (require 'daf-evil)
               (require 'daf-evil-leader)
 	      (require 'daf-mode-hooks)
@@ -77,7 +77,6 @@
  '(indicate-empty-lines t)
  '(inhibit-startup-screen nil)
  '(initial-buffer-choice nil)
- '(show-paren-mode t)
  '(size-indication-mode t)
  '(tool-bar-mode nil))
 

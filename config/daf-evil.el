@@ -3,13 +3,28 @@
 
 (require 'evil)
 
+;;
+;; Basic Settings
+;;
+
+;; Don't override cursor color
+(setq evil-default-cursor t)
+
 ;; M-SPC toggles evil/emacs state
 (evil-set-toggle-key "M-SPC")
+
+;; Allow C-n and C-p in insert state
+(define-key evil-insert-state-map (kbd "C-n") nil)
+(define-key evil-insert-state-map (kbd "C-p") nil)
 
 ;; Fix motion-state
 (define-key evil-motion-state-map (kbd "RET") nil)
 (define-key evil-motion-state-map (kbd "TAB") nil)
 (define-key evil-motion-state-map (kbd "SPC") nil)
+
+;; makes evil-emacs-state modes open up in motion state
+(setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
+(setq evil-emacs-state-modes nil)
 
 ;; esc quits -- modified from http://stackoverflow.com/questions/8483182/emacs-evil-mode-best-practice
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
@@ -21,32 +36,33 @@
 (define-key minibuffer-local-must-match-map [escape] 'abort-recursive-edit)
 (define-key minibuffer-local-isearch-map [escape] 'abort-recursive-edit)
 
+
+
+
+;;
+;; Remaps
+;;
+
 ;; Maps "kj" to escape
 ;; from http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-vim/
 (evil-define-key 'insert global-map "k" #'cofi/maybe-exit)
 (evil-define-key 'insert global-map "k" #'cofi/maybe-exit)
 (evil-define-command cofi/maybe-exit ()
- :repeat change
- (interactive)
- (let ((modified (buffer-modified-p)))
-   (insert "k")
-   (let ((evt (read-event (format "Insert %c to exit insert state" ?j)
+  :repeat change
+  (interactive)
+  (let ((modified (buffer-modified-p)))
+    (insert "k")
+    (let ((evt (read-event (format "Insert %c to exit insert state" ?j)
 			   nil 0.5)))
-     (cond
-      ((null evt) (message ""))
-      ((and (integerp evt) (char-equal evt ?j))
+      (cond
+       ((null evt) (message ""))
+       ((and (integerp evt) (char-equal evt ?j))
 	(delete-char -1)
 	(set-buffer-modified-p modified)
 	(push 'escape unread-command-events))
-      (t (setq unread-command-events (append unread-command-events
+       (t (setq unread-command-events (append unread-command-events
 					      (list evt))))))))
 
-;; Evil
-(setq evil-default-cursor t)
-;; from emacs wiki (http://emacswiki.org/emacs/Evil#toc8)
-;; makes evil-emacs-state modes open up in motion state
-(setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
-(setq evil-emacs-state-modes nil)
 
 ;; Minimize hand fatigue
 ;; window mappings

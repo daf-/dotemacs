@@ -13,7 +13,7 @@
    ((eq major-mode "text-mode")	;; Allow comments in text-mode
     (setq comment-start "#"))))
 (add-hook 'text-mode-hook 'my-text-mode-hook)
-(setq default-major-mode 'text-mode) ;; default is fundamental-mode
+(setq major-mode 'text-mode) ;; default is fundamental-mode
 
 ;; Have comments auto-wrap
 (defun code-comments-mode-hook ()
