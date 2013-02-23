@@ -13,11 +13,11 @@
 ;; M-SPC toggles evil/emacs state
 (evil-set-toggle-key "M-SPC")
 
-;; Allow C-n and C-p in insert state
+;; Remove useless vim bindings
 (define-key evil-insert-state-map (kbd "C-n") nil)
 (define-key evil-insert-state-map (kbd "C-p") nil)
-
-;; Fix motion-state
+(define-key evil-insert-state-map (kbd "C-k") nil)
+(define-key evil-insert-state-map (kbd "C-r") nil)
 (define-key evil-motion-state-map (kbd "RET") nil)
 (define-key evil-motion-state-map (kbd "TAB") nil)
 (define-key evil-motion-state-map (kbd "SPC") nil)

@@ -15,7 +15,7 @@
 (transient-mark-mode t)    ;; show regions as highlighted
 (column-number-mode t)     ;; shows column number in modeline
 (size-indication-mode t)   ;; show buffer size in modeline
-(electric-indent-mode t)
+(when (>= emacs-major-version 24) (electric-indent-mode t))
 (show-paren-mode t)
 (global-hl-line-mode t)
 (iswitchb-mode t)
@@ -26,7 +26,7 @@
 (if window-system
     (tool-bar-mode 0))
 ;; (global-linum-mode 1)
-(setq linum-format "%4d ")
+;; (setq linum-format " ")
 ;; (setq scroll-conservatively 1)
 (setq scroll-margin 5)
 (if (not (window-system))

@@ -31,5 +31,6 @@
 (evil-define-key 'normal scheme-mode-map ",es" 'geiser-eval-last-sexp)
 (evil-define-key 'normal emacs-lisp-mode-map ",es" 'eval-last-sexp)
 (evil-define-key 'normal lisp-interaction-mode-map ",es" 'eval-last-sexp)
+(evil-define-key 'normal python-mode-map ",eb" 'python-send-buffer)
 
 (provide 'daf-evil-leader)

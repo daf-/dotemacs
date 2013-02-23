@@ -5,22 +5,58 @@
 (require 'package)
 (setq package-archives '(("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
+
+(when (< emacs-major-version 24) ;; check package-alist
+  (setq package-load-list
+        '((color-theme t)
+          (color-theme-solarized t)
+          (popup t)
+          (auto-complete t)
+          (undo-tree t)
+          (evil t)
+          (evil-leader t)
+          (magit t)
+          (pony-mode t)
+          (geiser t)))
+  (defvar daf-packages'(color-theme
+                        color-theme-solarized
+                        popup
+                        auto-complete
+                        undo-tree
+                        evil
+                        evil-leader
+                        magit
+                        pony-mode
+                        geiser)))
+
+(when (>= emacs-major-version 24)
+  (setq package-load-list
+        '((popup t)
+          (auto-complete t)
+          (undo-tree t)
+          (evil t)
+          (evil-leader t)
+          (magit t)
+          (zenburn-theme t)
+          (twilight-theme t)
+          (pony-mode t)
+          (geiser t)))
+  (defvar daf-packages'(popup
+                        auto-complete
+                        undo-tree
+                        evil
+                        evil-leader
+                        magit
+                        zenburn-theme
+                        twilight-theme
+                        pony-mode
+                        geiser)))
+
 (package-initialize)
 
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(defvar daf-packages '(popup
-                       auto-complete
-                       undo-tree
-                       evil
-                       evil-leader
-                       magit
-                       ;; yasnippet
-                       ;; color-theme-solarized
-                       twilight-theme
-                       pony-mode
-                       geiser))
 (dolist (p daf-packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -51,8 +87,10 @@
 	      (require 'luke-funcs)))
 
 ;; Colors
-;; (load-theme 'solarized-dark t)
-(load-theme 'zenburn t)
+(when (>= emacs-major-version 24) (load-theme 'zenburn t))
+(when (< emacs-major-version 24)
+  (color-theme-initialize)
+  (color-theme-solarized-dark))
 
 
 ;;;;;;;;;;;;;;;;;;;

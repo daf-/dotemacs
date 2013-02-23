@@ -23,6 +23,11 @@
 (add-hook 'java-mode-hook 'code-comments-mode-hook)
 (add-hook 'python-mode-hook 'code-comments-mode-hook)
 
+;; Have C-d scroll down in comint buffers
+(add-hook 'comint-mode-hook
+          (lambda ()
+            (evil-local-set-key 'normal (kbd "C-d") 'evil-scroll-down)))
+
 (defun my-lispy-mode-hook ()
   (make-local-variable 'evil-move-cursor-back)
   (setq evil-move-cursor-back nil))
