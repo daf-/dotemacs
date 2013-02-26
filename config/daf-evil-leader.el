@@ -10,7 +10,7 @@
 (evil-leader/set-key "f" 'find-file)
 (evil-leader/set-key "b" 'ido-switch-buffer)
 (evil-leader/set-key "l" 'load-file)
-(evil-leader/set-key "c" 'comment-or-uncomment-region)
+(evil-leader/set-key "c" 'comment-or-uncomment-line-or-region)
 (evil-leader/set-key "w" 'save-buffer)
 (evil-leader/set-key "t" 'ansi-term)
 (evil-leader/set-key "s" 'eshell)

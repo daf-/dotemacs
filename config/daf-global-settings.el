@@ -2,6 +2,8 @@
 ;; Daniel Friedman, Fall 2013
 
 
+;; for comment func
+(setq mark-even-if-inactive nil)
 
 ;; global keys
 (global-set-key (kbd "s-<return>") 'ns-toggle-fullscreen)
@@ -17,6 +19,7 @@
 (size-indication-mode t)   ;; show buffer size in modeline
 (when (>= emacs-major-version 24) (electric-indent-mode t))
 (show-paren-mode t)
+(scroll-bar-mode 0)
 (global-hl-line-mode t)
 (iswitchb-mode t)
 (ido-mode t)

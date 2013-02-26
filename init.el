@@ -75,12 +75,12 @@
 (add-hook 'after-init-hook
           #'(lambda ()
 	      (add-to-list 'load-path "~/.emacs.d/config")
-	      ;; (require 'daf-yas)
               (require 'daf-evil)
               (require 'daf-evil-leader)
 	      (require 'daf-mode-hooks)
+	      (require 'daf-evil-mode-hooks)
 	      (require 'daf-global-settings)
-	      (require 'luke-funcs)))
+	      (require 'funcs)))
 
 ;; Colors
 (when (>= emacs-major-version 24) (load-theme 'zenburn t))

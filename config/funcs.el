@@ -1,5 +1,11 @@
-;; Code donated from Luke Lovett
-
+(defun comment-or-uncomment-line-or-region ()
+  "Toggles commenting on the current line if no region is defined,
+   otherwise toggles comments on the region"
+  (interactive "*")
+  (let ((use-empty-active-region t) (mark-even-if-inactive nil))
+    (cond
+     ((use-region-p) (comment-or-uncomment-region (region-beginning) (region-end)))
+     (t (comment-or-uncomment-region (line-beginning-position) (line-end-position))))))
 
 ;; Fun comments with boxing
 (defun box-comment() ;; "defun" is a macro for defining named functions in emacs lisp
@@ -46,8 +52,4 @@ box, then it attempts to remove the blank lines left over by this operation."
 	(goto-char (region-end))
 	(delete-blank-lines)))))
 
-;; This is useful for macbooks, where C-/ has been cleverly
-;; bound to "make the terminal beep" by Apple. Thanks, Apple!
-(global-set-key "\M-/" 'undo)
-
-(provide 'luke-funcs)
+(provide 'funcs)
