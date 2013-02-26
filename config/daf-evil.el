@@ -18,7 +18,8 @@
 (define-key evil-insert-state-map (kbd "C-p") nil)
 (define-key evil-insert-state-map (kbd "C-k") nil)
 (define-key evil-insert-state-map (kbd "C-r") nil)
-(define-key evil-motion-state-map (kbd "RET") nil)
+(define-key evil-motion-state-map (kbd "RET") nil) ;; This somehow messes up RET in normal state, so...:
+(define-key evil-normal-state-map (kbd "RET") 'evil-ret)
 (define-key evil-motion-state-map (kbd "TAB") nil)
 (define-key evil-motion-state-map (kbd "SPC") nil)
 

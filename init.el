@@ -63,16 +63,12 @@
 
 
 ;; initialize plugins
-; (add-to-list 'load-path "~/.emacs.d/plugin/emacs-daylight")
 (require 'popup)
 (require 'auto-complete-config)
 (ac-config-default)
 
-;; (require 'pony-mode)
 
 (evil-mode 1)
-
-;; (yas-global-mode 1)
 
 
 ;; load settings -- wait for packages to load first (emacswiki.org/emacs/ELPA)
@@ -90,7 +86,7 @@
 (when (>= emacs-major-version 24) (load-theme 'zenburn t))
 (when (< emacs-major-version 24)
   (color-theme-initialize)
-  (color-theme-solarized-dark))
+  (color-theme-solarized-light))
 
 
 ;;;;;;;;;;;;;;;;;;;
