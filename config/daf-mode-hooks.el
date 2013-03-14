@@ -12,12 +12,24 @@
 (setq major-mode 'text-mode) ;; default is fundamental-mode
 
 ;; Have comments auto-wrap
-(defun code-comments-mode-hook ()
+(defun c-like-mode-hook ()
+  (setq c-basic-offset 2)
+  (setq evil-shift-width 2)
   (auto-fill-mode))
-(add-hook 'c-mode-hook 'code-comments-mode-hook)
-(add-hook 'c++-mode-hook 'code-comments-mode-hook)
-(add-hook 'java-mode-hook 'code-comments-mode-hook)
-(add-hook 'python-mode-hook 'code-comments-mode-hook)
+(add-hook 'c-mode-hook 'c-like-mode-hook)
+(add-hook 'c++-mode-hook 'c-like-mode-hook)
+;; (add-hook 'java-mode-hook 'c-like-mode-hook)
+
+(add-hook 'python-mode-hook (auto-fill-mode))
+
+(add-hook 'java-mode-hook
+          (lambda ()
+            (unless (or (file-exists-p "makefile")
+                        (file-exists-p "Makefile"))
+              (set (make-local-variable 'compile-command)
+                   (concat "javac "
+                           ;; (buffer-file-name))))))
+                           (buffer-name))))))
 
 (add-hook 'latex-mode-hook
           (lambda ()

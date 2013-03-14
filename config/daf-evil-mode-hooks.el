@@ -49,6 +49,7 @@
 
 (add-hook 'geiser-repl-mode-hook
           (lambda ()
-            (evil-define-key normal 'geiser-repl-mode-map (kbd "C-h") 'window-left)))
+            (evil-define-key normal 'geiser-repl-mode-map (kbd "C-h") 'evil-window-left)
+            (evil-define-key normal 'geiser-repl-mode-map (kbd "C-j") 'evil-window-down)))
 
 (provide 'daf-evil-mode-hooks)
