@@ -91,4 +91,7 @@
 (define-key evil-motion-state-map (kbd "H") #'evil-first-non-blank)
 (define-key evil-motion-state-map (kbd "L") #'evil-end-of-line)
 
+;; Fix latex-mode C-j binding
+(evil-define-key 'insert latex-mode-map (kbd "C-j") #'evil-ret)
+
 (provide 'daf-evil)
