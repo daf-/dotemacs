@@ -6,57 +6,18 @@
 (setq package-archives '(("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 
-(when (< emacs-major-version 24) ;; check package-alist
-  (setq package-load-list
-        '((color-theme t)
-          (color-theme-solarized t)
-	  (color-theme-sanityinc-tomorrow t)
-          (popup t)
-          (auto-complete t)
-          (undo-tree t)
-          (evil t)
-          (evil-leader t)
-          (magit t)
-	  (markdown-mode t)
-          (pony-mode t)
-          (geiser t)))
-  (defvar daf-packages'(color-theme
-                        color-theme-solarized
-			color-theme-sanityinc-tomorrow
-                        popup
-                        auto-complete
-                        undo-tree
-                        evil
-                        evil-leader
-                        magit
-			markdown-mode
-                        pony-mode
-                        geiser)))
-
-(when (>= emacs-major-version 24)
-  (setq package-load-list
-        '((popup t)
-          (auto-complete t)
-	  (undo-tree t)
-          (evil t)
-          (evil-leader t)
-          (magit t)
-	  (markdown-mode t)
-          (zenburn-theme t)
-          (twilight-theme t)
-          (pony-mode t)
-          (geiser t)))
-  (defvar daf-packages'(popup
-                        auto-complete
-			undo-tree
-                        evil
-                        evil-leader
-                        magit
-			markdown-mode
-                        zenburn-theme
-                        twilight-theme
-                        pony-mode
-                        geiser)))
+(defvar daf-packages'(auto-complete
+		      deep-thought-theme
+		      evil
+		      evil-leader
+		      geiser
+		      magit
+		      markdown-mode
+		      pony-mode
+		      popup
+		      rainbow-delimiters
+		      undo-tree
+		      zenburn-theme))
 
 (package-initialize)
 
@@ -71,12 +32,10 @@
 ;; initialize plugins
 (require 'popup)
 (require 'auto-complete-config)
+(require 'rainbow-delimiters)
 (ac-config-default)
-;; (autoload 'markdown-mode "markdown-mode"
-;;   "Major mode for rediting Markdown files" t)
+(rainbow-delimiters-mode t)
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
-
 (evil-mode 1)
 
 
@@ -92,9 +51,15 @@
  	      (require 'funcs)))
 
 ;; Colors
-(when (< emacs-major-version 24)
-  (add-to-list 'load-path "~/.emacs.d/elpa/zenburn-theme-20130215.1443/"))
-(load-theme 'zenburn)
+(if (< emacs-major-version 24)
+    (lambda ()
+      (add-to-list 'load-path "~/.emacs.d/themes")
+      (add-to-list 'load-path "~/.emacs.d/elpa/zenburn-theme-20130215.1443/"))
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes"))
+
+(if (display-graphic-p)
+    (load-theme 'soothe t)
+  (load-theme 'zenburn t))
 
 ;; Font for GUI emacs
 (if (display-graphic-p)
@@ -106,29 +71,32 @@
 ;;;;;;;;;;;;;;;;;;;
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
- '(background-color "#1c1c1c")
- '(background-mode dark)
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(Linum-format "%7i ")
+ '(ansi-color-names-vector ["#3f3f3f" "#cc9393" "#7f9f7f" "#f0dfaf" "#8cd0d3" "#dc8cc3" "#93e0e3" "#dcdccc"])
+ '(ansi-term-color-vector ["#3f3f3f" "#cc9393" "#7f9f7f" "#f0dfaf" "#8cd0d3" "#dc8cc3" "#93e0e3" "#dcdccc"] t)
  '(column-number-mode t)
- '(cursor-color "#808080")
- '(custom-safe-themes (quote ("1760322f987b57884e38f4076ac586c27566a1d7ed421b67843c8c98a1501e3a" "eace176e2e6cd7c37128335e069b6f982116cd7bb84d0cea3012ebf23a017659" "36a309985a0f9ed1a0c3a69625802f87dee940767c9e200b89cdebdb737e5b29" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "159bb8f86836ea30261ece64ac695dc490e871d57107016c09f286146f0dae64" "fe6330ecf168de137bb5eddbf9faae1ec123787b5489c14fa5fa627de1d9f82b" "5e1d1564b6a2435a2054aa345e81c89539a72c4cad8536cfe02583e0b7d5e2fa" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "27470eddcaeb3507eca2760710cc7c43f1b53854372592a3afa008268bcf7a75" "6cfe5b2f818c7b52723f3e121d1157cf9d95ed8923dbc1b47f392da80ef7495d" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
- '(foreground-color "#808080")
+ '(custom-safe-themes (quote ("033005194740d1996ddd93ea814677c719f2d2c178d363bb5ca14badfa2c6e62" "4ddc42a539280ec21ae202b6c12a4d7ce7d7af8a19e8c344b60b09f1ca1496d5" default)))
+ '(fci-rule-character-color "#202020")
+ '(fci-rule-color "#383838")
  '(fringe-mode (quote (nil . 0)) nil (fringe))
  '(indicate-buffer-boundaries (quote left))
  '(indicate-empty-lines t)
  '(inhibit-startup-screen nil)
  '(initial-buffer-choice nil)
+ '(main-line-color1 "#202020")
+ '(main-line-color2 "#141414")
+ '(show-paren-mode t)
  '(size-indication-mode t)
  '(tool-bar-mode nil))
 
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(hl-line ((t (:inherit highlight :weight bold)))))
 (put 'set-goal-column 'disabled nil)

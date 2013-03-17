@@ -1,4 +1,4 @@
-;; -*- emacs-lisp -*- <13/02/16 11:07:37 /Users/danielfriedman/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <13/03/17 15:59:00 /Users/danielfriedman/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; You can delete it, forcing Tramp to reapply the checks.
 
@@ -36,7 +36,9 @@
   ("remote-decoding" tramp-perl-decode-with-module)
   ("file-exists" "test -e")
   ("ls" "/usr/xpg4/bin/ls")
-  ("ls-dired" nil))
+  ("ls-dired" nil)
+  ("inline-compress" "gzip")
+  ("inline-decompress" "gzip -d"))
  (["scpc" "dfriedma" "occs.oberlin.edu" nil]
   ("uname" "SunOS 5.10")
   ("test" "test")

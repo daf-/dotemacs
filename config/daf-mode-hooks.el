@@ -1,6 +1,7 @@
 ;; open header files in c++ mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 ;; from luke
 (defun my-text-mode-hook ()
   (turn-on-auto-fill)

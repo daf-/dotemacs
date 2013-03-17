@@ -14,7 +14,7 @@
 (column-number-mode t)     ;; shows column number in modeline
 (size-indication-mode t)   ;; show buffer size in modeline
 ;; (when (>= emacs-major-version 24) (electric-indent-mode t))
-(setq show-paren-style 'expression)
+;; (setq show-paren-style 'expression)
 (show-paren-mode t)
 (scroll-bar-mode 0)
 (global-hl-line-mode t)
