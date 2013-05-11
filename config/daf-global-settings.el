@@ -9,13 +9,38 @@
 (global-set-key (kbd "C-<down>") 'shrink-window)
 (global-set-key (kbd "C-<up>") 'enlarge-window)
 
+;; for switching windows
+(define-key evil-normal-state-map " " #'evil-toggle-fold)
+(define-key evil-normal-state-map (kbd "C-h") #'evil-window-left)
+(define-key evil-normal-state-map (kbd "C-j") #'evil-window-down)
+(define-key evil-normal-state-map (kbd "C-k") #'evil-window-up)
+(define-key evil-normal-state-map (kbd "C-l") #'evil-window-right)
+(define-key evil-motion-state-map (kbd "C-h") #'evil-window-left)
+(define-key evil-motion-state-map (kbd "C-j") #'evil-window-down)
+(define-key evil-motion-state-map (kbd "C-k") #'evil-window-up)
+(define-key evil-motion-state-map (kbd "C-l") #'evil-window-right)
+
+(define-prefix-command 'personal-map)
+(global-set-key (kbd "C-c") personal-map)
+
+(define-key personal-map "." 'bookmark-set)
+(define-key personal-map "/" 'bookmark-jump)
+(define-key personal-map ";" 'comment-or-uncomment-line-or-region)
+(define-key personal-map "c" 'compile)
+(define-key personal-map "f" 'find-file-other-window)
+(define-key personal-map "g" 'magit-status)
+(define-key personal-map "l" 'goto-line)
+(define-key personal-map "p" 'run-python)
+(define-key personal-map "s" 'eshell)
+(define-key personal-map "t" 'ansi-term)
+
 ;; minor modes
 (transient-mark-mode t)    ;; show regions as highlighted
 (column-number-mode t)     ;; shows column number in modeline
 (size-indication-mode t)   ;; show buffer size in modeline
-;; (when (>= emacs-major-version 24) (electric-indent-mode t))
-;; (setq show-paren-style 'expression)
 (show-paren-mode t)
+(setq show-paren-style 'expression)
+(setq show-paren-delay 0)
 (scroll-bar-mode 0)
 (global-hl-line-mode t)
 (iswitchb-mode t)
@@ -23,22 +48,24 @@
 
 ;; global settings
 (setq inhibit-startup-screen t)
+;; (setq initial-scratch-message (shell-command-to-string "cookie"))
+(setq initial-scratch-message)
 (make-variable-buffer-local 'global-hl-line-mode)
 (if window-system
     (tool-bar-mode 0))
 ;; (global-linum-mode 1)
-;; (setq linum-format " ")
+(setq linum-format "%d ")
 ;; (setq scroll-conservatively 1)
-(setq scroll-margin 5)
+;; (setq scroll-margin 5)
 (if (not (window-system))
     (menu-bar-mode -1))
 
 ;; allows mouse in terminal
-;; (unless window-system
-;;   (require 'mouse)
-;;   (xterm-mouse-mode t)
-;;   (defun track-mouse(e))
-;;   (setq mouse-sel-mode t))
+(unless window-system
+  (require 'mouse)
+  (xterm-mouse-mode t)
+  (defun track-mouse(e))
+  (setq mouse-sel-mode t))
 
 ;; Don't prompt for "really want to exit?" when I still have processes running
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
@@ -48,10 +75,12 @@
 ;; woman
 (setq woman-use-topic-at-point t)
 
+;; gdb
+(setq gdb-many-windows t)
 
 ;; style
-;; (setq c-default-style "k&r")
-;; (setq-default indent-tabs-mode nil)
+(setq c-default-style "k&r")
+(setq-default indent-tabs-mode nil)
 
 ; no backup files
 (setq make-backup-files nil) ; prevents creation of backup files on first save

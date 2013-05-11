@@ -21,6 +21,12 @@
 (add-hook 'c++-mode-hook 'c-like-mode-hook)
 ;; (add-hook 'java-mode-hook 'c-like-mode-hook)
 
+;; Indent javascript by two spaces
+(add-hook 'js-mode-hook
+          (lambda ()
+            (setq js-indent-level 2)
+            (setq evil-shift-width 2)))
+
 (add-hook 'python-mode-hook (auto-fill-mode))
 
 (add-hook 'java-mode-hook
@@ -30,7 +36,8 @@
               (set (make-local-variable 'compile-command)
                    (concat "javac "
                            ;; (buffer-file-name))))))
-                           (buffer-name))))))
+                           (buffer-name))))
+            (setq c-basic-offset 4)))
 
 (add-hook 'latex-mode-hook
           (lambda ()

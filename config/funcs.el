@@ -1,3 +1,7 @@
+(defun cookie ()
+  "Tasty cookie"
+  (shell-command-to-string "cookie"))
+
 (defun comment-or-uncomment-line-or-region ()
   "Toggles commenting on the current line if no region is defined,
    otherwise toggles comments on the region"
