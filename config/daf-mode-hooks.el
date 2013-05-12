@@ -27,6 +27,8 @@
             (setq js-indent-level 2)
             (setq evil-shift-width 2)))
 
+(add-hook 'emacs-lisp-mode-hook (paredit-mode))
+
 (add-hook 'python-mode-hook (auto-fill-mode))
 
 (add-hook 'java-mode-hook
