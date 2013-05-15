@@ -16,6 +16,7 @@
 		      magit
 		      markdown-mode
                       paredit
+                      evil-paredit
 		      pony-mode
 		      popup
 		      rainbow-delimiters
@@ -36,21 +37,22 @@
 (require 'popup)
 (require 'auto-complete-config)
 (require 'rainbow-delimiters)
+(require 'evil-paredit)
 (ac-config-default)
 (global-rainbow-delimiters-mode t)
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (global-undo-tree-mode)
-;; (evil-mode 1)
+(evil-mode 1)
 
 
 ;; load settings -- wait for packages to load first (emacswiki.org/emacs/ELPA)
 (add-hook 'after-init-hook
 	  #'(lambda ()
  	      (add-to-list 'load-path "~/.emacs.d/config")
-	      ;; (require 'daf-evil)
-	      ;; (require 'daf-evil-leader)
+	      (require 'daf-evil)
+	      (require 'daf-evil-leader)
  	      (require 'daf-mode-hooks)
- 	      ;; (require 'daf-evil-mode-hooks)
+ 	      (require 'daf-evil-mode-hooks)
  	      (require 'daf-global-settings)
  	      (require 'funcs)))
 
