@@ -3,16 +3,13 @@
           (lambda ()
             (evil-local-set-key 'normal (kbd "C-d") 'evil-scroll-down)))
 
-;; (defun my-lispy-mode-hook ()
-;;   (make-local-variable 'evil-move-cursor-back)
-;;   (setq evil-move-cursor-back nil)
-;;   (make-local-variable 'evil-highlight-closing-paren-at-point-states)
-;;   (setq evil-highlight-closing-paren-at-point-states '(not emacs insert replace normal)))
-;; (add-hook 'emacs-lisp-mode-hook 'my-lispy-mode-hook t)
-;; (add-hook 'lisp-mode-hook 'my-lispy-mode-hook t)
-;; (add-hook 'lisp-interaction-mode-hook 'my-lispy-mode-hook)
-;; (add-hook 'scheme-mode-hook 'my-lispy-mode-hook t)
-;; (add-hook 'clojure-mode-hook 'my-lispy-mode-hook t)
+(defun evil-lispy-mode-hook ()
+  (evil-paredit-mode))
+(add-hook 'emacs-lisp-mode-hook 'evil-lispy-mode-hook)
+(add-hook 'lisp-mode-hook 'evil-lispy-mode-hook)
+(add-hook 'lisp-interaction-mode-hook 'evil-lispy-mode-hook)
+(add-hook 'scheme-mode-hook 'evil-lispy-mode-hook)
+(add-hook 'clojure-mode-hook 'evil-lispy-mode-hook)
 
 ;; fix indentation in pony template mode
 (defun pony-tpl-mode-fix-indent (function-symbol)
@@ -39,6 +36,10 @@
 (add-hook 'occur-mode-hook
           (lambda ()
             (define-key evil-motion-state-local-map (kbd "RET") 'occur-mode-goto-occurrence)))
+;; make C-j play nice in comint-mode
+(add-hook 'comint-mode-hook
+          (lambda ()
+            (define-key evil-insert-state-local-map (kbd "C-j") 'comint-send-input)))
 
 ;; use j/k as n/p in grep mode
 (add-hook 'grep-mode-hook

@@ -1,6 +1,17 @@
 ;; Some simple global Settings
 ;; Daniel Friedman, Fall 2013
 
+;;; set PATH to recognize homebrew
+(setenv "PATH"
+  (concat
+   "~/code/devkit/bin" ":"
+   "~/bin" ":"
+   "/usr/local/bin" ":"
+   (getenv "PATH")))
+
+;;; Delete trailing whitespace before saving
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 ;; global keys
 (global-set-key (kbd "s-<return>") 'ns-toggle-fullscreen)
 ;; C-left/right/up/down resize the window
@@ -30,10 +41,10 @@
 (column-number-mode t)     ;; shows column number in modeline
 (size-indication-mode t)   ;; show buffer size in modeline
 (show-paren-mode t)
-(setq show-paren-style 'expression)
+;; (setq show-paren-style 'expression)
 (setq show-paren-delay 0)
 (scroll-bar-mode 0)
-(global-hl-line-mode t)
+;; (global-hl-line-mode t)
 (iswitchb-mode t)
 (ido-mode t)
 
@@ -46,7 +57,7 @@
     (tool-bar-mode 0))
 ;; (global-linum-mode 1)
 (setq linum-format "%d ")
-;; (setq scroll-conservatively 1)
+(setq scroll-conservatively 1)
 ;; (setq scroll-margin 5)
 (if (not (window-system))
     (menu-bar-mode -1))

@@ -17,6 +17,9 @@
 (define-key evil-motion-state-map (kbd "C-k") #'evil-window-up)
 (define-key evil-motion-state-map (kbd "C-l") #'evil-window-right)
 
+;; Since C-h is used for window navigation in normal mode, bind M-H to help
+(define-key evil-normal-state-map (kbd "M-H") #'help)
+
 ;; Don't override cursor color
 (setq evil-default-cursor t)
 
@@ -24,10 +27,7 @@
 (evil-set-toggle-key "M-SPC")
 
 ;; Remove useless vim bindings
-(define-key evil-insert-state-map (kbd "C-n") nil)
-(define-key evil-insert-state-map (kbd "C-p") nil)
 (define-key evil-insert-state-map (kbd "C-k") nil)
-(define-key evil-insert-state-map (kbd "C-r") nil)
 (define-key evil-motion-state-map (kbd "RET") nil) ;; This somehow messes up RET in normal state, so...:
 (define-key evil-normal-state-map (kbd "RET") 'evil-ret)
 (define-key evil-motion-state-map (kbd "TAB") nil)
@@ -74,7 +74,6 @@
        (t (setq unread-command-events (append unread-command-events
 					      (list evt))))))))
 
-
 ;; Minimize hand fatigue
 ;; window mappings
 (define-key evil-normal-state-map " " #'evil-toggle-fold)
@@ -94,12 +93,15 @@
 (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
 (define-key evil-visual-state-map (kbd "TAB") #'evil-indent)
 
-(define-key evil-normal-state-map (kbd "H") #'evil-first-non-blank)
-(define-key evil-normal-state-map (kbd "L") #'evil-end-of-line)
-(define-key evil-visual-state-map (kbd "H") #'evil-first-non-blank)
-(define-key evil-visual-state-map (kbd "L") #'evil-end-of-line)
-(define-key evil-motion-state-map (kbd "H") #'evil-first-non-blank)
-(define-key evil-motion-state-map (kbd "L") #'evil-end-of-line)
+(define-key evil-normal-state-map (kbd "H") 'evil-first-non-blank)
+(define-key evil-normal-state-map (kbd "L") 'evil-end-of-line)
+(define-key evil-visual-state-map (kbd "H") 'evil-first-non-blank)
+(define-key evil-visual-state-map (kbd "L") 'evil-end-of-line)
+(define-key evil-motion-state-map (kbd "H") 'evil-first-non-blank)
+(define-key evil-motion-state-map (kbd "L") 'evil-end-of-line)
+
+(define-key evil-normal-state-map (kbd "C-i") 'evil-jump-forward)
+(define-key evil-visual-state-map (kbd "C-i") 'evil-jump-forward)
 
 ;; Fix latex-mode C-j binding
 (evil-define-key 'insert latex-mode-map (kbd "C-j") #'evil-ret)
