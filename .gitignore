@@ -5,3 +5,5 @@ elpa/*
 /color-mode-line.el
 /config/smart-semi.el
 /themes/*
+/.mc-lists.el
+/url/cookies

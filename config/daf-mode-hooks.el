@@ -34,6 +34,7 @@
             (setq js-indent-level 2)
             (setq evil-shift-width 2)
             (electric-indent-mode)))
+
 (add-hook 'js2-mode-hook
           (lambda ()
             (setq js2-basic-offset 2)

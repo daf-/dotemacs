@@ -1,3 +1,6 @@
+(if (and (fboundp 'menu-bar-mode) (not (display-graphic-p))) (menu-bar-mode -1))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+
 (setq vc-handled-backends nil)
 (setq show-paren-delay 0)
 
@@ -12,9 +15,11 @@
 		      deep-thought-theme
 		      evil
 		      evil-leader
+                      expand-region
 		      geiser
 		      magit
 		      markdown-mode
+                      multiple-cursors
 		      pony-mode
 		      popup
 		      rainbow-delimiters
@@ -29,6 +34,7 @@
                       paredit
                       solarized-theme
                       ujelly-theme
+                      w3m
                       ;; yasnippet
                       ))
 
@@ -46,10 +52,13 @@
 (defun evil-all ()
   (require 'evil-paredit)
   (global-evil-leader-mode)
-  (evil-mode 1))
+  (evil-mode 1)
+  )
 
 (defun load-plugins ()
   (evil-all)
+  (require 'paredit)
+  (require 'sclang)
   (global-undo-tree-mode)
   (global-flycheck-mode)
   (yas-global-mode)
@@ -58,19 +67,25 @@
 
 ;; initialize settings
 (defun load-settings ()
-  (add-to-list 'load-path "~/.emacs.d/config")
   (require 'daf-mode-hooks)
   (require 'daf-global-settings)
-  (require 'funcs)
+  (require 'funcs))
+
+;; initialize Evil settings
+(defun load-evil-settings ()
   (require 'daf-evil)
   (require 'daf-evil-leader)
   (require 'daf-evil-mode-hooks))
 
 
 ;; load settings -- wait for packages to load first (emacswiki.org/emacs/ELPA)
+(add-to-list 'load-path "~/.emacs.d/config")
+(add-to-list 'load-path "~/.emacs.d/plugin/supercollider")
+
 (add-hook 'after-init-hook
 	  (lambda ()
             (load-settings)
+            (load-evil-settings)
             (load-plugins)))
 
 ;; Colors, font
@@ -78,7 +93,7 @@
     (add-to-list 'load-path "~/.emacs.d/themes")
   (add-to-list 'custom-theme-load-path "~/.emacs.d/themes"))
 (if (display-graphic-p)
-    (load-theme 'underwater t)
+    (load-theme 'zenburn t)
   (load-theme 'zenburn t))
 (if (eq system-type 'darwin)
     (set-frame-font "-apple-Monaco-medium-normal-normal-*-*-*-*-*-m-0-iso10646-1"))
@@ -94,10 +109,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(Linum-format "%7i ")
  '(ansi-color-names-vector ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
- '(custom-safe-themes (quote ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "1d1622e8bc2292dab58d7ba452cef0ac81463dcf021f3f5a65afb0d551c1d746" default)))
+ '(custom-safe-themes (quote ("3bedd09a2afee0d1f8d52892f740cd86f665ab1291fcdefb120963a0fa9b18d7" "8f05205f2254cbd129e0e16d4f3826ddded3e1230c21023b341d94a5293e3617" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "7a2c92b6267b84ae28a396f24dd832e29a164c1942f1f8b3fe500f1c25f8e09d" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "1d1622e8bc2292dab58d7ba452cef0ac81463dcf021f3f5a65afb0d551c1d746" default)))
+ '(evil-cross-lines nil)
  '(exec-path (quote ("/usr/local/share/python" "/usr/local/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/Cellar/emacs/24.3/libexec/emacs/24.3/x86_64-apple-darwin12.3.0")))
+ '(fci-rule-character-color "#202020")
  '(fci-rule-color "#383838")
+ '(fringe-mode 4 nil (fringe))
+ '(main-line-color1 "#1e1e1e")
+ '(main-line-color2 "#111111")
+ '(main-line-separator-style (quote chamfer))
+ '(powerline-color1 "#1e1e1e")
+ '(powerline-color2 "#111111")
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map (quote ((20 . "#BC8383") (40 . "#CC9393") (60 . "#DFAF8F") (80 . "#D0BF8F") (100 . "#E0CF9F") (120 . "#F0DFAF") (140 . "#5F7F5F") (160 . "#7F9F7F") (180 . "#8FB28F") (200 . "#9FC59F") (220 . "#AFD8AF") (240 . "#BFEBBF") (260 . "#93E0E3") (280 . "#6CA0A3") (300 . "#7CB8BB") (320 . "#8CD0D3") (340 . "#94BFF3") (360 . "#DC8CC3"))))
  '(vc-annotate-very-old-color "#DC8CC3"))
