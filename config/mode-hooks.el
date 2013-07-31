@@ -1,3 +1,5 @@
+(require 'funcs)
+
 ;; open header files in c++ mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
@@ -20,13 +22,21 @@
 (add-hook 'scheme-mode-hook 'my-lispy-mode-hook)
 (add-hook 'clojure-mode-hook 'my-lispy-mode-hook)
 
+;; use eldoc-mode w/ emacs-lisp mode
+(add-hook 'emacs-lisp-mode-hook
+          (lambda () (eldoc-mode)))
+
 ;; Have comments auto-wrap
 (defun c-like-mode-hook ()
   (setq c-basic-offset 4)
   (setq evil-shift-width 4)
-  (auto-fill-mode))
+  (auto-fill-mode)
+  (electric-pair-mode)
+  (local-set-key (kbd "C-;") 'insert-semicolon-eol))
+
 (add-hook 'c-mode-hook 'c-like-mode-hook)
 (add-hook 'c++-mode-hook 'c-like-mode-hook)
+(add-hook 'java-mode-hook 'c-like-mode-hook)
 
 ;; Fix js indentation
 (add-hook 'js-mode-hook
@@ -38,7 +48,9 @@
 (add-hook 'js2-mode-hook
           (lambda ()
             (setq js2-basic-offset 2)
-            (electric-pair-mode)))
+            (setq evil-shift-width 2)
+            (electric-pair-mode)
+            (define-key js2-mode-map (kbd "C-;") 'insert-semicolon-eol)))
 
 (add-hook 'python-mode-hook (lambda ()
                               (setq python-indent-offset 4)
@@ -74,4 +86,4 @@
           (lambda ()
             (auto-complete-mode)))
 
-(provide 'daf-mode-hooks)
+(provide 'mode-hooks)

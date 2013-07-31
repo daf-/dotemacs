@@ -1,6 +1,14 @@
 (if (and (fboundp 'menu-bar-mode) (not (display-graphic-p))) (menu-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
+(setq mac-option-modifier 'super)
+(setq mac-command-modifier 'meta)
+(setq ns-function-modifier 'hyper)
+
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
 (setq vc-handled-backends nil)
 (setq show-paren-delay 0)
 
@@ -10,33 +18,34 @@
 (setq package-archives '(("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 
-(defvar daf-packages'(
-                      ace-jump-mode
-		      deep-thought-theme
-		      evil
-		      evil-leader
-                      expand-region
-		      geiser
-		      magit
-		      markdown-mode
-                      multiple-cursors
-		      pony-mode
-		      popup
-		      rainbow-delimiters
-		      undo-tree
-		      zenburn-theme
-                      actionscript-mode
-                      auto-complete
-                      color-theme
-                      evil-paredit
-                      flycheck
-                      js2-mode
-                      paredit
-                      solarized-theme
-                      ujelly-theme
-                      w3m
-                      ;; yasnippet
-                      ))
+(defvar daf-packages '(
+                       ace-jump-mode
+                       ag
+                       deep-thought-theme
+                       evil
+                       evil-leader
+                       expand-region
+                       geiser
+                       magit
+                       markdown-mode
+                       multiple-cursors
+                       pony-mode
+                       popup
+                       rainbow-delimiters
+                       undo-tree
+                       zenburn-theme
+                       evil-paredit
+                       flycheck
+                       js2-mode
+                       paredit
+                       phoenix-dark-mono-theme
+                       phoenix-dark-pink-theme
+                       solarized-theme
+                       twilight-theme
+                       ujelly-theme
+                       w3m
+                       yasnippet
+                       ))
 
 (package-initialize)
 
@@ -48,35 +57,19 @@
     (package-install p)))
 
 
-;; initialize plugins
-(defun evil-all ()
+(defun evil-plugins ()
   (require 'evil-paredit)
-  (global-evil-leader-mode)
-  (evil-mode 1)
-  )
+  (global-evil-leader-mode))
 
 (defun load-plugins ()
-  (evil-all)
+  (evil-plugins)
+  (evil-mode)
   (require 'paredit)
   (require 'sclang)
   (global-undo-tree-mode)
   (global-flycheck-mode)
   (yas-global-mode)
-  (add-to-list 'auto-mode-alist '("\\.as$" . actionscript-mode))
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
-
-;; initialize settings
-(defun load-settings ()
-  (require 'daf-mode-hooks)
-  (require 'daf-global-settings)
-  (require 'funcs))
-
-;; initialize Evil settings
-(defun load-evil-settings ()
-  (require 'daf-evil)
-  (require 'daf-evil-leader)
-  (require 'daf-evil-mode-hooks))
-
 
 ;; load settings -- wait for packages to load first (emacswiki.org/emacs/ELPA)
 (add-to-list 'load-path "~/.emacs.d/config")
@@ -84,8 +77,9 @@
 
 (add-hook 'after-init-hook
 	  (lambda ()
-            (load-settings)
-            (load-evil-settings)
+            (require 'mode-hooks)
+            (require 'global-settings)
+            (require 'evil-setup)
             (load-plugins)))
 
 ;; Colors, font
@@ -93,7 +87,7 @@
     (add-to-list 'load-path "~/.emacs.d/themes")
   (add-to-list 'custom-theme-load-path "~/.emacs.d/themes"))
 (if (display-graphic-p)
-    (load-theme 'zenburn t)
+    (load-theme 'soothe t)
   (load-theme 'zenburn t))
 (if (eq system-type 'darwin)
     (set-frame-font "-apple-Monaco-medium-normal-normal-*-*-*-*-*-m-0-iso10646-1"))
@@ -110,21 +104,33 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Linum-format "%7i ")
- '(ansi-color-names-vector ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
- '(custom-safe-themes (quote ("3bedd09a2afee0d1f8d52892f740cd86f665ab1291fcdefb120963a0fa9b18d7" "8f05205f2254cbd129e0e16d4f3826ddded3e1230c21023b341d94a5293e3617" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "7a2c92b6267b84ae28a396f24dd832e29a164c1942f1f8b3fe500f1c25f8e09d" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "1d1622e8bc2292dab58d7ba452cef0ac81463dcf021f3f5a65afb0d551c1d746" default)))
+ '(ansi-color-names-vector ["#110F13" "#b13120" "#719f34" "#ceae3e" "#7c9fc9" "#7868b5" "#009090" "#F4EAD5"])
+ '(ansi-term-color-vector [unspecified "#110F13" "#b13120" "#719f34" "#ceae3e" "#7c9fc9" "#7868b5" "#009090" "#F4EAD5"] t)
+ '(compilation-message-face (quote default))
+ '(custom-safe-themes (quote ("d83d50e8d2ef8643934f271856f7c74a715fb7aaa780d700a3670465b78da258" "c377a5f3548df908d58364ec7a0ee401ee7235e5e475c86952dc8ed7c4345d8e" "fc6e906a0e6ead5747ab2e7c5838166f7350b958d82e410257aeeb2820e8a07a" "bd50e3b2dea5d01950991bc230583fdab93f3fd7af6a7c62421c370e347226ec" "c8cc8dad64aebc4ecd81fbb5007d5a29488f018b02bf0d61efdb0fd1ae0dee24" "3bedd09a2afee0d1f8d52892f740cd86f665ab1291fcdefb120963a0fa9b18d7" "8f05205f2254cbd129e0e16d4f3826ddded3e1230c21023b341d94a5293e3617" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "7a2c92b6267b84ae28a396f24dd832e29a164c1942f1f8b3fe500f1c25f8e09d" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "1d1622e8bc2292dab58d7ba452cef0ac81463dcf021f3f5a65afb0d551c1d746" default)))
  '(evil-cross-lines nil)
  '(exec-path (quote ("/usr/local/share/python" "/usr/local/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/Cellar/emacs/24.3/libexec/emacs/24.3/x86_64-apple-darwin12.3.0")))
  '(fci-rule-character-color "#202020")
- '(fci-rule-color "#383838")
+ '(fci-rule-color "#202020")
  '(fringe-mode 4 nil (fringe))
+ '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
+ '(highlight-tail-colors (quote (("#eee8d5" . 0) ("#B4C342" . 20) ("#69CABF" . 30) ("#69B7F0" . 50) ("#DEB542" . 60) ("#F2804F" . 70) ("#F771AC" . 85) ("#eee8d5" . 100))))
  '(main-line-color1 "#1e1e1e")
  '(main-line-color2 "#111111")
  '(main-line-separator-style (quote chamfer))
  '(powerline-color1 "#1e1e1e")
  '(powerline-color2 "#111111")
- '(vc-annotate-background "#2B2B2B")
- '(vc-annotate-color-map (quote ((20 . "#BC8383") (40 . "#CC9393") (60 . "#DFAF8F") (80 . "#D0BF8F") (100 . "#E0CF9F") (120 . "#F0DFAF") (140 . "#5F7F5F") (160 . "#7F9F7F") (180 . "#8FB28F") (200 . "#9FC59F") (220 . "#AFD8AF") (240 . "#BFEBBF") (260 . "#93E0E3") (280 . "#6CA0A3") (300 . "#7CB8BB") (320 . "#8CD0D3") (340 . "#94BFF3") (360 . "#DC8CC3"))))
- '(vc-annotate-very-old-color "#DC8CC3"))
+ '(syslog-debug-face (quote ((t :background unspecified :foreground "#2aa198" :weight bold))))
+ '(syslog-error-face (quote ((t :background unspecified :foreground "#dc322f" :weight bold))))
+ '(syslog-hour-face (quote ((t :background unspecified :foreground "#859900"))))
+ '(syslog-info-face (quote ((t :background unspecified :foreground "#268bd2" :weight bold))))
+ '(syslog-ip-face (quote ((t :background unspecified :foreground "#b58900"))))
+ '(syslog-su-face (quote ((t :background unspecified :foreground "#d33682"))))
+ '(syslog-warn-face (quote ((t :background unspecified :foreground "#cb4b16" :weight bold))))
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map (quote ((20 . "#dc322f") (40 . "#CF4F1F") (60 . "#C26C0F") (80 . "#b58900") (100 . "#AB8C00") (120 . "#A18F00") (140 . "#989200") (160 . "#8E9500") (180 . "#859900") (200 . "#729A1E") (220 . "#609C3C") (240 . "#4E9D5B") (260 . "#3C9F79") (280 . "#2aa198") (300 . "#299BA6") (320 . "#2896B5") (340 . "#2790C3") (360 . "#268bd2"))))
+ '(vc-annotate-very-old-color nil)
+ '(weechat-color-list (quote (unspecified "#002b36" "#073642" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#839496" "#657b83"))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

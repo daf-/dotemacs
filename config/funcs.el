@@ -56,4 +56,26 @@ box, then it attempts to remove the blank lines left over by this operation."
 	(goto-char (region-end))
 	(delete-blank-lines)))))
 
+(defun insert-semicolon-eol ()
+  (interactive)
+  (end-of-line)
+  (when (and (not (looking-at ";")) (not (looking-back ";")))
+    (insert ";")))
+
+(defun insert-semicolon ()
+  (when (and (not (looking-at ";")) (not (looking-back ";")))
+    (insert ";")))
+
+(defun insert-semicolon-dwim ()
+  "Place a semicolon, if needed, on the current line to end the
+current statement.  When writing a for loop, will not jump to the
+end of line."
+  (interactive)
+  (let ((line (buffer-substring (point-at-bol) (point-at-eol))))
+    (cond
+     ((string-match "\\<for\\>" line)
+      (insert-semicolon))
+     ((not (or (looking-back ";") (looking-at ";")))
+      (insert-semicolon-eol)))))
+
 (provide 'funcs)

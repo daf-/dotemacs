@@ -7,3 +7,6 @@ elpa/*
 /themes/*
 /.mc-lists.el
 /url/cookies
+/.DS_Store
+/dandark-theme.el
+/init.el~
