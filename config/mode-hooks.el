@@ -61,9 +61,7 @@
             (unless (or (file-exists-p "makefile")
                         (file-exists-p "Makefile"))
               (set (make-local-variable 'compile-command)
-                   (concat "javac "
-                           ;; (buffer-file-name))))))
-                           (buffer-name))))
+                   (concat "javac " (buffer-name))))
             (setq c-basic-offset 4)))
 
 (add-hook 'latex-mode-hook
@@ -75,15 +73,12 @@
           (lambda ()
             (set (make-local-variable 'sgml-basic-offset) 4)))
 
-;; don't highlight line in shell
-(defun my-term-mode-hook ()
-  (setq global-hl-line-mode nil))
-(add-hook 'term-mode-hook 'my-term-mode-hook)
-(add-hook 'term-mode-hook 'my-term-mode-hook)
-(add-hook 'eshell-mode-hook 'my-term-mode-hook)
 
-(add-hook 'actionscript-mode-hook
-          (lambda ()
-            (auto-complete-mode)))
+(defun my-term-mode-hook ()
+  (setq global-hl-line-mode nil)       ; don't highlight line in shell
+  (yas-minor-mode -1))                 ; yasnippet messes up TAB
+(add-hook 'term-mode-hook 'my-term-mode-hook)
+(add-hook 'ansi-term-mode-hook 'my-term-mode-hook)
+(add-hook 'eshell-mode-hook 'my-term-mode-hook)
 
 (provide 'mode-hooks)

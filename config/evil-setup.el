@@ -106,6 +106,15 @@
   (if evil-local-mode
       (evil-insert 1)))
 
+;;; TODO: finish
+;; (defvar evil-hl-line-mode -1)
+;; (defadvice evil-visual-state (before evil-visual-state-no-hl-line activate)
+;;   (if hl-line-mode
+;;       (hl-line-mode -1)))
+;; (defadvice evil-visual-state (after evil-visual-state-no-hl-line activate)
+;;   (if hl-line-mode
+;;       (hl-line-mode 1)))
+
 ;; fix indentation in pony template mode
 (defun pony-tpl-mode-fix-indent (function-symbol)
   (eval `(defadvice ,function-symbol (after pony-tpl-end-of-line activate)
@@ -191,7 +200,7 @@
   "l" 'load-file
   "c" 'comment-or-uncomment-line-or-region
   "w" 'save-buffer
-  "t" 'ansi-term
+  "t" '(lambda () (interactive) (ansi-term "bash"))
   "s" 'eshell
   "g" 'magit-status
   "q" 'evil-quit

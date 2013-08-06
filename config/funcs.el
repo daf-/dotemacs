@@ -58,24 +58,59 @@ box, then it attempts to remove the blank lines left over by this operation."
 
 (defun insert-semicolon-eol ()
   (interactive)
-  (end-of-line)
-  (when (and (not (looking-at ";")) (not (looking-back ";")))
-    (insert ";")))
+  (save-excursion
+    (end-of-line)
+    (when (and (not (looking-at ";")) (not (looking-back ";")))
+      (insert ";"))))
 
 (defun insert-semicolon ()
   (when (and (not (looking-at ";")) (not (looking-back ";")))
     (insert ";")))
 
-(defun insert-semicolon-dwim ()
-  "Place a semicolon, if needed, on the current line to end the
-current statement.  When writing a for loop, will not jump to the
-end of line."
-  (interactive)
-  (let ((line (buffer-substring (point-at-bol) (point-at-eol))))
-    (cond
-     ((string-match "\\<for\\>" line)
-      (insert-semicolon))
-     ((not (or (looking-back ";") (looking-at ";")))
-      (insert-semicolon-eol)))))
+;;; Not working -- thing-at-point isn't behaving like it should...
+;; (defun insert-semicolon-dwim ()
+;;   "Place a semicolon, if needed, on the current line to end the
+;; current statement.  When writing a for loop, will not jump to the
+;; end of line."
+;;   (interactive)
+;;   (let ((line (buffer-substring (point-at-bol) (point-at-eol))))
+;;     (cond
+;;      ((string-match "\\<for\\>" line)
+;;       (insert-semicolon))
+;;      ((not (or (looking-back ";") (looking-at ";")))
+;;       (insert-semicolon-eol)))))
+
+;;; For advising
+(defun newline-and-indent-dwim ()
+  "Behaves the same as newline-and-indent, but, when your cursor
+is between two braces (i.e. {|}, [], or ()), inserts an extra
+newline and puts the cursor on the empty line."
+  (if (or (and (looking-back "{") (looking-at "}"))
+          (and (looking-back "\\[") (looking-at "\\]"))
+          (and (looking-back "(") (looking-at ")")))
+      (save-excursion
+        (newline)
+        (indent-for-tab-command))))
+
+;;; Snippet helpers for javascript -- taken from https://github.com/magnars
+(defun js-method-p ()
+  (save-excursion
+    (word-search-backward "function")
+    (looking-back ": ")))
+
+(defun js-function-declaration-p ()
+  (save-excursion
+    (word-search-backward "function")
+    (looking-back "^\\s *")))
+
+(defun snippet--function-punctuation ()
+  (if (js-method-p)
+      (when (not (looking-at "[ \n\t\r]*}"))
+        (insert ","))
+    (unless (js-function-declaration-p)
+      (if (looking-at "$") (insert ";")))))
+
+(defun snippet--function-name ()
+  (if (js-function-declaration-p) "name" ""))
 
 (provide 'funcs)
