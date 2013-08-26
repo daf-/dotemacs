@@ -10,3 +10,4 @@ elpa/*
 /.DS_Store
 /dandark-theme.el
 /init.el~
+tramp
