@@ -11,6 +11,7 @@
      ((use-region-p) (comment-or-uncomment-region (region-beginning) (region-end)))
      (t (comment-or-uncomment-region (line-beginning-position) (line-end-position))))))
 
+
 ;; Fun comments with boxing
 (defun box-comment() ;; "defun" is a macro for defining named functions in emacs lisp
   ;; This is the docstring
@@ -87,10 +88,14 @@ is between two braces (i.e. {|}, [], or ()), inserts an extra
 newline and puts the cursor on the empty line."
   (if (or (and (looking-back "{") (looking-at "}"))
           (and (looking-back "\\[") (looking-at "\\]"))
-          (and (looking-back "(") (looking-at ")")))
+          (and (looking-back "(") (looking-at ")"))
+          (and (or (eq major-mode 'html-mode)
+                   (eq major-mode 'nxml-mode))
+               (looking-back ">") (looking-at "<")))
       (save-excursion
+        (ad-deactivate 'newline) ; don't want recursively advised version
         (newline)
-        (indent-for-tab-command))))
+        (ad-activate 'newline))))
 
 ;;; Snippet helpers for javascript -- taken from https://github.com/magnars
 (defun js-method-p ()
