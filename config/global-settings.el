@@ -12,20 +12,31 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;;; global keys
+(setq mac-option-modifier 'super)
+(setq mac-command-modifier 'meta)
+(setq ns-function-modifier 'hyper)
+
 ;; C-left/right/up/down moves the window
 (global-set-key (kbd "C-<left>") 'shrink-window-horizontally)
 (global-set-key (kbd "C-<right>") 'enlarge-window-horizontally)
 (global-set-key (kbd "C-<down>") 'shrink-window)
 (global-set-key (kbd "C-<up>") 'enlarge-window)
+
 ;; Cycle windows backwards as well
 (global-set-key (kbd "C-x O") (lambda ()
                                 (interactive)
                                 (other-window -1)))
-;; Insert an extra newline when hitting C-j between braces
+;; mouse
+(global-set-key (kbd "<S-down-mouse-1>") 'mouse-yank-at-click) ; same as middle mouse, but for trackpad
+(global-set-key (kbd "<mode-line> <C-mouse-1>") 'mouse-split-window-vertically)
+(setq mouse-drag-copy-region t)
+
 ;; undo-tree
 (global-set-key (kbd "s-Z") 'undo-tree-redo)
+
 ;; expand-region
 (global-set-key (kbd "C-=") 'er/expand-region)
+
 ;; multiple-cursors
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
@@ -59,54 +70,60 @@
 (size-indication-mode t)   ;; show buffer size in modeline
 (show-paren-mode t)
 (setq show-paren-delay 0)
+(setq show-paren-style 'expression)
 (global-hl-line-mode t)
 (iswitchb-mode t)
 (ido-mode t)
-;; (make-variable-buffer-local 'global-hl-line-mode)
+(setq ido-enable-flex-matching t)
 (global-auto-revert-mode t)
+(electric-indent-mode t)
+(electric-pair-mode t)
+; type-break-mode... awesome
+(setq type-break-interval 2700)
+(setq type-break-demo-functions '(zone))
+(type-break-mode t)
 
 ;; fix annoyances
 (setq inhibit-startup-screen t)
 (setq initial-scratch-message)
 (setq comint-prompt-read-only t)
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (setq linum-format "%d ")
 (setq scroll-conservatively 1)
-(when (display-graphic-p)               ; much better GUI scrolling
-  (progn
-    (setq mouse-wheel-scroll-amount '(0.01))
-    (setq mouse-wheel-progressive-speed nil)))
-
-; show unicode in ansi-term mode
-(defadvice ansi-term (after advise-ansi-term-coding-system activate)
-  (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
-
 (setq make-backup-files nil) ; prevents creation of backup files on first save
 (setq backup-inhibited t)    ; never make backups
 (setq auto-save-default nil) ; disables auto save
+(when (display-graphic-p)               ; much better GUI scrolling
+  (progn
+    (setq mouse-wheel-scroll-amount '(0.01))))
 
-; allow mouse in terminal
+;; show unicode in ansi-term mode
+(defadvice ansi-term (after advise-ansi-term-coding-system activate)
+  (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
+
+;; allow mouse in terminal
 (unless window-system
   (require 'mouse)
   (xterm-mouse-mode t)
-  (defun track-mouse(e))
+  (defun track-mouse(e))                ; what is this doing
   (setq mouse-sel-mode t))
 
-; Don't prompt for "really want to exit?" when I still have processes running
+;; Don't prompt for "really want to exit?" when I still have processes running
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (let ((process-list ())) ad-do-it))
 
-;;
-;; style
-;;
+;;;
+;;; style
+;;;
 
 (setq c-default-style "k&r")
 (setq-default indent-tabs-mode nil)
 
 
 ;;; Plugin settings
+;; yasnippet
+(setq yas-prompt-functions '(yas-ido-prompt))
+
 ;; ag
 (setq ag-highlight-search t)
 (global-set-key (kbd "<f5>") 'ag-project)
@@ -117,18 +134,36 @@
 (add-hook 'css-mode-hook 'skewer-css-mode)
 (add-hook 'html-mode-hook 'skewer-html-mode)
 
+;; multi-web-mode
+(require 'multi-web-mode)
+(setq mweb-default-major-mode 'html-mode)
+(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+                  (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
+                  (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
+(setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+(multi-web-global-mode 1)
+
 
 
 ;;; Advice
 (defadvice newline-and-indent (before newline-and-indent-dwim activate)
   (newline-and-indent-dwim))
 
+(defadvice newline (before newline-dwim activate)
+  (if electric-indent-mode
+      (newline-and-indent-dwim)))
+
 (defadvice evil-ret-and-indent (before newline-and-indent-dwim activate)
   (newline-and-indent-dwim))
 
-; don't leave my terminal buffer hanging around when I'm done with it
-; taken from the sweet blog post at
-; http://emacs-journey.blogspot.com/2012/06/improving-ansi-term.html
+(defadvice paredit-mode (before paredit-turn-off-electric-pair-mode activate)
+  "Disable electric-pair-mode when we use paredit."
+  (if electric-pair-mode
+      (electric-pair-mode -1)))
+
+;; don't leave my terminal buffer hanging around when I'm done with it
+;; taken from the sweet blog post at
+;; http://emacs-journey.blogspot.com/2012/06/improving-ansi-term.html
 (defadvice term-sentinel (around my-advice-term-sentinel (proc msg) activate)
   (if (memq (process-status proc) '(signal exit))
       (let ((buffer (process-buffer proc)))
