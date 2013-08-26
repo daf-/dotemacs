@@ -82,6 +82,36 @@
 (define-key evil-visual-state-map (kbd "SPC")   'evil-ace-jump-char-mode)
 (define-key evil-visual-state-map (kbd "S-SPC") 'evil-ace-jump-word-mode)
 (define-key evil-visual-state-map (kbd "C-SPC") 'evil-ace-jump-line-mode)
+
+;;; Operators
+(evil-define-operator evil-comment (beg end type register yank-handler)
+  "Toggle comment on text from BEG to END with TYPE.
+Save pre-commented text in REGISTER or in the kill-ring with YANK-HANDLER.
+Copied from evil-delete implementation."
+  (interactive "<R><x><y>")
+  (unless register
+    (let ((text (filter-buffer-substring beg end)))
+      (unless (string-match-p "\n" text)
+        ;; set the small delete register
+        (evil-set-register ?- text))))
+  (evil-yank beg end type register yank-handler)
+  (cond
+   ((eq type 'block)
+    (evil-apply-on-block #'comment-or-uncomment-region beg end nil))
+   ((and (eq type 'line)
+         (= end (point-max))
+         (or (= beg end)
+             (/= (char-before end) ?\n))
+         (/= beg (point-min))
+         (=  (char-before beg) ?\n))
+    (comment-or-uncomment-region (1- beg) end))
+   (t
+    (comment-or-uncomment-region beg end)))
+  (when (and (evil-called-interactively-p)
+             (eq type 'line))
+    (evil-first-non-blank)))
+
+
 ;;
 ;; Advice
 ;;
@@ -106,14 +136,6 @@
   (if evil-local-mode
       (evil-insert 1)))
 
-;;; TODO: finish
-;; (defvar evil-hl-line-mode -1)
-;; (defadvice evil-visual-state (before evil-visual-state-no-hl-line activate)
-;;   (if hl-line-mode
-;;       (hl-line-mode -1)))
-;; (defadvice evil-visual-state (after evil-visual-state-no-hl-line activate)
-;;   (if hl-line-mode
-;;       (hl-line-mode 1)))
 
 ;; fix indentation in pony template mode
 (defun pony-tpl-mode-fix-indent (function-symbol)
@@ -169,10 +191,6 @@
   "k" 'previous-error-no-select
   "q" 'quit-window)
 
-(evil-define-key 'normal 'geiser-repl-mode-map
-  (kbd "C-h") 'evil-window-left
-  (kbd "C-j") 'evil-window-down)
-
 ;; Fix indentation in pony template mode
 (add-hook 'pony-tpl-mode-hook
           (lambda ()
@@ -198,7 +216,7 @@
   "f" 'find-file
   "b" 'ido-switch-buffer
   "l" 'load-file
-  "c" 'comment-or-uncomment-line-or-region
+  "c" 'evil-comment
   "w" 'save-buffer
   "t" '(lambda () (interactive) (ansi-term "bash"))
   "s" 'eshell
