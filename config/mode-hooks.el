@@ -15,6 +15,7 @@
 
 (defun my-lispy-mode-hook ()
   (rainbow-delimiters-mode t)
+  ;; (electric-pair-mode -1)
   (enable-paredit-mode))
 (add-hook 'emacs-lisp-mode-hook 'my-lispy-mode-hook)
 (add-hook 'lisp-mode-hook 'my-lispy-mode-hook)
@@ -29,7 +30,7 @@
 ;; Have comments auto-wrap
 (defun c-like-mode-hook ()
   (setq c-basic-offset 4)
-  (setq evil-shift-width 4)
+  (setq evil-shift-width c-basic-offset)
   (auto-fill-mode)
   (electric-pair-mode)
   (local-set-key (kbd "C-;") 'insert-semicolon-eol))
@@ -42,19 +43,18 @@
 (add-hook 'js-mode-hook
           (lambda ()
             (setq js-indent-level 2)
-            (setq evil-shift-width 2)
-            (electric-indent-mode)))
+            (setq evil-shift-width js-indent-level)))
 
 (add-hook 'js2-mode-hook
           (lambda ()
             (setq js2-basic-offset 2)
-            (setq evil-shift-width 2)
+            (setq evil-shift-width js2-basic-offset)
             (electric-pair-mode)
-            (define-key js2-mode-map (kbd "C-;") 'insert-semicolon-eol)))
+            (define-key js2-mode-map (kbd "C-;") 'insert-semicolon-eol)
+            (local-unset-key (kbd "<down-mouse-3>"))))
 
-(add-hook 'python-mode-hook (lambda ()
-                              (setq python-indent-offset 4)
-                              (auto-fill-mode)))
+(add-hook 'ruby-mode-hook (lambda ()
+                            (setq evil-shift-width ruby-indent-level)))
 
 (add-hook 'java-mode-hook
           (lambda ()
@@ -66,12 +66,12 @@
 
 (add-hook 'latex-mode-hook
           (lambda ()
-            (turn-on-auto-fill)
-            (set-fill-column 90)))
+            (set-fill-column 90)
+            (turn-on-auto-fill)))
 
 (add-hook 'html-mode-hook
           (lambda ()
-            (set (make-local-variable 'sgml-basic-offset) 4)))
+            (setq evil-shift-width sgml-basic-offset)))
 
 
 (defun my-term-mode-hook ()
