@@ -6,7 +6,8 @@
    "~/bin" ":"
    "/usr/local/bin" ":"
    (getenv "PATH")))
-(push "/Applications/SuperCollider/Contents/Resources" exec-path)
+(when (eq system-type 'darwin)
+  (push "/Applications/SuperCollider/Contents/Resources" exec-path))
 
 ;;; Delete trailing whitespace before saving
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -71,13 +72,14 @@
 (show-paren-mode t)
 (setq show-paren-delay 0)
 (setq show-paren-style 'expression)
-(global-hl-line-mode t)
+;; (global-hl-line-mode)
 (iswitchb-mode t)
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 (global-auto-revert-mode t)
-(electric-indent-mode t)
-(electric-pair-mode t)
+(when (> emacs-major-version 24)
+  (electric-indent-mode t)
+  (electric-pair-mode t))
 ; type-break-mode... awesome
 (setq type-break-interval 2700)
 (setq type-break-demo-functions '(zone))
@@ -135,13 +137,13 @@
 (add-hook 'html-mode-hook 'skewer-html-mode)
 
 ;; multi-web-mode
-(require 'multi-web-mode)
-(setq mweb-default-major-mode 'html-mode)
-(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-                  (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
-                  (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
-(setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
-(multi-web-global-mode 1)
+;; (require 'multi-web-mode)
+;; (setq mweb-default-major-mode 'html-mode)
+;; (setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+;;                   (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
+;;                   (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
+;; (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+;; (multi-web-global-mode 1)
 
 
 
@@ -150,15 +152,16 @@
   (newline-and-indent-dwim))
 
 (defadvice newline (before newline-dwim activate)
-  (if electric-indent-mode
-      (newline-and-indent-dwim)))
+  (when (> emacs-major-version 24) (if electric-indent-mode
+      (newline-and-indent-dwim))))
 
 (defadvice evil-ret-and-indent (before newline-and-indent-dwim activate)
   (newline-and-indent-dwim))
 
 (defadvice paredit-mode (before paredit-turn-off-electric-pair-mode activate)
   "Disable electric-pair-mode when we use paredit."
-  (if electric-pair-mode
+  (if (and (> emacs-major-version 24)
+           electric-pair-mode)
       (electric-pair-mode -1)))
 
 ;; don't leave my terminal buffer hanging around when I'm done with it

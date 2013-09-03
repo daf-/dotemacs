@@ -150,22 +150,23 @@ Copied from evil-delete implementation."
 ;;
 
 ;; Some modes clash too much with Evil
-;;
-;; Taken (and modified) shamelessly from cofi's evil config
-;; ( https://github.com/cofi/dotfiles/tree/master/emacs.d/config )
-(cl-loop for (mode . state) in '((inferior-emacs-lisp-mode  . emacs)
-                                 (term-mode                 . emacs)
-                                 (bc-menu-mode              . emacs)
-                                 (magit-mode                . emacs)
-                                 (magit-branch-manager-mode . emacs)
-                                 (magit-cherry-mode         . emacs)
-                                 (magit-commit-mode         . emacs)
-                                 (magit-diff-mode           . emacs)
-                                 (magit-key-mode            . emacs)
-                                 (magit-log-edit-mode-map   . emacs)
-                                 (magit-log-mode            . emacs)
-                                 (magit-status-mode         . emacs))
-         do (evil-set-initial-state mode state))
+
+;; Taken (modified to use dolist to work with emacs23) from cofi's
+;; evil config
+;; (https://github.com/cofi/dotfiles/tree/master/emacs.d/config)
+(dolist (mode-state '((inferior-emacs-lisp-mode  . emacs)
+                      (term-mode                 . emacs)
+                      (bc-menu-mode              . emacs)
+                      (magit-mode                . emacs)
+                      (magit-branch-manager-mode . emacs)
+                      (magit-cherry-mode         . emacs)
+                      (magit-commit-mode         . emacs)
+                      (magit-diff-mode           . emacs)
+                      (magit-key-mode            . emacs)
+                      (magit-log-edit-mode-map   . emacs)
+                      (magit-log-mode            . emacs)
+                      (magit-status-mode         . emacs)))
+        (evil-set-initial-state (car mode-state) (cdr mode-state)))
 
 ;; make magit evil
 (evil-define-key 'emacs magit-mode-map
