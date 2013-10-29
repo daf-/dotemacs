@@ -12,3 +12,7 @@ elpa/*
 /init.el~
 tramp
 /bookmarks
+/projectile-bookmarks.eld
+/projectile.cache
+/snippets/c-mode/for
+/snippets/python-mode/def
