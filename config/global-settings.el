@@ -170,7 +170,7 @@
 
 ;; projectile
 (setq projectile-enable-caching t)
-;; (setq projectile-completion-system 'grizzl)
+(setq projectile-completion-system 'grizzl)
 
 ;; web-mode (see web-mode.org)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
