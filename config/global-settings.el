@@ -89,7 +89,7 @@
 (show-paren-mode t)
 (setq show-paren-delay 0)
 (setq show-paren-style 'expression)
-(global-hl-line-mode t)
+;; (global-hl-line-mode)
 (iswitchb-mode t)
 (ido-mode t)
 (setq ido-enable-flex-matching t)
@@ -97,7 +97,6 @@
 (electric-indent-mode t)
 (electric-pair-mode t)
 (setq speedbar-select-frame-method 'attached)
-
 ; type-break-mode... awesome
 ;; (setq type-break-interval 2700)
 ;; (setq type-break-demo-functions '(zone))
@@ -188,15 +187,16 @@
   (newline-and-indent-dwim))
 
 (defadvice newline (before newline-dwim activate)
-  (if electric-indent-mode
-      (newline-and-indent-dwim)))
+  (when (> emacs-major-version 24) (if electric-indent-mode
+      (newline-and-indent-dwim))))
 
 (defadvice evil-ret-and-indent (before newline-and-indent-dwim activate)
   (newline-and-indent-dwim))
 
 (defadvice paredit-mode (before paredit-turn-off-electric-pair-mode activate)
   "Disable electric-pair-mode when we use paredit."
-  (if electric-pair-mode
+  (if (and (> emacs-major-version 24)
+           electric-pair-mode)
       (electric-pair-mode -1)))
 
 ;; don't leave my terminal buffer hanging around when I'm done with it

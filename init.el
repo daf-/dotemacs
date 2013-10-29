@@ -14,6 +14,7 @@
   (add-to-list 'load-path "~/.emacs.d/"))
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+			 ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 (defvar daf-packages '(
@@ -65,6 +66,7 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
+;;; emacs23 doesn't work with many plugins...
 (dolist (p daf-packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -95,7 +97,6 @@
 
 ;; load settings -- wait for packages to load first (emacswiki.org/emacs/ELPA)
 (add-to-list 'load-path "~/.emacs.d/config")
-
 (add-hook 'after-init-hook
           (lambda ()
             (require 'mode-hooks)
