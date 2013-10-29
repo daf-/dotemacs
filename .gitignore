@@ -11,3 +11,4 @@ elpa/*
 /dandark-theme.el
 /init.el~
 tramp
+/bookmarks

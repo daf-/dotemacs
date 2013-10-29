@@ -1,16 +1,20 @@
 (require 'evil)
 (require 'evil-leader)
+(require 'funcs)
 
 ;;
 ;; Basic Settings
 ;;
 
-(evil-set-toggle-key "M-SPC")
+(if (display-graphic-p)
+    (evil-set-toggle-key "s-SPC")
+  (evil-set-toggle-key "M-SPC"))
+
 (setq evil-default-cursor t)
 
 ;; makes evil-emacs-state modes open up in motion state
-(setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
-(setq evil-emacs-state-modes nil)
+;; (setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
+;; (setq evil-emacs-state-modes nil)
 
 ;;
 ;; Global Remaps
@@ -29,21 +33,7 @@
 ;; Maps "kj" to escape
 ;; from http://zuttobenkyou.wordpress.com/2011/02/15/some-thoughts-on-emacs-and-vim/
 (evil-define-key 'insert global-map "k" #'cofi/maybe-exit)
-(evil-define-command cofi/maybe-exit ()
-  :repeat change
-  (interactive)
-  (let ((modified (buffer-modified-p)))
-    (insert "k")
-    (let ((evt (read-event (format "Insert %c to exit insert state" ?j)
-			   nil 0.5)))
-      (cond
-       ((null evt) (message ""))
-       ((and (integerp evt) (char-equal evt ?j))
-	(delete-char -1)
-	(set-buffer-modified-p modified)
-	(push 'escape unread-command-events))
-       (t (setq unread-command-events (append unread-command-events
-					      (list evt))))))))
+
 
 ;; window mappings
 (define-key evil-normal-state-map " " #'evil-toggle-fold)
@@ -83,7 +73,24 @@
 (define-key evil-visual-state-map (kbd "S-SPC") 'evil-ace-jump-word-mode)
 (define-key evil-visual-state-map (kbd "C-SPC") 'evil-ace-jump-line-mode)
 
-;;; Operators
+;;; Operators, commands
+
+(evil-define-command cofi/maybe-exit ()
+  :repeat change
+  (interactive)
+  (let ((modified (buffer-modified-p)))
+    (insert "k")
+    (let ((evt (read-event (format "Insert %c to exit insert state" ?j)
+			   nil 0.5)))
+      (cond
+       ((null evt) (message ""))
+       ((and (integerp evt) (char-equal evt ?j))
+	(delete-char -1)
+	(set-buffer-modified-p modified)
+	(push 'escape unread-command-events))
+       (t (setq unread-command-events (append unread-command-events
+					      (list evt))))))))
+
 (evil-define-operator evil-comment (beg end type register yank-handler)
   "Toggle comment on text from BEG to END with TYPE.
 Save pre-commented text in REGISTER or in the kill-ring with YANK-HANDLER.
@@ -156,6 +163,7 @@ Copied from evil-delete implementation."
 (cl-loop for (mode . state) in '((inferior-emacs-lisp-mode  . emacs)
                                  (term-mode                 . emacs)
                                  (bc-menu-mode              . emacs)
+                                 (gud-mode                  . emacs)
                                  (magit-mode                . emacs)
                                  (magit-branch-manager-mode . emacs)
                                  (magit-cherry-mode         . emacs)
@@ -166,6 +174,11 @@ Copied from evil-delete implementation."
                                  (magit-log-mode            . emacs)
                                  (magit-status-mode         . emacs))
          do (evil-set-initial-state mode state))
+
+(evil-define-state magit-motion
+  "Like Motion state, but respects magit keybindings"
+  :tag " <MM> "
+  :suppress-keymap f)
 
 ;; make magit evil
 (evil-define-key 'emacs magit-mode-map
@@ -182,14 +195,17 @@ Copied from evil-delete implementation."
 (evil-define-key 'normal comint-mode-map "C-d" 'evil-scroll-down)
 (evil-define-key 'insert comint-mode-map "C-j" 'comint-send-input)
 
-;; Fix latex-mode C-j binding
-(evil-define-key 'insert latex-mode-map (kbd "C-j") 'evil-ret)
-
-;; use j/k as n/p in grep mode
+;; use j/k as n/p in grep/ag mode
 (evil-define-key 'normal grep-mode-map
   "j" 'next-error-no-select
   "k" 'previous-error-no-select
   "q" 'quit-window)
+
+(evil-define-key 'normal ag-mode-map
+  "j" 'next-error-no-select
+  "k" 'previous-error-no-select
+  "q" 'quit-window)
+
 
 ;; Fix indentation in pony template mode
 (add-hook 'pony-tpl-mode-hook
@@ -200,15 +216,14 @@ Copied from evil-delete implementation."
               (pony-tpl-mode-fix-indent 'evil-open-above)
               (pony-tpl-mode-fix-indent 'yas-expand))))
 
-
-;;;;;;;;;;;;;;;;;;;;;
-;; Plugin Settings ;;
-;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Plugin Settings
+;;
 
 ;; evil-leader
 
 (evil-leader/set-leader ",")
-(setq evil-leader/in-all-states t)      ; in emacs state, use C-, as <leader>
+(setq evil-leader/in-all-states nil)      ; in emacs state, use C-, as <leader>
 
 (evil-leader/set-key
   "a" 'ag-project-regexp
@@ -218,15 +233,17 @@ Copied from evil-delete implementation."
   "l" 'load-file
   "c" 'evil-comment
   "w" 'save-buffer
-  "t" '(lambda () (interactive) (ansi-term "bash"))
-  "s" 'eshell
+
+  "t" 'split-term                       ; fix these
+  "s" 'split-shell
+
   "g" 'magit-status
   "q" 'evil-quit
   "o" 'occur
   "m" 'compile
-  "d" 'kill-this-buffer
-  "," 'evil-repeat-find-char-reverse
-  "SPC" 'evil-ace-jump-char-mode)
+  "k" 'kill-this-buffer
+  "K" 'kill-buffer-and-window
+  "," 'evil-repeat-find-char-reverse)
 
 
 (evil-leader/set-key-for-mode 'emacs-lisp-mode
@@ -243,11 +260,6 @@ Copied from evil-delete implementation."
   "eb" 'python-shell-send-buffer
   "ed" 'python-shell-send-defun
   "er" 'python-shell-send-region)
-
-(evil-leader/set-key-for-mode 'scheme-mode
-  "ed" 'geiser-eval-definition
-  "er" 'geiser-eval-region
-  "es" 'geiser-eval-last-sexp)
 
 
 

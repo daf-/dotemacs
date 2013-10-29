@@ -1,12 +1,11 @@
 (require 'funcs)
 
-;;; set PATH to recognize homebrew, supercollider
+;;; set PATH to recognize homebrew
 (setenv "PATH"
   (concat
    "~/bin" ":"
    "/usr/local/bin" ":"
    (getenv "PATH")))
-(push "/Applications/SuperCollider/Contents/Resources" exec-path)
 
 ;;; Delete trailing whitespace before saving
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -15,6 +14,17 @@
 (setq mac-option-modifier 'super)
 (setq mac-command-modifier 'meta)
 (setq ns-function-modifier 'hyper)
+
+;;; mac keys
+(setq mac-emulate-three-button-mouse t)
+(global-set-key (kbd "s-s") 'save-buffer)
+(global-set-key (kbd "s-S") 'ido-write-file)
+(global-set-key (kbd "s-c") 'kill-ring-save)
+(global-set-key (kbd "s-x") 'kill-region)
+(global-set-key (kbd "s-z") 'undo-tree-undo)
+(global-set-key (kbd "s-Z") 'undo-tree-redo)
+(global-set-key (kbd "s-q") 'save-buffers-kill-terminal)
+; (global-set-key (kbd "<s-return>") 'mac-mouse-turn-on-fullscreen) ; Make this toggle fullscreen
 
 ;; C-left/right/up/down moves the window
 (global-set-key (kbd "C-<left>") 'shrink-window-horizontally)
@@ -26,8 +36,11 @@
 (global-set-key (kbd "C-x O") (lambda ()
                                 (interactive)
                                 (other-window -1)))
+;; toggle fullscreen
+(global-set-key (kbd "M-RET") 'toggle-fullscreen)
+
 ;; mouse
-(global-set-key (kbd "<S-down-mouse-1>") 'mouse-yank-at-click) ; same as middle mouse, but for trackpad
+(setq mouse-autoselect-window t)
 (global-set-key (kbd "<mode-line> <C-mouse-1>") 'mouse-split-window-vertically)
 (setq mouse-drag-copy-region t)
 
@@ -43,6 +56,10 @@
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 (global-unset-key (kbd "M-<down-mouse-1>"))
 (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click)
+
+;; evil-numbers
+(global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
+(global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
 
 ;; personal bindings
 (define-prefix-command 'personal-map)
@@ -62,6 +79,7 @@
 (define-key personal-map "i" (lambda ()
                                (interactive)
                                (find-file "~/.emacs.d/init.el")))
+(define-key personal-map "b" 'sr-speedbar-toggle)
 
 ;; global minor modes
 (transient-mark-mode t)    ;; show regions as highlighted
@@ -78,10 +96,12 @@
 (global-auto-revert-mode t)
 (electric-indent-mode t)
 (electric-pair-mode t)
+(setq speedbar-select-frame-method 'attached)
+
 ; type-break-mode... awesome
-(setq type-break-interval 2700)
-(setq type-break-demo-functions '(zone))
-(type-break-mode t)
+;; (setq type-break-interval 2700)
+;; (setq type-break-demo-functions '(zone))
+;; (type-break-mode t)
 
 ;; fix annoyances
 (setq inhibit-startup-screen t)
@@ -92,9 +112,9 @@
 (setq make-backup-files nil) ; prevents creation of backup files on first save
 (setq backup-inhibited t)    ; never make backups
 (setq auto-save-default nil) ; disables auto save
-(when (display-graphic-p)               ; much better GUI scrolling
-  (progn
-    (setq mouse-wheel-scroll-amount '(0.01))))
+;; (when (display-graphic-p)               ; much better GUI scrolling
+;;   (progn
+;;     (setq mouse-wheel-scroll-amount '(0.01))))
 
 ;; show unicode in ansi-term mode
 (defadvice ansi-term (after advise-ansi-term-coding-system activate)
@@ -104,7 +124,7 @@
 (unless window-system
   (require 'mouse)
   (xterm-mouse-mode t)
-  (defun track-mouse(e))                ; what is this doing
+  (defun track-mouse(e))                ; what is this doing?
   (setq mouse-sel-mode t))
 
 ;; Don't prompt for "really want to exit?" when I still have processes running
@@ -120,7 +140,12 @@
 (setq-default indent-tabs-mode nil)
 
 
-;;; Plugin settings
+;;; Plugins
+
+
+;; auto-complete
+(setq ac-delay 0.001)
+
 ;; yasnippet
 (setq yas-prompt-functions '(yas-ido-prompt))
 
@@ -134,16 +159,29 @@
 (add-hook 'css-mode-hook 'skewer-css-mode)
 (add-hook 'html-mode-hook 'skewer-html-mode)
 
-;; multi-web-mode
-(require 'multi-web-mode)
-(setq mweb-default-major-mode 'html-mode)
-(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-                  (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
-                  (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
-(setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
-(multi-web-global-mode 1)
+;; mouse+
+(global-set-key [down-mouse-2]        'mouse-flash-position-or-M-x)
+(global-set-key [S-down-mouse-2]      'mouse-scan-lines-or-M-:)
+(global-set-key [mode-line C-mouse-1] 'mouse-tear-off-window)
+(global-set-key [minibuffer mouse-3]        '(lambda ()
+                                              (interactive)
+                                              (ido-find-file)
+                                              (end-of-line)))
 
+;; projectile
+(setq projectile-enable-caching t)
+;; (setq projectile-completion-system 'grizzl)
 
+;; web-mode (see web-mode.org)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+; for plain html:
+; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 ;;; Advice
 (defadvice newline-and-indent (before newline-and-indent-dwim activate)
@@ -170,5 +208,6 @@
         ad-do-it
         (kill-buffer buffer))
     ad-do-it))
+
 
 (provide 'global-settings)

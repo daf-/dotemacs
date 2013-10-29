@@ -97,6 +97,24 @@ newline and puts the cursor on the empty line."
         (newline)
         (ad-activate 'newline))))
 
+(defun split-shell ()
+  (interactive)
+  (split-window-sensibly)
+  (eshell))
+
+(defun split-term ()
+  (interactive "*")
+  (split-window-sensibly)
+  (ansi-term "bash"))
+
+(defun toggle-fullscreen ()
+  "Toggle fullscreen mode"
+  (interactive "*")
+  (let ((frame (window-frame (selected-window))))
+    (if (not (eq (frame-parameter frame 'fullscreen) 'fullboth))
+	(set-frame-parameter frame 'fullscreen 'fullboth)
+      (set-frame-parameter frame 'fullscreen nil))))
+
 ;;; Snippet helpers for javascript -- taken from https://github.com/magnars
 (defun js-method-p ()
   (save-excursion
@@ -105,7 +123,7 @@ newline and puts the cursor on the empty line."
 
 (defun js-function-declaration-p ()
   (save-excursion
-    (word-search-backward "function")
+    (word-search-backward "function ")
     (looking-back "^\\s *")))
 
 (defun snippet--function-punctuation ()

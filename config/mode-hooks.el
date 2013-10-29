@@ -3,6 +3,9 @@
 ;; open header files in c++ mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
+;; (add-hook 'dired-mode-hook (lambda ()
+;;                              (local-set-key (kbd "<down-mouse-1>") 'dired-find-alternate-file)))
+
 ;; from luke
 (defun my-text-mode-hook ()
   (turn-on-auto-fill)
@@ -15,13 +18,19 @@
 
 (defun my-lispy-mode-hook ()
   (rainbow-delimiters-mode t)
-  ;; (electric-pair-mode -1)
   (enable-paredit-mode))
 (add-hook 'emacs-lisp-mode-hook 'my-lispy-mode-hook)
 (add-hook 'lisp-mode-hook 'my-lispy-mode-hook)
 (add-hook 'lisp-interaction-mode-hook 'my-lispy-mode-hook)
 (add-hook 'scheme-mode-hook 'my-lispy-mode-hook)
 (add-hook 'clojure-mode-hook 'my-lispy-mode-hook)
+
+;; TODO: make comment-dwim insert at least two spaces between end of
+;; code and #
+;; (add-hook 'python-mode
+;;           (lambda ()
+;;             (electric-indent-mode '-1)
+;;             (defadvice)))
 
 ;; use eldoc-mode w/ emacs-lisp mode
 (add-hook 'emacs-lisp-mode-hook
@@ -32,7 +41,6 @@
   (setq c-basic-offset 4)
   (setq evil-shift-width c-basic-offset)
   (auto-fill-mode)
-  (electric-pair-mode)
   (local-set-key (kbd "C-;") 'insert-semicolon-eol))
 
 (add-hook 'c-mode-hook 'c-like-mode-hook)
@@ -52,6 +60,11 @@
             (electric-pair-mode)
             (define-key js2-mode-map (kbd "C-;") 'insert-semicolon-eol)
             (local-unset-key (kbd "<down-mouse-3>"))))
+
+(add-hook 'coffee-mode-hook
+          (lambda ()
+            (setq coffee-tab-width 2)
+            (setq evil-shift-width coffee-tab-width)))
 
 (add-hook 'ruby-mode-hook (lambda ()
                             (setq evil-shift-width ruby-indent-level)))
