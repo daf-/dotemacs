@@ -24,6 +24,7 @@
 (global-set-key (kbd "s-z") 'undo-tree-undo)
 (global-set-key (kbd "s-Z") 'undo-tree-redo)
 (global-set-key (kbd "s-q") 'save-buffers-kill-terminal)
+(global-set-key (kbd "s-b") 'ido-switch-buffer)
 ; (global-set-key (kbd "<s-return>") 'mac-mouse-turn-on-fullscreen) ; Make this toggle fullscreen
 
 ;; C-left/right/up/down moves the window
@@ -73,8 +74,8 @@
 (define-key personal-map "g" 'magit-status)
 (define-key personal-map "l" 'goto-line)
 (define-key personal-map "p" 'run-python)
-(define-key personal-map "s" 'eshell)
-(define-key personal-map "t" '(lambda () (interactive) (ansi-term "bash")))
+(define-key personal-map "s" 'split-eshell)
+(define-key personal-map "t" 'split-ansi-term)
 (define-key personal-map " " 'ace-jump-mode)
 (define-key personal-map "i" (lambda ()
                                (interactive)
