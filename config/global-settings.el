@@ -215,6 +215,28 @@
         ad-do-it
         (kill-buffer buffer))
     ad-do-it))
+;; scss-mode
+(setq scss-compile-at-save nil)
+
+;; processing
+(setq processing-sketchbook-dir "~/code/Processing")
+
+
+;;; Filetype stuff
+;; ruby
+(add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Rakefile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.gemspec\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.ru\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Guardfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Capfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.thor\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Thorfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Vagrantfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.jbuilder\\'" . ruby-mode))
+;; C++
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 
 (provide 'global-settings)
