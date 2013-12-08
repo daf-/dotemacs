@@ -141,11 +141,19 @@
 (setq-default indent-tabs-mode nil)
 
 
-;;; Plugins
+;;; Plugin settings
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
 
 
 ;; auto-complete
 (setq ac-delay 0.001)
+
+;; flx/flx-ido
+(ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
+(setq ido-use-faces nil)
 
 ;; yasnippet
 (setq yas-prompt-functions '(yas-ido-prompt))
@@ -154,11 +162,6 @@
 (setq ag-highlight-search t)
 (global-set-key (kbd "<f5>") 'ag-project)
 (global-set-key (kbd "<f6>") 'ag-regexp-project-at-point)
-
-;; skewer-mode
-(add-hook 'js2-mode-hook 'skewer-mode)
-(add-hook 'css-mode-hook 'skewer-css-mode)
-(add-hook 'html-mode-hook 'skewer-html-mode)
 
 ;; mouse+
 (global-set-key [down-mouse-2]        'mouse-flash-position-or-M-x)
@@ -170,8 +173,10 @@
                                               (end-of-line)))
 
 ;; projectile
-(setq projectile-enable-caching t)
-(setq projectile-completion-system 'grizzl)
+(global-set-key (kbd "s-p") 'projectile-find-file)
+
+;; tabbar
+(setq tabbar-use-images nil)
 
 ;; web-mode (see web-mode.org)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
