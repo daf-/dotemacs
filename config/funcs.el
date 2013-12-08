@@ -2,6 +2,18 @@
   "Tasty cookie"
   (shell-command-to-string "cookie"))
 
+;; stay organized
+(defun find-or-create-weekly-org-file ()
+  "Finds the org-mode file for this week, creating one if
+necessary."
+  (let ((cur-week-file (concat "~/org/" (format-time-string "%W") ".org")))
+    (if (file-exists-p cur-week-file)
+        (find-file cur-week-file)
+      (progn
+        (find-file cur-week-file)
+        (insert-file-contents "~/org/template.org")
+        (save-buffer)))))
+
 (defun comment-or-uncomment-line-or-region ()
   "Toggles commenting on the current line if no region is defined,
    otherwise toggles comments on the region"
@@ -97,15 +109,27 @@ newline and puts the cursor on the empty line."
         (newline)
         (ad-activate 'newline))))
 
-(defun split-shell ()
-  (interactive)
-  (split-window-sensibly)
-  (eshell))
+;;; Better eshell/ansi-term window management
+(defvar eshell-delete-window nil)
+(defvar ansi-term-delete-window nil)
 
-(defun split-term ()
+(defun split-eshell ()
   (interactive "*")
-  (split-window-sensibly)
-  (ansi-term "bash"))
+  (let ((window (split-window-sensibly)))
+    (cond (window (select-window window)
+                  (setq eshell-delete-window t))
+          (t (other-window 1)
+             (setq eshell-delete-window nil)))
+    (eshell)))
+
+(defun split-ansi-term ()
+  (interactive "*")
+  (let ((window (split-window-sensibly)))
+    (cond (window (select-window window)
+                  (setq ansi-term-delete-window t))
+          (t (other-window 1)
+             (setq ansi-term-delete-window nil)))
+    (ansi-term "bash")))
 
 (defun toggle-fullscreen ()
   "Toggle fullscreen mode"

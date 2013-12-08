@@ -104,7 +104,7 @@
             (require 'evil-setup)
 	    (require 'funcs)
             (load-plugins)
-            (find-weekly-org-file)))
+            (find-or-create-weekly-org-file)))
 
 ;; Colors, font
 ;; (set-frame-font "-*-Anonymous Pro-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1")
