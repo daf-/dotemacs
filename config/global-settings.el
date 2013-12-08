@@ -189,32 +189,6 @@
 ; for plain html:
 ; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
-;;; Advice
-(defadvice newline-and-indent (before newline-and-indent-dwim activate)
-  (newline-and-indent-dwim))
-
-(defadvice newline (before newline-dwim activate)
-  (when (> emacs-major-version 24) (if electric-indent-mode
-      (newline-and-indent-dwim))))
-
-(defadvice evil-ret-and-indent (before newline-and-indent-dwim activate)
-  (newline-and-indent-dwim))
-
-(defadvice paredit-mode (before paredit-turn-off-electric-pair-mode activate)
-  "Disable electric-pair-mode when we use paredit."
-  (if (and (> emacs-major-version 24)
-           electric-pair-mode)
-      (electric-pair-mode -1)))
-
-;; don't leave my terminal buffer hanging around when I'm done with it
-;; taken from the sweet blog post at
-;; http://emacs-journey.blogspot.com/2012/06/improving-ansi-term.html
-(defadvice term-sentinel (around my-advice-term-sentinel (proc msg) activate)
-  (if (memq (process-status proc) '(signal exit))
-      (let ((buffer (process-buffer proc)))
-        ad-do-it
-        (kill-buffer buffer))
-    ad-do-it))
 ;; scss-mode
 (setq scss-compile-at-save nil)
 

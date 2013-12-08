@@ -1,10 +1,10 @@
 (require 'funcs)
 
-;; open header files in c++ mode
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
-;; (add-hook 'dired-mode-hook (lambda ()
-;;                              (local-set-key (kbd "<down-mouse-1>") 'dired-find-alternate-file)))
+
+;;;;;;;;;;;;;;;;
+;; mode hooks ;;
+;;;;;;;;;;;;;;;;
 
 ;; from luke
 (defun my-text-mode-hook ()
@@ -27,10 +27,9 @@
 
 ;; TODO: make comment-dwim insert at least two spaces between end of
 ;; code and #
-;; (add-hook 'python-mode
-;;           (lambda ()
-;;             (electric-indent-mode '-1)
-;;             (defadvice)))
+(add-hook 'python-mode
+          (lambda ()
+            (set (make-local-variable 'electric-indent-mode) nil)))
 
 ;; use eldoc-mode w/ emacs-lisp mode
 (add-hook 'emacs-lisp-mode-hook
@@ -75,7 +74,8 @@
                         (file-exists-p "Makefile"))
               (set (make-local-variable 'compile-command)
                    (concat "javac " (buffer-name))))
-            (setq c-basic-offset 4)))
+            (setq c-basic-offset 4)
+            (set (make-local-variable 'electric-indent-mode) nil)))
 
 (add-hook 'latex-mode-hook
           (lambda ()
@@ -86,6 +86,15 @@
           (lambda ()
             (setq evil-shift-width sgml-basic-offset)))
 
+(add-hook 'css-mode-hook
+          (lambda ()
+            (setq css-indent-offset 2)
+            (setq evil-shift-width css-indent-offset)))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (set (make-local-variable 'electric-indent-mode) nil)))
+
 
 (defun my-term-mode-hook ()
   (setq global-hl-line-mode nil)       ; don't highlight line in shell
@@ -94,4 +103,49 @@
 (add-hook 'ansi-term-mode-hook 'my-term-mode-hook)
 (add-hook 'eshell-mode-hook 'my-term-mode-hook)
 
-(provide 'mode-hooks)
+;; When exiting eshell, close the window if it's not the only one left
+(add-hook 'eshell-exit-hook
+  (lambda ()
+    (if eshell-delete-window
+        (delete-window (get-buffer-window "*eshell*")))))
+
+;; (add-hook 'dired-mode-hook (lambda ()
+;;                              (local-set-key (kbd "<down-mouse-1>") 'dired-find-alternate-file)))
+
+
+
+;;;;;;;;;;;;
+;; advice ;;
+;;;;;;;;;;;;
+
+(defadvice newline-and-indent (before newline-and-indent-dwim activate)
+  (newline-and-indent-dwim))
+
+(defadvice newline (before newline-dwim activate)
+  (when (> emacs-major-version 24)
+    (if electric-indent-mode
+      (newline-and-indent-dwim))))
+
+(defadvice evil-ret-and-indent (before newline-and-indent-dwim activate)
+  (newline-and-indent-dwim))
+
+(defadvice paredit-mode (before paredit-turn-off-electric-pair-mode activate)
+  "Disable electric-pair-mode when we use paredit."
+  (if (and (> emacs-major-version 24) electric-pair-mode)
+      (electric-pair-mode -1)))
+
+;; Don't leave my terminal buffer hanging around when I'm done with it
+;; Modified from the sweet blog post at
+;; http://emacs-journey.blogspot.com/2012/06/improving-ansi-term.html
+(defadvice term-sentinel (around term-kill-buffer-close-window (proc msg) activate)
+  (if (memq (process-status proc) '(signal exit))
+      (let ((buffer (process-buffer proc)))
+        ad-do-it
+        ;; Delete window (if only one), since we're usually using the
+        ;; term split function in funcs.el
+        (if ansi-term-delete-window
+            (delete-window (get-buffer-window buffer)))
+        (kill-buffer buffer))
+    ad-do-it))
+
+(provide 'hooks-advice)
