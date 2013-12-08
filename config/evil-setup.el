@@ -36,8 +36,6 @@
 
 
 ;; window mappings
-(define-key evil-normal-state-map " " #'evil-toggle-fold)
-(define-key evil-normal-state-map " " #'evil-toggle-fold)
 (define-key evil-normal-state-map (kbd "C-h") #'evil-window-left)
 (define-key evil-normal-state-map (kbd "C-j") #'evil-window-down)
 (define-key evil-normal-state-map (kbd "C-k") #'evil-window-up)
@@ -163,22 +161,8 @@ Copied from evil-delete implementation."
 (cl-loop for (mode . state) in '((inferior-emacs-lisp-mode  . emacs)
                                  (term-mode                 . emacs)
                                  (bc-menu-mode              . emacs)
-                                 (gud-mode                  . emacs)
-                                 (magit-mode                . emacs)
-                                 (magit-branch-manager-mode . emacs)
-                                 (magit-cherry-mode         . emacs)
-                                 (magit-commit-mode         . emacs)
-                                 (magit-diff-mode           . emacs)
-                                 (magit-key-mode            . emacs)
-                                 (magit-log-edit-mode-map   . emacs)
-                                 (magit-log-mode            . emacs)
-                                 (magit-status-mode         . emacs))
+                                 (gud-mode                  . emacs))
          do (evil-set-initial-state mode state))
-
-(evil-define-state magit-motion
-  "Like Motion state, but respects magit keybindings"
-  :tag " <MM> "
-  :suppress-keymap f)
 
 ;; make magit evil
 (evil-define-key 'emacs magit-mode-map
@@ -190,7 +174,9 @@ Copied from evil-delete implementation."
   "\C-h" 'evil-window-left
   "\C-j" 'evil-window-down
   "\C-k" 'evil-window-up
-  "\C-l" 'evil-window-right)
+  "\C-l" 'evil-window-right
+  )
+
 
 (evil-define-key 'normal comint-mode-map "C-d" 'evil-scroll-down)
 (evil-define-key 'insert comint-mode-map "C-j" 'comint-send-input)
@@ -229,13 +215,17 @@ Copied from evil-delete implementation."
   "a" 'ag-project-regexp
   "x" ctl-x-map
   "f" 'find-file
+  "d" 'ido-dired
   "b" 'ido-switch-buffer
   "l" 'load-file
   "c" 'evil-comment
   "w" 'save-buffer
 
-  "t" 'split-term                       ; fix these
-  "s" 'split-shell
+  "t" 'split-ansi-term
+  "s" 'split-eshell
+
+  "ps" 'projectile-switch-project
+  "pf" 'projectile-find-file
 
   "g" 'magit-status
   "q" 'evil-quit
@@ -260,7 +250,6 @@ Copied from evil-delete implementation."
   "eb" 'python-shell-send-buffer
   "ed" 'python-shell-send-defun
   "er" 'python-shell-send-region)
-
 
 
 (provide 'evil-setup)
