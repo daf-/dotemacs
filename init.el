@@ -42,7 +42,6 @@
                        magit
                        multiple-cursors
                        paredit
-                       ;; popup
                        projectile
                        rainbow-delimiters
                        simple-httpd
