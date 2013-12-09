@@ -25,6 +25,7 @@
 (global-set-key (kbd "s-Z") 'undo-tree-redo)
 (global-set-key (kbd "s-q") 'save-buffers-kill-terminal)
 (global-set-key (kbd "s-b") 'ido-switch-buffer)
+(global-set-key (kbd "s-k") 'kill-buffer-and-window)
 ; (global-set-key (kbd "<s-return>") 'mac-mouse-turn-on-fullscreen) ; Make this toggle fullscreen
 
 ;; C-left/right/up/down moves the window

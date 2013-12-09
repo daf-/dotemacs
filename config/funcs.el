@@ -114,7 +114,7 @@ newline and puts the cursor on the empty line."
 (defvar ansi-term-delete-window nil)
 
 (defun split-eshell ()
-  (interactive "*")
+  (interactive)
   (let ((window (split-window-sensibly)))
     (cond (window (select-window window)
                   (setq eshell-delete-window t))
@@ -123,7 +123,7 @@ newline and puts the cursor on the empty line."
     (eshell)))
 
 (defun split-ansi-term ()
-  (interactive "*")
+  (interactive)
   (let ((window (split-window-sensibly)))
     (cond (window (select-window window)
                   (setq ansi-term-delete-window t))
