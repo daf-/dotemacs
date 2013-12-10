@@ -112,9 +112,12 @@ newline and puts the cursor on the empty line."
 ;;; Better eshell/ansi-term window management
 (defvar eshell-delete-window nil)
 (defvar ansi-term-delete-window nil)
+(defvar eshell-previous-window nil)
+(defvar ansi-term-previous-window nil)
 
 (defun split-eshell ()
   (interactive)
+  (setq eshell-previous-window (selected-window))
   (let ((window (split-window-sensibly)))
     (cond (window (select-window window)
                   (setq eshell-delete-window t))
@@ -124,6 +127,7 @@ newline and puts the cursor on the empty line."
 
 (defun split-ansi-term ()
   (interactive)
+  (setq ansi-term-previous-window (selected-window))
   (let ((window (split-window-sensibly)))
     (cond (window (select-window window)
                   (setq ansi-term-delete-window t))

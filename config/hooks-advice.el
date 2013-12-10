@@ -74,8 +74,11 @@
                         (file-exists-p "Makefile"))
               (set (make-local-variable 'compile-command)
                    (concat "javac " (buffer-name))))
-            (setq c-basic-offset 4)
-            (set (make-local-variable 'electric-indent-mode) nil)))
+            (setq c-basic-offset 4)))
+
+(add-hook 'processing-mode-hook
+          (lambda ()
+            (auto-complete-mode 1)))
 
 (add-hook 'latex-mode-hook
           (lambda ()
@@ -107,7 +110,8 @@
 (add-hook 'eshell-exit-hook
   (lambda ()
     (if eshell-delete-window
-        (delete-window (get-buffer-window "*eshell*")))))
+        (delete-window (get-buffer-window "*eshell*")))
+    (select-window eshell-previous-window)))
 
 ;; (add-hook 'dired-mode-hook (lambda ()
 ;;                              (local-set-key (kbd "<down-mouse-1>") 'dired-find-alternate-file)))
@@ -146,6 +150,7 @@
         (if ansi-term-delete-window
             (delete-window (get-buffer-window buffer)))
         (kill-buffer buffer))
-    ad-do-it))
+    ad-do-it)
+  (select-window ansi-term-previous-window))
 
 (provide 'hooks-advice)
