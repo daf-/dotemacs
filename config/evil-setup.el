@@ -47,6 +47,7 @@
 
 ;; Navigation and Editing
 (define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-up)
+;; (define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-up)
 (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
 (define-key evil-visual-state-map (kbd "TAB") #'evil-indent)
 
