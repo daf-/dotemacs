@@ -114,6 +114,7 @@
 (setq make-backup-files nil) ; prevents creation of backup files on first save
 (setq backup-inhibited t)    ; never make backups
 (setq auto-save-default nil) ; disables auto save
+(setq visible-bell t)        ; disable annoying beeping
 ;; (when (display-graphic-p)               ; much better GUI scrolling
 ;;   (progn
 ;;     (setq mouse-wheel-scroll-amount '(0.01))))
