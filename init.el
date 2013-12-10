@@ -78,15 +78,15 @@
 
 (defun load-plugins ()
   (evil-plugins)
-  ;; (evil-mode 1)
+  (evil-mode 1)
 
   (require 'auto-complete-config)
-  (ac-config-default)
   (require 'auto-complete)
   (require 'paredit)
   (require 'mouse+)
   (require 'web-mode)
   (require 'flx-ido)
+  (ac-config-default)
   (global-auto-complete-mode 1)
   (global-undo-tree-mode 1)
   (global-flycheck-mode 1)
