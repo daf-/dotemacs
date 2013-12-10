@@ -137,7 +137,7 @@ newline and puts the cursor on the empty line."
 
 (defun toggle-fullscreen ()
   "Toggle fullscreen mode"
-  (interactive "*")
+  (interactive)
   (let ((frame (window-frame (selected-window))))
     (if (not (eq (frame-parameter frame 'fullscreen) 'fullboth))
 	(set-frame-parameter frame 'fullscreen 'fullboth)
