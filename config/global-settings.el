@@ -1,33 +1,11 @@
 (require 'funcs)
 
-;;; set PATH to recognize homebrew
-(setenv "PATH"
-  (concat
-   "~/bin" ":"
-   "/usr/local/bin" ":"
-   (getenv "PATH")))
+(print "FUUUUUUUUCK SFS DF SDF SDF")
 
 ;;; Delete trailing whitespace before saving
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;;; global keys
-(setq mac-option-modifier 'super)
-(setq mac-command-modifier 'meta)
-(setq ns-function-modifier 'hyper)
-
-;;; mac keys
-(setq mac-emulate-three-button-mouse t)
-(global-set-key (kbd "s-s") 'save-buffer)
-(global-set-key (kbd "s-S") 'ido-write-file)
-(global-set-key (kbd "s-c") 'kill-ring-save)
-(global-set-key (kbd "s-x") 'kill-region)
-(global-set-key (kbd "s-z") 'undo-tree-undo)
-(global-set-key (kbd "s-Z") 'undo-tree-redo)
-(global-set-key (kbd "s-q") 'save-buffers-kill-terminal)
-(global-set-key (kbd "s-b") 'ido-switch-buffer)
-(global-set-key (kbd "s-k") 'kill-buffer-and-window)
-; (global-set-key (kbd "<s-return>") 'mac-mouse-turn-on-fullscreen) ; Make this toggle fullscreen
-
 ;; C-left/right/up/down moves the window
 (global-set-key (kbd "C-<left>") 'shrink-window-horizontally)
 (global-set-key (kbd "C-<right>") 'enlarge-window-horizontally)
@@ -47,6 +25,7 @@
 (setq mouse-drag-copy-region t)
 
 ;; undo-tree
+(global-undo-tree-mode 1)
 (global-set-key (kbd "s-Z") 'undo-tree-redo)
 
 ;; expand-region
@@ -144,20 +123,29 @@
 
 
 ;;; Plugin settings
+(require 'paredit)
+(global-flycheck-mode 1)
+
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
 
 ;; auto-complete
+(require 'auto-complete-config)
+(require 'auto-complete)
+(ac-config-default)
+(global-auto-complete-mode 1)
 (setq ac-delay 0.001)
 
 ;; flx/flx-ido
+(require 'flx-ido)
 (ido-mode 1)
 (ido-everywhere 1)
 (flx-ido-mode 1)
 (setq ido-use-faces nil)
 
 ;; yasnippet
+(yas-global-mode)
 (setq yas-prompt-functions '(yas-ido-prompt))
 
 ;; ag
@@ -166,6 +154,7 @@
 (global-set-key (kbd "<f6>") 'ag-regexp-project-at-point)
 
 ;; mouse+
+(require 'mouse+)
 (global-set-key [down-mouse-2]        'mouse-flash-position-or-M-x)
 (global-set-key [S-down-mouse-2]      'mouse-scan-lines-or-M-:)
 (global-set-key [mode-line C-mouse-1] 'mouse-tear-off-window)
@@ -175,12 +164,17 @@
                                               (end-of-line)))
 
 ;; projectile
+(projectile-global-mode 1)
 (global-set-key (kbd "s-p") 'projectile-find-file)
 
 ;; tabbar
 (setq tabbar-use-images nil)
 
+;; js2
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
 ;; web-mode (see web-mode.org)
+(require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))

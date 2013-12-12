@@ -1,6 +1,8 @@
 (require 'evil)
 (require 'evil-leader)
 (require 'funcs)
+(require 'evil-paredit)
+(require 'evil-numbers)
 
 ;;
 ;; Basic Settings
@@ -207,7 +209,11 @@ Copied from evil-delete implementation."
 ;; Plugin Settings
 ;;
 
+;; surround
+(global-surround-mode 1)
+
 ;; evil-leader
+(global-evil-leader-mode 1)
 
 (evil-leader/set-leader ",")
 (setq evil-leader/in-all-states nil)      ; in emacs state, use C-, as <leader>
