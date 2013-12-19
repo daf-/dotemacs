@@ -98,6 +98,7 @@
  '(background-color "#202020")
  '(background-mode dark)
  '(cursor-color "#cccccc")
+ '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "0d553fda3eaa6ba8d831aabbb389d6ae0b32f1c83769296ee74d7140493be2f1" "a30d5f217d1a697f6d355817ac344d906bb0aae3e888d7abaa7595d5a4b7e2e3" default)))
  '(fci-rule-color "#383838")
  '(foreground-color "#cccccc")
  '(vc-annotate-background "#2B2B2B")

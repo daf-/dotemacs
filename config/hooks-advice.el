@@ -126,11 +126,6 @@
   (newline-and-indent-dwim))
 
 (defadvice newline (before newline-dwim activate)
-  (when (> emacs-major-version 24)
-    (if electric-indent-mode
-      (newline-and-indent-dwim))))
-
-(defadvice evil-ret-and-indent (before newline-and-indent-dwim activate)
   (newline-and-indent-dwim))
 
 (defadvice paredit-mode (before paredit-turn-off-electric-pair-mode activate)

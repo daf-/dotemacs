@@ -107,6 +107,7 @@ newline and puts the cursor on the empty line."
       (save-excursion
         (ad-deactivate 'newline) ; don't want recursively advised version
         (newline)
+        (indent-according-to-mode)
         (ad-activate 'newline))))
 
 ;;; Better eshell/ansi-term window management
