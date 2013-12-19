@@ -98,6 +98,11 @@
           (lambda ()
             (set (make-local-variable 'electric-indent-mode) nil)))
 
+(add-hook 'git-commit-mode-hook
+          (lambda ()
+            (when evil-mode
+              (evil-insert 1))))
+
 
 (defun my-term-mode-hook ()
   (setq global-hl-line-mode nil)       ; don't highlight line in shell

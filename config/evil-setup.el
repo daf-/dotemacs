@@ -140,11 +140,6 @@ Copied from evil-delete implementation."
   (if evil-mode
       (evil-paredit-mode)))
 
-(defadvice magit-log-edit (after evil-magit-log-insert-mode activate)
-  (if evil-local-mode
-      (evil-insert 1)))
-
-
 ;; fix indentation in pony template mode
 (defun pony-tpl-mode-fix-indent (function-symbol)
   (eval `(defadvice ,function-symbol (after pony-tpl-end-of-line activate)
