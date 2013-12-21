@@ -110,6 +110,24 @@ newline and puts the cursor on the empty line."
         (indent-according-to-mode)
         (ad-activate 'newline))))
 
+;;; Window management
+(defun daf-two-window-setup ()
+  "Just like C-x o, but easier to type"
+  (interactive)
+  (delete-other-windows)
+  (split-window-right))
+
+(defun daf-three-window-setup ()
+  "Create common three-window setup (one in left column, two in
+right)"
+  (interactive)
+  (delete-other-windows)
+  (split-window-right)
+  (other-window 1)
+  (split-window-below)
+  (other-window -1))
+
+
 ;;; Better eshell/ansi-term window management
 (defvar eshell-delete-window nil)
 (defvar ansi-term-delete-window nil)
@@ -134,7 +152,7 @@ newline and puts the cursor on the empty line."
                   (setq ansi-term-delete-window t))
           (t (other-window 1)
              (setq ansi-term-delete-window nil)))
-    (ansi-term "bash")))
+    (ansi-term (getenv "SHELL"))))
 
 (defun toggle-fullscreen ()
   "Toggle fullscreen mode"

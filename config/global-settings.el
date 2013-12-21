@@ -1,7 +1,5 @@
 (require 'funcs)
 
-(print "FUUUUUUUUCK SFS DF SDF SDF")
-
 ;;; Delete trailing whitespace before saving
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -16,33 +14,21 @@
 (global-set-key (kbd "C-x O") (lambda ()
                                 (interactive)
                                 (other-window -1)))
-;; toggle fullscreen
-(global-set-key (kbd "M-RET") 'toggle-fullscreen)
-
-;; mouse
-(setq mouse-autoselect-window t)
-(global-set-key (kbd "<mode-line> <C-mouse-1>") 'mouse-split-window-vertically)
-(setq mouse-drag-copy-region t)
-
-;; undo-tree
-(global-undo-tree-mode 1)
-(global-set-key (kbd "s-Z") 'undo-tree-redo)
-
-;; expand-region
-(global-set-key (kbd "C-=") 'er/expand-region)
-
-;; multiple-cursors
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-(global-unset-key (kbd "M-<down-mouse-1>"))
-(global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click)
-
-;; evil-numbers
-(global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
-(global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
-
 ;; personal bindings
+(global-set-key (kbd "A-s") 'save-buffer)
+(global-set-key (kbd "A-S") 'ido-write-file)
+(global-set-key (kbd "A-z") 'undo-tree-undo)
+(global-set-key (kbd "A-Z") 'undo-tree-redo)
+(global-set-key (kbd "A-q") 'save-buffers-kill-terminal)
+(global-set-key (kbd "A-k") 'kill-this-buffer)
+(global-set-key (kbd "A-K") 'kill-buffer-and-window)
+(global-set-key (kbd "A-1") 'delete-other-windows)
+(global-set-key (kbd "A-2") 'daf-two-window-setup)
+(global-set-key (kbd "A-3") 'daf-three-window-setup)
+(global-set-key (kbd "A-o") 'other-window)
+(global-set-key (kbd "A-RET") 'toggle-fullscreen)
+
+
 (define-prefix-command 'personal-map)
 (global-set-key (kbd "C-c") personal-map)
 
@@ -67,13 +53,14 @@
 (delete-selection-mode t)  ;; can type over a highlighted region
 (column-number-mode t)     ;; shows column number in modeline
 (size-indication-mode t)   ;; show buffer size in modeline
-(show-paren-mode t)
 (setq show-paren-delay 0)
+(show-paren-mode t)
 (setq show-paren-style 'expression)
 ;; (global-hl-line-mode)
 (iswitchb-mode t)
 (ido-mode t)
-(setq ido-enable-flex-matching t)
+(setq ido-enable-flex-matching t
+      ido-create-new-buffer 'always)
 (global-auto-revert-mode t)
 (electric-indent-mode t)
 (electric-pair-mode t)
@@ -94,9 +81,10 @@
 (setq backup-inhibited t)    ; never make backups
 (setq auto-save-default nil) ; disables auto save
 (setq visible-bell t)        ; disable annoying beeping
-;; (when (display-graphic-p)               ; much better GUI scrolling
-;;   (progn
-;;     (setq mouse-wheel-scroll-amount '(0.01))))
+(when (display-graphic-p)    ; much better GUI scrolling
+  (progn
+    ;; (setq mouse-wheel-progressive-speed nil)
+    (setq mouse-wheel-scroll-amount '(0.01))))
 
 ;; show unicode in ansi-term mode
 (defadvice ansi-term (after advise-ansi-term-coding-system activate)
@@ -129,7 +117,6 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
-
 ;; auto-complete
 (require 'auto-complete-config)
 (require 'auto-complete)
@@ -137,12 +124,15 @@
 (global-auto-complete-mode 1)
 (setq ac-delay 0.001)
 
-;; flx/flx-ido
+;; ido
 (require 'flx-ido)
 (ido-mode 1)
-(ido-everywhere 1)
 (flx-ido-mode 1)
 (setq ido-use-faces nil)
+(require 'ido-vertical-mode)
+(ido-vertical-mode)
+(require 'ido-ubiquitous)               ; better than ido-everywhere
+(ido-ubiquitous-mode 1)
 
 ;; yasnippet
 (yas-global-mode)
@@ -165,10 +155,11 @@
 
 ;; projectile
 (projectile-global-mode 1)
-(global-set-key (kbd "s-p") 'projectile-find-file)
-
-;; tabbar
-(setq tabbar-use-images nil)
+(setq projectile-remember-window-configs t
+      projectile-use-git-grep t)
+(global-set-key (kbd "A-p") 'projectile-switch-project)
+(global-set-key (kbd "A-f") 'projectile-find-file)
+(global-set-key (kbd "A-b") 'projectile-switch-to-buffer)
 
 ;; js2
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
@@ -182,15 +173,39 @@
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-; for plain html:
-; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+;; for plain html:
+;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 ;; scss-mode
-(setq scss-compile-at-save nil)
+;; (setq scss-compile-at-save nil)
 
 ;; processing
 (setq processing-sketchbook-dir "~/code/Processing")
 
+;; undo-tree
+(global-undo-tree-mode 1)
+(global-set-key (kbd "s-Z") 'undo-tree-redo)
+
+;; expand-region
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+;; multiple-cursors
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(global-unset-key (kbd "M-<down-mouse-1>"))
+(global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click)
+
+;; evil-numbers
+(global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
+(global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
+
+;; daylight
+(setq daylight-morning-theme 'solarized-light
+      daylight-afternoon-theme 'monokai
+      daylight-evening-theme 'zenburn
+      daylight-late-theme 'spacegray)
+(daylight-mode 1)
 
 ;;; Filetype stuff
 ;; ruby
@@ -207,6 +222,7 @@
 (add-to-list 'auto-mode-alist '("\\.jbuilder\\'" . ruby-mode))
 ;; C++
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-
+;; scheme
+(setq scheme-program-name "racket")
 
 (provide 'global-settings)

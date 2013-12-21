@@ -162,6 +162,12 @@ Copied from evil-delete implementation."
                                  (gud-mode                  . emacs))
          do (evil-set-initial-state mode state))
 
+;;; emacs lisp
+(evil-define-key 'normal emacs-lisp-mode-map
+  "K" '(lambda ()
+         (interactive)
+         (describe-function (symbol-at-point))))
+
 ;; make magit evil
 (evil-define-key 'emacs magit-mode-map
   "h" 'magit-toggle-diff-refine-hunk
@@ -214,6 +220,7 @@ Copied from evil-delete implementation."
 (setq evil-leader/in-all-states nil)      ; in emacs state, use C-, as <leader>
 
 (evil-leader/set-key
+  "i" (lambda () (interactive) (find-file "~/.emacs.d/init.el"))
   "a" 'ag-project-regexp
   "x" ctl-x-map
   "f" 'find-file
@@ -226,8 +233,10 @@ Copied from evil-delete implementation."
   "t" 'split-ansi-term
   "s" 'split-eshell
 
-  "ps" 'projectile-switch-project
+  "pa" 'projectile-ag
+  "pb" 'projectile-switch-to-buffer
   "pf" 'projectile-find-file
+  "ps" 'projectile-switch-project
 
   "g" 'magit-status
   "q" 'evil-quit
@@ -237,21 +246,22 @@ Copied from evil-delete implementation."
   "K" 'kill-buffer-and-window
   "," 'evil-repeat-find-char-reverse)
 
-
-(evil-leader/set-key-for-mode 'emacs-lisp-mode
-  "er" 'eval-region
-  "eb" 'eval-buffer
-  "es" 'eval-last-sexp)
-
-(evil-leader/set-key-for-mode 'lisp-interaction-mode
-  "er" 'eval-region
-  "eb" 'eval-buffer
-  "es" 'eval-last-sexp)
+(dolist (mode '(emacs-lisp-mode
+                lisp-interaction-mode
+                scheme-mode))
+  (evil-leader/set-key-for-mode mode
+    "er" 'eval-region
+    "eb" 'eval-buffer
+    "ed" 'eval-defun
+    "es" 'eval-last-sexp))
 
 (evil-leader/set-key-for-mode 'python-mode
   "eb" 'python-shell-send-buffer
   "ed" 'python-shell-send-defun
   "er" 'python-shell-send-region)
+
+;;; Last, but not least...
+(evil-mode 1)
 
 
 (provide 'evil-setup)

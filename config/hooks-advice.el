@@ -60,6 +60,14 @@
             (define-key js2-mode-map (kbd "C-;") 'insert-semicolon-eol)
             (local-unset-key (kbd "<down-mouse-3>"))))
 
+(add-hook 'web-mode-hook
+          (lambda ()
+            (setq web-mode-markup-indent-offset 2
+                  web-mode-css-indent-offset 2
+                  web-mode-code-indent-offset 2
+                  evil-shift-width 2)
+            (set (make-local-variable 'electric-pair-mode) nil)))
+
 (add-hook 'coffee-mode-hook
           (lambda ()
             (setq coffee-tab-width 2)
@@ -113,10 +121,13 @@
 
 ;; When exiting eshell, close the window if it's not the only one left
 (add-hook 'eshell-exit-hook
-  (lambda ()
-    (if eshell-delete-window
-        (delete-window (get-buffer-window "*eshell*")))
-    (select-window eshell-previous-window)))
+          (lambda ()
+            (when eshell-delete-window
+              (delete-window (get-buffer-window "*eshell*"))
+              (setq eshell-delete-window nil))
+            (when eshell-previous-window
+              (select-window eshell-previous-window)
+              (setq eshell-previous-window nil))))
 
 ;; (add-hook 'dired-mode-hook (lambda ()
 ;;                              (local-set-key (kbd "<down-mouse-1>") 'dired-find-alternate-file)))
@@ -147,10 +158,13 @@
         ad-do-it
         ;; Delete window (if only one), since we're usually using the
         ;; term split function in funcs.el
-        (if ansi-term-delete-window
-            (delete-window (get-buffer-window buffer)))
+        (when ansi-term-delete-window
+          (delete-window (get-buffer-window buffer))
+          (setq ansi-term-delete-window nil))
         (kill-buffer buffer))
     ad-do-it)
-  (select-window ansi-term-previous-window))
+  (when ansi-term-previous-window
+    (select-window ansi-term-previous-window)
+    (setq ansi-term-previous-window nil)))
 
 (provide 'hooks-advice)
