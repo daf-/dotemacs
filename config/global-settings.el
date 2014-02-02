@@ -128,7 +128,6 @@
 (require 'flx-ido)
 (ido-mode 1)
 (flx-ido-mode 1)
-(setq ido-use-faces nil)
 (require 'ido-vertical-mode)
 (ido-vertical-mode)
 (require 'ido-ubiquitous)               ; better than ido-everywhere

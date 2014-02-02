@@ -48,10 +48,7 @@
                        yasnippet
                        ;; themes
                        anti-zenburn-theme
-                       deep-thought-theme
                        monokai-theme
-                       phoenix-dark-mono-theme
-                       phoenix-dark-pink-theme
                        soft-morning-theme
                        solarized-theme
                        spacegray-theme
