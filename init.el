@@ -3,7 +3,7 @@
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (and (fboundp 'menu-bar-mode) (not (display-graphic-p))) (menu-bar-mode -1))
 (setq vc-handled-backends nil)
-(set-frame-font "Menlo 14")
+(set-frame-font "Monaco 11")
 (require 'server)
 (unless (server-running-p)
   (server-start))
