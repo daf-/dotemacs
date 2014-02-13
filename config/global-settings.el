@@ -199,13 +199,6 @@
 (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
 
-;; daylight
-(setq daylight-morning-theme 'solarized-light
-      daylight-afternoon-theme 'monokai
-      daylight-evening-theme 'zenburn
-      daylight-late-theme 'spacegray)
-(daylight-mode 1)
-
 ;;; Filetype stuff
 ;; ruby
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
